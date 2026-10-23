@@ -12,6 +12,7 @@
     <a href="README.en.md">English</a>
   </p>
   <p>
+    <a href="https://github.com/Humboldt-Zh/SwitchDesk/actions/workflows/build.yml"><img src="https://github.com/Humboldt-Zh/SwitchDesk/actions/workflows/build.yml/badge.svg" alt="Build and verify"></a>
     <img src="https://img.shields.io/badge/Windows-x64-2563EB" alt="Windows x64">
     <img src="https://img.shields.io/badge/.NET-10-512BD4" alt=".NET 10">
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-blue" alt="GPL-3.0"></a>

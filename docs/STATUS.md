@@ -8,7 +8,7 @@
 - 游戏库 500 项夹具：搜索、选择、容器回收和布局检查；浅／深主题、1050／1280／1920 DIP，以及 96／192 DPI 的 WPF 渲染比例检查。未覆盖真实显示器 DPI 切换和 Explorer 人工拖放。
 - Switch 0.2.4 目标构建通过。早期 0.2.1 基线有两次独立目录构建记录，不承诺字节级可复现。
 - Linux ASan/UBSan 检查协议、路径、摘要、64 位 argv 与替代绘图接口的管理页状态。未对 Horizon 服务执行 sanitizer。
-- GitHub Actions 工作流已提供，尚未远程执行，不显示“CI passing”徽章。
+- GitHub Actions 首轮检查通过（2026-10-23）：Windows 构建、70 项自动化测试、WPF UI 检查和原生 ASan/UBSan 检查；[运行记录](https://github.com/Humboldt-Zh/SwitchDesk/actions/runs/39904998656)。Switch 容器构建按手动触发条件跳过，配套附件仍使用已部署的原始 0.2.4 NRO。
 
 ## 已完成的真机检查
 

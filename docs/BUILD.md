@@ -63,7 +63,7 @@ g++ -std=c++20 -O1 -g -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefi
 ./argv-tests
 ```
 
-GitHub Actions 自动执行 Windows 与上述原生检查；Switch 容器构建仅手动触发，因宿主 SDK 和下载源仍需核对。尚未在 GitHub 执行这些工作流。相应 sanitizer 只覆盖便携逻辑，不能代替 Horizon 实机检查。
+GitHub Actions 自动执行 Windows 与上述原生检查；[首轮运行](https://github.com/Humboldt-Zh/SwitchDesk/actions/runs/39904998656)于 2026-10-23 通过，包含 70 项测试与 WPF UI 检查。Switch 容器构建仅手动触发，首轮按条件跳过。相应 sanitizer 只覆盖便携逻辑，不能代替 Horizon 实机检查。
 
 ## 发布与对应源码
 

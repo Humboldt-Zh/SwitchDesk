@@ -4,7 +4,7 @@
   <p><strong>Manage your Switch games, saves and SD files.</strong></p>
   <p>A game, console-save and SD-file manager for Atmosphère-enabled Nintendo Switch consoles. Runs on Windows.</p>
   <p><a href="https://github.com/Humboldt-Zh/SwitchDesk/releases/tag/v0.2.5-preview">Download preview</a> · <a href="docs/INSTALL.md">Get started</a> · <a href="docs/STATUS.md">Test status</a> · <a href="docs/BUILD.md">Build</a> · <a href="README.md">简体中文</a></p>
-  <p><img src="https://img.shields.io/badge/Windows-x64-2563EB" alt="Windows x64"> <img src="https://img.shields.io/badge/.NET-10-512BD4" alt=".NET 10"> <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-blue" alt="GPL-3.0"></a> <img src="https://img.shields.io/badge/status-development_preview-E8A23B" alt="Development preview"></p>
+  <p><a href="https://github.com/Humboldt-Zh/SwitchDesk/actions/workflows/build.yml"><img src="https://github.com/Humboldt-Zh/SwitchDesk/actions/workflows/build.yml/badge.svg" alt="Build and verify"></a> <img src="https://img.shields.io/badge/Windows-x64-2563EB" alt="Windows x64"> <img src="https://img.shields.io/badge/.NET-10-512BD4" alt=".NET 10"> <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-blue" alt="GPL-3.0"></a> <img src="https://img.shields.io/badge/status-development_preview-E8A23B" alt="Development preview"></p>
 </div>
 
 Use a Windows PC and USB to manage games, saves and SD files on your Switch. Browse console content, back up Switch saves to the PC, and access file-transfer and restore tools. The local library organizes installation packages and exported content.
@@ -49,7 +49,7 @@ As of **2026-10-23**, local checks include 70 automated tests, a 500-item UI fix
 
 The tested hardware baseline is OLED / HOS 20.4.0 / Atmosphère 1.9.4 / emuMMC / full application mode. Companion 0.2.4 startup, X/B controls, reopening and one USB inventory read passed. This does not establish compatibility with every model or firmware.
 
-The desktop uses C# / WPF / .NET 10; the companion uses C++ / libnx and pinned Sphaira sources. Build instructions and roadmap: [Build](docs/BUILD.md) · [Protocol](docs/PROTOCOL.md) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md). Remote GitHub Actions has not yet been run.
+The desktop uses C# / WPF / .NET 10; the companion uses C++ / libnx and pinned Sphaira sources. Build instructions and roadmap: [Build](docs/BUILD.md) · [Protocol](docs/PROTOCOL.md) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md). [GitHub Actions](https://github.com/Humboldt-Zh/SwitchDesk/actions/runs/39904998656) passed Windows build, 70 automated tests, WPF UI checks and portable native ASan/UBSan checks on 2026-10-23. The companion build is a separate manually triggered job.
 
 ## Credits and license
 
