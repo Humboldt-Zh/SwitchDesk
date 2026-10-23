@@ -1,0 +1,160 @@
+[
+  {
+    "archive": "third_party/Sphaira-1.0.8-source.zip",
+    "sha256": "d851837b74a695b1ba12b110105a8b98f8fd9bc67691798eac38cea09d1cabb2",
+    "licenseCopies": [
+      "third_party/licenses/Sphaira-1.0.8-source/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/dr_libs-b962384.zip",
+    "sha256": "1334db789ec16f5be25a50c0acd515201a2ff25e5951a8f88af59546d737cfa0",
+    "licenseCopies": [
+      "third_party/licenses/dr_libs-b962384/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/ftpsrv-7c82402.zip",
+    "sha256": "cf654dc11824869a3045b3947fa2b16dc2f7116a422e94b075df438736f8060f",
+    "licenseCopies": []
+  },
+  {
+    "archive": "vendor/cache/id3v2lib-43e4592.zip",
+    "sha256": "80667fbe4650e8e3c66542f2d1320d405efe6155f881e533cdd7c22295a68009",
+    "licenseCopies": [
+      "third_party/licenses/id3v2lib-43e4592/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/libhaze-f1c9c63.zip",
+    "sha256": "f1ffb42444f3e480df87ce9a19d0f089681018bf137fd5e41d2de65f19950b98",
+    "licenseCopies": [
+      "third_party/licenses/libhaze-f1c9c63/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/libnfs-65f3e11.zip",
+    "sha256": "3b1b9b97031fca652cdc0f57475b896bb2e9f8b1842e27b5515116860f234ccc",
+    "licenseCopies": [
+      "third_party/licenses/libnfs-65f3e11/COPYING"
+    ]
+  },
+  {
+    "archive": "vendor/cache/libnxtc-aa0a375.zip",
+    "sha256": "3f90a2818aca0a48176074f32fcc87bb1115d8c878deb0d4a4e9ac6623e0c0a5",
+    "licenseCopies": [
+      "third_party/licenses/libnxtc-aa0a375/LICENSE.md"
+    ]
+  },
+  {
+    "archive": "vendor/cache/libpulsar-ac7bc97.zip",
+    "sha256": "b79ed495b1c5f5cae7c11db93e531ca1f02e790d78871a8427ae0b58501806c1",
+    "licenseCopies": [
+      "third_party/licenses/libpulsar-ac7bc97/LICENSE.md"
+    ]
+  },
+  {
+    "archive": "vendor/cache/libsmb2-867beea.zip",
+    "sha256": "d03ef3d8a08bad1f60e5d3fa47fe62913a9625d7eeb16d418c136e780daa68eb",
+    "licenseCopies": [
+      "third_party/licenses/libsmb2-867beea/COPYING"
+    ]
+  },
+  {
+    "archive": "vendor/cache/libusbdvd-c7598a9.zip",
+    "sha256": "af3e2f3117718b0c02cb92c03ebe372c4d687bd5bcc4a46fc1fa6da87532697c",
+    "licenseCopies": [
+      "third_party/licenses/libusbdvd-c7598a9/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/libusbhsfs-625269b.zip",
+    "sha256": "021fe56d51cbbbbd5c1c5e61aba6a71cdedfabdcd7fac9b82b6043e17771be20",
+    "licenseCopies": [
+      "third_party/licenses/libusbhsfs-625269b/LICENSE_GPLv2+.md",
+      "third_party/licenses/libusbhsfs-625269b/LICENSE_ISC.md"
+    ]
+  },
+  {
+    "archive": "vendor/cache/minIni-6e952b6.zip",
+    "sha256": "8ed577ca9006872a981e732e6791f6f367a2ab7725f7dcef51cfb9febdd70116",
+    "licenseCopies": [
+      "third_party/licenses/minIni-6e952b6/LICENSE",
+      "third_party/licenses/minIni-6e952b6/NOTICE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/nanovg-2acb0f3.zip",
+    "sha256": "94a8eda444c41a07935bf3d5c5584697e9434d62a3b01d452602ab5ff14dc998",
+    "licenseCopies": [
+      "third_party/licenses/nanovg-2acb0f3/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/nvjpg-45680e7.zip",
+    "sha256": "3b488165d4d5e2d3b402a66b392106dd74e37707e5b4156e28633f7232f40abe",
+    "licenseCopies": [
+      "third_party/licenses/nvjpg-45680e7/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/pugixml-v1.15.zip",
+    "sha256": "0dd4dc16e38bbc1c889d3a59660072450127bac7d19415f3cf5d5d6b25c58b35",
+    "licenseCopies": [
+      "third_party/licenses/pugixml-v1.15/LICENSE.md"
+    ]
+  },
+  {
+    "archive": "vendor/cache/stb-5c20573.zip",
+    "sha256": "0f8a1ecf12d67098166dc677a6b8919afc571d24eb50e81c439713a252502276",
+    "licenseCopies": [
+      "third_party/licenses/stb-5c20573/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/stb_nanovg-31c1ad3.zip",
+    "sha256": "9133573544b48031fe57e2b60a3cb1bdeab97aa0e23433e617fb82a871f381fb",
+    "licenseCopies": [
+      "third_party/licenses/stb_nanovg-31c1ad3/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/yyjson-0.12.0.zip",
+    "sha256": "4dd0ca29fba70f1f1e5ca4de96eae85774a7ff536295b6c02dc10367f7578691",
+    "licenseCopies": [
+      "third_party/licenses/yyjson-0.12.0/LICENSE"
+    ]
+  },
+  {
+    "archive": "vendor/cache/zstd-v1.5.7.zip",
+    "sha256": "7897bc5d620580d9b7cd3539c44b59d78f3657d33663fe97a145e07b4ebd69a4",
+    "licenseCopies": [
+      "third_party/licenses/zstd-v1.5.7/COPYING",
+      "third_party/licenses/zstd-v1.5.7/LICENSE",
+      "third_party/licenses/zstd-v1.5.7/build/LICENSE"
+    ]
+  },
+  {
+    "archive": "third_party/libnx-b156b4774fb2df7b93402169509266da7547fc4c.tar.gz",
+    "sha256": "5dc1867045a3875586893c7e1142936725abe523ffe512769108b6f3a8abbf7b",
+    "licenseCopies": [
+      "third_party/licenses/libnx-b156b4774fb2df7b93402169509266da7547fc4c/LICENSE.md"
+    ]
+  },
+  {
+    "archive": "third_party/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2.tar.gz",
+    "sha256": "61fdc61da6aacb2523477093d53db2793072ba597e2e4fd2d821bf88c148f936",
+    "licenseCopies": [
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/COPYING",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/COPYING.LIB",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/COPYING.LIBGLOSS",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/COPYING.NEWLIB",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/COPYING3",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/COPYING3.LIB",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/include/COPYING",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/include/COPYING3",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/winsup/COPYING",
+      "third_party/licenses/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2/winsup/COPYING.LIB"
+    ]
+  }
+]

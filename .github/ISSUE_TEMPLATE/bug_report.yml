@@ -1,0 +1,29 @@
+name: 缺陷报告 / Bug report
+description: 提供可复现的步骤与环境，请先脱敏
+body:
+  - type: markdown
+    attributes:
+      value: 请勿上传密钥、游戏、原始存档或私人日志。安全问题请先阅读 SECURITY.md。
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境 / Environment
+      description: 双端版本、Windows、型号、HOS、Atmosphere、emuMMC/sysMMC、完整应用/Applet；说明是真机还是夹具
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤 / Steps
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: 期望与实际结果 / Expected and actual
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 脱敏后的截图或错误 / Redacted evidence

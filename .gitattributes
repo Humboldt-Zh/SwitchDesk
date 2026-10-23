@@ -1,0 +1,13 @@
+* text=auto eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.cs text eol=lf
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.zip -text
+*.gz -text
+*.gpg -text
+*.png -text
+*.ico -text

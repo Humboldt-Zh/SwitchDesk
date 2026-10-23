@@ -1,0 +1,24 @@
+{
+  "application": "SwitchDesk WPF 0.2.5",
+  "applicationSourceId": "ed793c7b2d73",
+  "data": "Actual console title records and icons from the running application's previously synchronized cache",
+  "fixtureData": false,
+  "liveUsbSession": false,
+  "consoleWrites": false,
+  "gameRecords": 31,
+  "realIconsLoaded": 31,
+  "cachedAtUtc": "2026-10-22T17:18:20.3879617+00:00",
+  "capturedAtUtc": "2026-10-23T02:10:16.9571701+00:00",
+  "privacy": "Console identity and emuMMC fingerprint hidden in display only. No account/save data, raw inventory, standalone game icons or local paths published.",
+  "method": "Actual application-owned WPF window rendered with RenderTargetBitmap; offline state and original cache timestamp retained. Not an OS screenshot of the already-running window.",
+  "images": [
+    "library-light.png",
+    "library-dark.png",
+    "library-expanded.png"
+  ],
+  "unusedLegacyDemoImages": [
+    "saves-dark.png",
+    "files-light.png",
+    "diagnostics-light.png"
+  ]
+}

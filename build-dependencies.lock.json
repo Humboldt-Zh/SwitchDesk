@@ -1,0 +1,229 @@
+{
+  "sdkPackages": [
+    {
+      "name": "devkitA64",
+      "version": "r30-1",
+      "url": "https://pkg.devkitpro.org/packages/devkitA64-r30-1-any.pkg.tar.zst",
+      "sha256": "66f100490dafe506495ee083bc932aa2c2f231b5dafaa2b203d1832389b700e9",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmopxa4ACgkQ9/1UkiZLudBfoRAAvwj3TWOOZb4V5Dqf2f7WrvOzaPTB2FoOoHyycwz6f7aIDpKZQb4MXnlXXuslp8jnjtYYZuAW3QCa4k3LfFlqgVOP+85UkBVz4+InMeetW7nvZV2aECp0X1sR6U5zoF6xBoJxnxTyCufOBDpu7s52DljLrEnN0BD2A4Hua0X5Fx0vL3dfbd5bY9vFSbHxLi9QfrT4Cc7IqYYU4NyOxgRg721PSL8bYXFKdwV/m9T1yiy6tRAq/ymuh4PhQRPhpf4vmaAO/OgBh0+3kKVUPthMnsVUKpmvkiFGyrMIM0yrLwmzvIsJS/+DvZp4Xqj4l1JvKD/Hxoaj6WxGI1NUj58edlzJfBy8vbFJclGKHsprEDYyskS8r//qh6RBXa5Im6HDmFI4iEsHzkaN++OkZH/u1FUDQUpq7AEIrZcmXdnvDwuO/divHIkZfGXAJiywtjfpcHIrn4ub6O8OdvCK9Sc82VUOrsjsJ72zIrpsqHD+qZaI+e3ZUUs4B2jA/+fDXvT/EtbHUVx/wuKpHT3734w7Z56Jjwa9955KTgGnyQHrwfYkB33bIZ1aeKcudyYR8cfGujtYqF1mTdLII9yjrYFc871JTcHFpzd3cSNZe1GPKDJ4sWClJDYYWKr+IG82QqzAORIv2p6tKc7TntVzSwe3oBl3whKT5t3oIrLm5RuK2t4="
+    },
+    {
+      "name": "devkita64-binutils",
+      "version": "2.46.0-1",
+      "url": "https://pkg.devkitpro.org/packages/windows/x86_64/devkita64-binutils-2.46.0-1-x86_64.pkg.tar.zst",
+      "sha256": "c516a70a31521b61e18759669c6f5c6718796a6cbb0b3c1c023a2ac418f79988",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmomoucACgkQ9/1UkiZLudBbOA//VV1j0GQLUib1fHNSVBse/6QD30lOV4QjWQfKC6h3beP8IcR0lVv2Vktihwa1XyGt6Qr19K+mIHunGj02yuM75FEXzhtZIvreFmw1Hu4DQaqVOHShGGWseCqYrOZeiZm5ryLoWOWLEZXayWdxrm4CF+2g0rQg5U2izQ7tGyIJaSuu1rQB/WCnWiRQvtKtoNn3W3GpV1suleB3Nm3WDpJ0BH5yQfAZaBXh0vtyJy95qYNnWJLrLRQLtufmPQ/BuuQH6Z/CUBjCcbihbZBJVO/3XgY2aHTNF4wQSIWN11fHnDthTpyGVADqjlYKotoJ/iddXlYypK0MzvWam1zzoewwmXWBOzG5N74l7uqmX3jgCVMuqRg4Dad891vSdEDxZ/kOxgMFaSekc6/r75oUWNc1BYtUk99b4I1rZNKQK5vvayeUtev+fU4LjPmZp/h0+QTC/TLWPZL/iVMQh7J7dhp4BVjOXyj2YgMgLExw1pKvU95QLY2BqfX4zepNP1fRlyz6+A6IBux6m4kSpXFpZsHjQ3GQwWJNJBc9iT4/xwUkewFBGu2grHIIt2G58GYo5rhaM7p3/N4JOY5wTN+nABy8IGk2M7ljeNWjG3bj+nzX736G0s+upfkRRle2Kc0eXspXAEFfZIT96C3F1KIKcHj/TT32hhhgF8xTTZVYKX61cbw="
+    },
+    {
+      "name": "devkita64-gcc",
+      "version": "16.1.0-1",
+      "url": "https://pkg.devkitpro.org/packages/windows/x86_64/devkita64-gcc-16.1.0-1-x86_64.pkg.tar.zst",
+      "sha256": "4ccf7ee6f3d85248f3b58708e44aa3e9f777479ff90cd4409a95862752e85400",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmopnuoACgkQ9/1UkiZLudD3zg//aQ0wB/l9P+P0mm/BgSA+SZl+gSPTaDL8ZIyJaZRJDlpDZd811alFNGqdia7WdtbXkQ0jszSPUQ+3pqPcf27N6oBs1yaR62OI25NNFRQyscGt8PRF6J0MfFqr8rBjdizia+t5PXBrAqzZ11zS8AEl2zf9pmKWPrDdCCtIF++Ev859GznxYtd09FCf4FzKO9m3zhlGqghIwk4NWeAUXdRblHGrk4Dfoc3c08syGUky0ti7rlPVzWyMsOOWJszrs30lhd6AyYdsaBt95W44w9PQpmBet5xNYYxEHtotYoHbOjd4LqOuW+wfWUcVUWlIgILVRYKmanLwGyPxg0UmAeR3TQuJPhZ1m6V05+JvTk+y3rG7w1P4O1Mc80zXXcT/lrFdT16MCXf7jT/wS/qyUzGIRJ0HgEyuHUB/7PP2ObepkHtRqxNhfYUexIGhmZgqB6S8sf6GvYikmgXf+EaLMTw+OiVkroiNy2HH2G+znTk5RoTj+vsOTPyTyzFgipcbObRTRGKHzc88KaDky1g9qk8DIvXqVKbBDuigXvvoWzFqX7xyzaiHtVDYaSsMHhzddktKuH1PT9Pu/g/lVMj2ZU/RN94hhIZeEshJ5yv0Y9RRMKgY0wLHtBH3+S6psQ+rZuSAKrFMzcMAeUXvSZ7JPihOm1cxjoELGPqr1UBjbjcoWgc="
+    },
+    {
+      "name": "devkita64-newlib",
+      "version": "4.6.0.20260123-4",
+      "url": "https://pkg.devkitpro.org/packages/devkita64-newlib-4.6.0.20260123-4-any.pkg.tar.zst",
+      "sha256": "fc97ba1009a94b68f8714c3cc548ef697ca82687b72fe0c05a7ca3df81beb53e",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmmXSoQACgkQ9/1UkiZLudAS/w//SyNyCMIpKam1WpdDDGCAcjSadvZILfcv8rFNOR8fJ5Ker+Q0R5Rs3dfu/uTA15MpTl7S3sjeTMPV3cMCgDEgmNu7HwJ6ip9kznBE91pEeYNmgn7LbIuSNlnazPwIlc6Ee6QPMHEbjafnNyTa2gCPD5yWfHrai8/HrtvHaihSV4ZHIthLMFKk4cX1Y0aMDSJm4Q31Ap0s7ORw/oPrW4b1HEVpcCSeMhChUERNmRe+NWnVQHlOh6w7mdmcYUHns67Ke5f9EBKPCHAaDlBX1TEDI0Mo9HrXW9mo2ym+nxWtqjCjdow2nz8a3tQLjYpS6CiasPGpRvqectp03b1j6kvzD2ZoKpvcOpfXz9JUYbN6/ERxST8wvRBRbzdN62QJp6QiL4HDz47RN3upGBkNTEGlkHhUSag9ODkiacQb6Xcl9367N2DZzvfmOmYPYpCi+OyrmGxIizFoXWDJ0EtD1ALWZW1BabBGGZTSVCNSKg51MvSxpGoceL224D2A02Qc8htfDg1g0em1P5G1dVfS/orF8ScG6PoYXXDE0COYkjubm3FbK1NJMCABONoPGqUVO4QLYEu1nsC3LPAHKUAmztcp2KUeuDXQCLQWE7jVwHWruFPGN/M2lJ1OOjVdv2ivBsXUbCWvbcGI35JlVq/Xk1BQpUyE0q+7SoQTzUC/YiEGCXM="
+    },
+    {
+      "name": "devkita64-rules",
+      "version": "1.1.1-1",
+      "url": "https://pkg.devkitpro.org/packages/devkita64-rules-1.1.1-1-any.pkg.tar.zst",
+      "sha256": "2649cf7827243447070073acc2aa2fee152a0592fc30e827ceed803c565a1ede",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmRqZn0ACgkQ9/1UkiZLudDSahAAnMnVCFk2MOjlxdcCfWhZuS5728HdwnfxWGHjD1E/LVAuvc8eaUp9SnzHQKKSDx+zJrwqL4369wp6H2aV9Lym1ccyf8F5FvRlraUaeMLml9pSPBx0x8gREpm0RUdYRDkf4naeuX6mXTJM8/3caS32b4iQEyLM7NepJMFlDA48ufkquQw7eYt5GGEuroID/AfdWihx5Yi4TWyr/GaO/t6nyvB9Alscx9R1u027sscqYp8hjAt49LtwCPN6wLcYWjD015WQgwAsLVA7RhHXYhhs+q76ncYtY3oD3o8EcpgBtbD9PEJa/5GybJq0MZ4UP25TFTvRn14GUbhxH6VVIYq/prdBVrqohVMaXENp15Q2VP+psFL/RJkW6JIi9bWbRwjI0bao2vCcM79WqYzsHwMAEsApB6wFfaL5sXP4w+E5AHIawPIob3VXVUUH2H2JIfy222OlqjJ/UqfE+zjfbOaGUSI1usVNJty1CYeWwaNSLCNAETNRZBHNKYF+dXfTHJWVLYKRmCNulu9lJ76yGaU2dBlquvpo+xk6rf/fg9APpuOVa1ZDF8/8ZBGEs8rwTo6Df87wh71oXgXSu4asEd2mxPpnWRjnJ8xe3s5EjFdI/PMud40iZbVCoUcXxbxPl6iQmFVhaS9Xof2udmNv+gltqAtWJJQVjJW/3gUOw7xBO4g="
+    },
+    {
+      "name": "general-tools",
+      "version": "1.4.4-1",
+      "url": "https://pkg.devkitpro.org/packages/windows/x86_64/general-tools-1.4.4-1-x86_64.pkg.tar.zst",
+      "sha256": "a0fcea1a26c4f472c2ac98c409847dbec9d8e86ed82cd8b02131454f63d239f1",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmRqZ8AACgkQ9/1UkiZLudAXBBAAhzDmkOCIPL8UGxZD994Cw6kYtnCdVJCIdus140eNOAf0t+A9/63ZTQUJxY9nGIDnfzU5TsaSU01pFjNAnT3Mjlpx2y6Fs0aPGby1bUQnxa7Q13Mi6jNzW2El+93thqLMEvOjtsM1tW8ggwFnYHcrlull5IXW/vJUWZCDeZuqNhRseIX5xnwi2fLDDe3pqf7nxcNVelkVblUej+Q2Q9qVKIm+zk3bg2VtibUHdAKDwVeV7s02THbVXm0r5rJUsMi4dvLkjqEwXrnEqLzQuehFdgI7PjU2MayjvkULlOTBbAAbd+nOWMONC1ijXuuqLvts0ouC73S16pEBm9C6UiljcL094kfWGU1z9NZE+VDsl0mAhbITY59X4aT19zrSoR5CD67KJk+qibNjPkhArMr0AqU4fU5OH9gEo64KFjV/HbVEXNiAgdQfQiYUkhsTI8yQvNk6Av51EDuj2T2MyGQpXJ6jPxkbhx01rm9BBz/j2AGOkfPa5Mq4brI4DJXbYhamMfH2vlmQcP6lAwOws8sM4fJnq2dhglmmaHeg4ft+/NJ+8P+Q7rMpTfo3r1e6kNbeLR9qeXqDxsHV/AWSRRBuHa35QAYh71/rgHROlYUzDniLnlAmYWxqFsBXYLb6BxSW8wAZBxD7VeIanp4nqzLaPirrS6ojoj8cmkhaBeE5DZk="
+    },
+    {
+      "name": "switch-cmake",
+      "version": "1.5.2-1",
+      "url": "https://pkg.devkitpro.org/packages/switch-cmake-1.5.2-1-any.pkg.tar.zst",
+      "sha256": "7eee6a98312991faac73246f93d88740fb234d90ac5bd19ca969d6e227a59c8f",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmgzctQACgkQ9/1UkiZLudAO8A/+K8Vu9wvP+fnTtbuj+2yiAm1kVy38B+tkX5sLPxr+0c8J9TYn7qUvIglF65oeftCE+j8XRTQcgwyUFImWJDyl/LeOnzuA+aI/UVJdUe9DUyMSXd6uyaMQyFH317AL73vOqTbklVUlApe6oBIzBJOkqKepAZNFwpyk+zADdT4MjxP9vNTvfuuw4fjDAvJxbvydmi9P3FgdbeGdsgPBEdBVfd2lMPbjhxblENhkOJ+IIniyiEg3VEzNTHqIi36qYhiEQVvhRPGygETYNclPCQPt2Jwm8pb9vrtvxm+d57X380SsYqAVUfXgSOwbtMq2OyDpBCn2DDF5CqbQJ0ZLd5m+/mrVLRdsqkYxc3Bii6k+7O3rRHQRKcBxdBzTUJv4pno5XsYdKogogzLu8puEPxkDaXhvNWBEedt4d+Huthiy/dplaLU3nMEsy8CUPECsUVqgWoqhqF5UJRnbutdSIY5k9wbfoi55BeHalmtriBSblIJ9BLNDa/j3nxa59icd++b/jnDWEb+mIdrknVumG5WrL+HtYaI4dDL9hIDH4/vPK8XcDJ49GxXD8BnKTrwK7PD7qfuxTGG7+yV+TSdwRCVqlBeT6Kmg9lsSNaHML72zj/evtNT14NH6cjgaNdhRfH9yMd6yQOQTEOKeOpanOXQV3Y0lwUT7HMdyryOT0kSfG7k="
+    },
+    {
+      "name": "devkita64-cmake",
+      "version": "1.1.3-1",
+      "url": "https://pkg.devkitpro.org/packages/devkita64-cmake-1.1.3-1-any.pkg.tar.zst",
+      "sha256": "f2baa41f2b776ea5e7c5340464d2ba1bcccbc73a96c3293c91ae13df9ee5d467",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmgzcakACgkQ9/1UkiZLudDS1RAAk3Fvn3h3pR5zNcRh3o6fhS4dOmaD7ED1gwK7GEkFDgXqaOkqgdJJMiH7AqOnHftEK2ofERD4Y45+4sa0gYd4Mddhr4XbNusie/k1QiVHBu5m21/VhVO7rlQ3IT3RnqBbRrcUtnLL3i8aUSNiUQngZWNKCDBNl/3Cs8ojw5sdhNUgeiaiX6O6SAY4+1WmUaUi2ySFhEkPEFtVb37nR45d8x8+YmD31Au9YAMU1121HAoEcpWKE9uN1nAKiNtKWAriKz3OLGH8oYXYFrp7e5vtG8zlTthLE+R+/zl5SJxM2VTv4EW4LZ3DDp5fFlKgoZ18i7HIMHKp7tNmGNU3hM/l1/sn9/sw1/ERcQUDbIJWgUxGWzlkjACkd8OonxkQgCCeOcoXRKl+jCfDXKwptz5UzmkzzNPfB4QEsodl29ubXwqZEiJytUTE9Peux/a1tCiXhZ+sfoOMNDfeuoGqmYqgrAIMOsog1JDLrGiDqwWOddOTXlldanvtxBZDbFKry7rMViX3fjzAhgTBE8ynFoN4BCQ6PZirqdFMyDsuAMeCk8qICm2sZrwkJv62ZUuJnofHxJyx7j2oz8K0HOR8JRrCwQn5n9TDY/SLenQsdCsDTMgVBoLd/bGNCXxBQqf/sSO+SroyRutvqNDSgxcXiI2G3oTs59QNRYscC5EjTPfi6sg="
+    },
+    {
+      "name": "dkp-cmake-common-utils",
+      "version": "1.5.3-1",
+      "url": "https://pkg.devkitpro.org/packages/dkp-cmake-common-utils-1.5.3-1-any.pkg.tar.zst",
+      "sha256": "9ddb64ff16962e6532d2a2bce1d7ae8eef4f6f5b859f145c2e58b87b7b164701",
+      "signature": "iQIzBAABCgAdFiEEAy9MnQuP87yEAZt4YsdgmtohnGAFAmlYR8EACgkQYsdgmtohnGDb6w//Sw6DxCr2z4nqhXr+HU/f6n3RSLZKJwiByTWWOMnNKfc12f9nCs8cSdnhrL3D1xRYCtMXz/wcsJZp7k4YcHyPcU2gV7uGwTyMVnT2qi1W8qodKeNLE7ENXECrvo3dbJQTd9oPlYeM66TCmVApQhYqsVnp6uo5vAz2gsACmj81Wsqk5OMccFrJRkefQpPvvEFxNDQ9Sxkd1YAtYg9fKwW//k+N5/oNBc3wavO4T54fCbUt9T8hGShlH8zZoVwYq3t1CkB2ypU8Bg7ST9oEOcezjdf8KzqAXzb9dxCW22zVLSdPrzUdmgnYZ6Ge/I/WGbzADHHlToH4CpuwOv1nbEXnDcXhkB8u0FGkNAydsdr+3tQItU11pRT5KPGPgx+L+DOi/dtFUzgDVcyucuMlY+jOOyMUf5rgRR+AE6LM/b6heEs3FeQdKHd85icMToltwezPqw/0u3495oQghLs96amlwb3654WNGwDpwq1MjQmIwlUlgQNbxrsE/45LJjFHFjNihUSjaR0V8w+SOPWKwi+6QrTg+W24ZoycQvagzjz4CeRfkve1CMjs4NPqzQGm7Mji/t+VnZ/svZOuNh2jULo4sYlxC5XkBrA1MpydqeRgmNcgBOOJtkof1m/IUf0gONeKsaSyPr+zbtD5dxDynqO2tCXLQ4YAiFO1iOxZesCM7Ko="
+    },
+    {
+      "name": "switch-tools",
+      "version": "1.13.1-1",
+      "url": "https://pkg.devkitpro.org/packages/windows/x86_64/switch-tools-1.13.1-1-x86_64.pkg.tar.zst",
+      "sha256": "c9c5fc60e3dd2f82d7c6592611bd37cc610d150ef4fa75fe09ce329df998084d",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmcZGVwACgkQ9/1UkiZLudAiNw/9GLpa9N5wCRx49ySHTPcQkrdqFnVFpiN+Hh/w07Q4Am4wgz9ZwC/jqecfxrrSPmGkjIazlew0+tKuvcebsr3RzAQVPxBnl73bxZIzrJIIzrUC8ckCAAjpau26mXs/q/1A2CY8qs7CvxGwEBN1mD0ze63sDTA/DsQW7yrCv/VDT1uFC5aloDaaOrS9yTUoYMrnNN+SKW2DLKeJP9ncYhBmQBB4BGtvcd2YGF3z+C+kolgtyrTjSYft6eVXxnzY31qlMi+EwBGr+gdKa3KjvX1031beeqHl/uisVgOVx3fIRouc69i3C/twUmXLVECxDCU323Hpc6SiHrUCs73Ii+8+mXyLy4tRP76pJ0n2GQQbGBnMbSb2NaWrdXcUrZu9FSAuq+SYEcNSYHp1QKxeXyDGEEsOzNr+9oDWxQQQK5KGLBUi1QY5vuNkTHzN3Be4EF+sRelZ20kDNliW5PQ1pPa5CgB/irxbWVyZTeMURLEBeaWjGoqxX3jYhHx6k4kudJvyJRTq5Yk4HvzjDwHwMTXiUd5PNwU6SqFnXfCLrFzTWXZCc3KEuF3/T5blkxUceT6+945OVXhUQHJrUJnE6XUjYi2ccvQDj4eHwA6j7LLDIZK30h/xQUgsmBO4symzP7DrKFFI+l3yyaNihYcQMVxGSnmusHEbHa0mT6JmhN07AxQ="
+    },
+    {
+      "name": "uam",
+      "version": "1.1.0-2",
+      "url": "https://pkg.devkitpro.org/packages/windows/x86_64/uam-1.1.0-2-x86_64.pkg.tar.xz",
+      "sha256": "7765523b9912fd454bcbb1ccfb90d3569b7099d1bcb3ce5997bf31bd1d7c6858",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmHvIFQACgkQ9/1UkiZLudBxpA/+PBt4BLmBjnSl7AyR5dpnTbYU/PIwGXTbo92IRIiTE9CVWSi1CgHGuualRyhH9ywRMkHpjLGy47MnaSPdjKl810fAPX4FVnRy4o4r/iCiApbOXwKxqmBP0vwtScRRwkQvcVihia8fkqpClzebSztI7/SBSHFDXG0xvmIziAjnMgYX3r5lpi0JLNFZ4RwKtLQiKMx7ku7rESrclzl1X6QqWi8niNiHJkd0iaKoLmRPrkn5SfZ25ghp6OJ5rdolTLTEjRY8wo1nAZJ75/2+kfG/jbm4hD5il9RroU+/uGbysllCx5I7YFCD0VCnqAHKaTLNqeMr+KWlWnrKdwcqB2mUNBTDaWGEsuCwNHDgXXjt3XNdpiLnsQxeXtjE56K+c1O+OKCBhSqceZGfk6iqLMb52y2enK4wtrH858wfpjsiefw4itD3EOASQ0AnthUfXaotyiV6skYWffCyI+9to7MhZIAzKHQBvHKtP9GkOGVnFb+qHx3bRyQCmYgETTLWG8No7ZKnwFBa26WDkZl6nEZXzMEe7bFsdueq3DrGqQY2cyXhEWhup0m8bOeXwY9X9iiNYeyhaZj6DObCzyW7jEv/lsWjcfKr62kBpkJP3Ufy5Tmh1IcVXfNO8bQOKZ7d/+sZFuiVmK+aWTyOJ2pcDXKUmcEWoXlDkOcygcEg4vTE3S4="
+    },
+    {
+      "name": "switch-pkg-config",
+      "version": "0.28-4",
+      "url": "https://pkg.devkitpro.org/packages/switch-pkg-config-0.28-4-any.pkg.tar.xz",
+      "sha256": "ccba20970fcd151d0212b44913e04df76b5cf295c1d48df686aa9991f5490b2e",
+      "signature": "iQIzBAABCAAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAl7v/fQACgkQ9/1UkiZLudDuixAAkCmJAur7Dxsfehmq6mNjQaU+3lkH1BBithawVr9h/kYp3NOuAC3NVEEcG6cR02nsun2pbcHNj+Tlwaf1ewuSG/ILmUVapnE+BssP6ns/aiDTgoR1BD9We5f/8iIJqkjiaavksh+1bCVvJF6YtnKXvLaM9V66hRxKhDmzIFMyQl4aJ8ieH9GOdQGWjMgsx5SKRx1/XLBW+yFocR4YIb/AuNgaimhPdsrctw4cHcKDYMtWP7uq6rA5lsJbtrY5nJYlgWFzr4bC8bl0A8eEjmvBYWl7vdKjl6gsfSo7YURFmngPx8ei+qanAYZoK0c//5XPDxIhs1hkQd2TIaz7CDry8SmBpN/KFkyKelchvvrCgqLHCQpb1aUeAKwAnmoRwdyObEmeoZzHezk9NfLZUU0q3QmqgWZ3cfZ+Pe9cRzu4son+Gk2L8SzdHrCH+Eazo3FS3Bzldhz1e+VZ5G0dVd7/7x89yklJStFs94hfUQR+vcrQP0T9V8JzB8SNpurrvoo3dVnKexizoIuSJSoX7YvjKl6zd0J8itnwby9zg3AMNp1A69nBChcuj5gBpZKMdRVbvS1coIk75v6l7yVeyLvemBwpLZaJZ4uzAgPBOGyQAD3fCMcU0Xnj+dKLp96FvOXz1mbcCzEXqodpkU49cjd+xNhjez6r/fIPdBdqyohmmU8="
+    },
+    {
+      "name": "deko3d",
+      "version": "0.5.0-1",
+      "url": "https://pkg.devkitpro.org/packages/deko3d-0.5.0-1-any.pkg.tar.zst",
+      "sha256": "d4281a573246c2e658c0a2619b78099d4016ad72d6210a1e13473a546e7f9ac3",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmVjUWoACgkQ9/1UkiZLudDtXRAAnEXszI/u7fAX9Bkrw7QvH7CjK0299eR5qXrlM8pNolv3gcDnYWMfBWhNMnIR3DeX8KgL2rvwU4OCdHjOj/P4hnH7rpEUso7QleYPriPOTtYJsRQSOPZ046rrqjow6Q5iVYvTqoY6DeCTjS06qvyKbKouRijyyHRs5eL5uyXmgkawNwvQ05CNCFsTweag81vKioLYe5qRzmvOc2h6gX1wQLl08eYWoQM9ECtcgpZBghxt9i7y4aHsB5NQWc/Cht8OZCcJRleFqN81g6qVuSZZFkaslTZ/Mi4IexKk6eIn5pNDFLcJNE7RTxP+6i0AnTtz9CkjSKvrJNElV3wOAHrh1z7KT2VSBaID4z98xYm0zRJpQzUuDkk8elx/s/XxElaexp84zScFmBehKJMjjeIQZOqVtthLzdPt5myYbwW0AMoSu4YMmOlAxBFt6gIqjRBLdDWmTbuhkba6x99UdVGKQso7Cq4QyRTyWuGc42LP8N84X3ZIcsmcmbyJorJzcQbymJ/QCoAmO/PPfU/EZMYR2vCpv2LdizPqjNxxcoDa28xfZICexiJYCXCap6dCKhhBMLgZdSlboFcspf9TYKWJWDEYTRfUuTz43dMIzlQmjGW6ySIUIZSbuVlt2JHsgkX2RB3280dqNuEXg+BltrWOGwbQIGfsO2VqJeYPdIyq2L8="
+    },
+    {
+      "name": "libnx",
+      "version": "4.12.0-1",
+      "url": "https://pkg.devkitpro.org/packages/libnx-4.12.0-1-any.pkg.tar.zst",
+      "sha256": "c6950bdf8e4b872ece492225368c03e633776329548a7494f91aa1e8f239cd8a",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmmDTCcACgkQ9/1UkiZLudDeNQ//X5wzQcunVAJosA6cxPZ+/+tXQ9cV/sBE42GVWMjwq3kHJjkgX7odV4CiiK+ggiYOSNnGRddQ+Z7m+OumUM6YHQIsdIQWMVsfNrkis4eUuL0CYMgWrB1qfORW2p/KvstP9AoTgiNYPlB7Br6RT5ygufKeP5Ff6XRhhW6sOjgW94vCZPLh2dpqp4D+Z55u+rlabCdPpco050PytmEV8QqZ9Za292gW1aAua2kOWJ+vaRsMb6ize7Q8q1II/tBg7qRJSOpzzeBCCSQnRB1AF35PtVTj6gSNSTIkq8wgdQCkovXQ/Ep36xyNqXw037QN9f9+Ab5fEsoMNxEbDpmw3DCkySxaStb/+VmHCGh0xiTn56BYvkJZFAjJocKEEEAIGt4jg2Om9+bwaqyNJoQDEadtb+P+88F/qxbIexQNO0PUJ45pVjxAamlHwMKolV9prox42MbZ9hBYVMfJ2Q9H+SKXbdBeUGWknXZe/kFE5RxLtsDufSimhKcBpiqJAmdUfLCHZjptgOVzGAZcWCWoGS11UANC1ORiU0gOGcAtE+kFK6FBhAJRKoWNB6NOuXeM7zKwGoN5TP3AFHLvUNdjUGxaxToSIWFyyAtTO1PTcwFGClkZGA1C28na2dtKWmhDbipB87MdEcFuxyCp0amiv3zCrd+KvzRZWRS4nwWow89dNxI="
+    },
+    {
+      "name": "switch-curl",
+      "version": "7.69.1-5",
+      "url": "https://pkg.devkitpro.org/packages/switch-curl-7.69.1-5-any.pkg.tar.zst",
+      "sha256": "062f683cc9925e6c27e38a9dc9c97fabe17a9eae6002c355000f5cff5886c81e",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmZuzQwACgkQ9/1UkiZLudB1lQ//QnIZVHy3a/yeWhsYIgAt/uKLNUtDezSsV8+6AA+48yVnmBWejYfzYJrPqtVJxpShoWG6QAghvst/homJoo+vUpzEFDgVgYB8TR2l2xtLTWxiq7XsncB0BnTJVOwScFJ3YuGhv8ixZzRVaPedOiSgw5H+ZE5K4gbm+mjVChvNXExEQOyQ2CEnG1HaK1V7+OivzeHuiN3TCYdLLtq/0rRPLH3DYh+I2QuftAg+o1O0UmbtTmBUSVea04ZVPLkHZ2iJGZq4P+9ttnW0ZpzHWh8uUa72yfhtoKe7YrfajtN5Mio8SMqjkTK/8bx18N6xsB9r+mn90yIYU54E6f0jp9WmVttAnt71zxmhOj0B4oIJupEAvzinoOe2hdErwH96bkJGCOfXaw4+HQQp+ZNhc8/lwzFNObJLEb2MiEIhH6hSKuzI1UbpJm2OGFCern4ahxJgqWxKiQloe+jAKkttok5quZLvzkNF8/KtGbU+KH8Kfu/YlihK2n1pKMx+tWhxs8/DiGP/rE1n/35z57LFSor0sGZU8XrQQW1I23If7H7KDe3+bKLGjzUUveaizf7ctcxTNKxI0R6Ytv9IL7xQxn3ThkMfcwxt71C8VrSNcvnt7pskCxk2ziQ9bIFlcZC41XBPDl/DPDVY+7Wi9fh8zX0VvO8zVdJf1PwqhMKy/2rnTYE="
+    },
+    {
+      "name": "switch-zlib",
+      "version": "1.3.1-1",
+      "url": "https://pkg.devkitpro.org/packages/switch-zlib-1.3.1-1-any.pkg.tar.zst",
+      "sha256": "53cb5dc4006c96cd4195dabc15b46f07a63ad99c91939ce921db33556396442c",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmZuwI0ACgkQ9/1UkiZLudB8+A/+IDvym1aRub27/PAtSjOk2iSartKvQCGEvlU8wMJG026i7D5GqC7ZLsgoEdUGxSstjq5U01zx2qVbgF9v9j3J++E+UsqotoO/D0nYRdwHjsqLiiifyhAsRhcGEeNy3Xw0iQ3cxiRBhTKjOiDzqq2rulwjs/kdt/b5YDZzfyJ8E3dZ5Ne3W3CJDxrgFJke0de6za3GHrLRUnTemOTPLlEnWqyVMY3cv4fsDXNbLhUq6bpZWv8OKKkXEZbB4IYxM2l4GCrDTrnswu1cM/BtyViV1uc/tJpMTv8yeMmiDW0YL3D/605nfUx3qQ90yqT6vpi62G7dK7zcJrID+HMuJYq2rgUEUciYd5xA9z1huad4zeoRoIfrS67T1vPKQpU7gDFO/VPAZNjZS/U5NjDwR0ut45LMZjMjBNug8oCHOwUaJB6KuRf4VvfAyPsZX9htSSe9R/FPBUHYGOv156KVeke3Gf8hKyxpM0UmrmjWHZXcTZNU0ZLEKApbqwK6VmX3Xh3QpZh3dlyEcaOWBpFMpTXf2xHT43453el5bv/a6EVBWkg4FZOVs8a6eizn+EqbA7zx3264MbcwyFftHB93zIn1u8fvAvTA+AE5thoXN8ZhV/yPbMnYm6uYEsZArEdOdVwJEfVKP5uNtKK/jV+mCBcKtz3P1rAyHQ6woOVLKbTbP4U="
+    },
+    {
+      "name": "switch-glm",
+      "version": "0.9.9.7-2",
+      "url": "https://pkg.devkitpro.org/packages/switch-glm-0.9.9.7-2-any.pkg.tar.xz",
+      "sha256": "bd9ce098aaa948ec1b9a61d7a36e2a741cf920b6747f405809e7d4a82824c1db",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmDDyCgACgkQ9/1UkiZLudCyCA//eVJQNVXpX9ftJg2zQYgD0RbVgZK6FsOHCuC3jV+bkRajOWO0LzD1FGiTbkBvJr4L7eKOFC2GV+9EI5w8GDavAW94lktqv3utWwYZk4kImXOZSK9r0GnBH19jGeplabxitFOgyLDC9TxlU+MbHuLz6Ptr583hpOUk5qyZObz0pi9byQFLju3ZgmAu6ho+KpRedlYF07Lo62etyEwERNkdQnnplAIzUXE2Q0f39c9y+Um7So0sWK/iRe/XIvLyTMY17nA3HVtWJjbXuBce/vJihdsy5Zuw9Z1XgQoqn6md8Q/fKIZ6/nNwucfof5/IKNzOE1mmw+G9Wsf7wcaqbqHyle0IxOz5QkU8+e/VcBw84ZdUUkuNspHoVyRvw/qAVXTiYYZ0/AnhzRaxwjjlHImzPQ9PJno0sjQwyTd9cSUjiUtoM5X+car5OrhQDvvx4W9UZcEf4C1cAB85XjmYFFoc9J+980fF2yRdIJ4X6gvyhk8CGj8EugfCt5NGiVgNE6X4kiAkIY5s9PKlErsjKB4d6MJqs4HCZFPplBp5Kg8Bo7hF+0mmXLqtXHm8+5+i7d0O4OnIbFybUZ2qj/VrVckFDFoEmgvi3wclbgHoPjlQ7alrX6UIWUSm7xUZTklR0+px96I+qAIhSpYZYUbsKBMd99GGmETtqwlrPlEWD2ZrAOk="
+    },
+    {
+      "name": "switch-mbedtls",
+      "version": "2.28.10-1",
+      "url": "https://pkg.devkitpro.org/packages/switch-mbedtls-2.28.10-1-any.pkg.tar.zst",
+      "sha256": "bf2b89236e280c5bfedab14826fc80566617a738034378c5917c40d7619143c9",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAmg087MACgkQ9/1UkiZLudDzSBAArTF9mfddxkxgsS9Y0H18+ZwC6ajyhliwQ7hAvzA7Bdk2LxzFWDm3hzpvWUF2cZhAIApp+adAGYbogDw1SagjuIFH1Ew76h5ACPw7mm/FCZ9caiMlzp2htOOyvh37tHrlxn792UQUO0q9OZOT5q0d3sGdwTGQG0MdR1QppYYT+MXthfgdsKWV1JFdwf5MsdYaRRKpQV1cJsBeCy1tzhT1xp5pxmVYmm0CUxV27EZCARqBb1BIxaRoEPa3WignfTmlXuUlDBJE3P7BE1nsocVtRXPgAm6i9Pwq2xCCwA5/Gw1ZegIy4KeLQ0qagIqWQcc/UbsuG/T3w7lOoC8+TXZxsxGd8iuYA2ofEGuYkZ5kWAzrCpJy/ZIxbpxTTAk3lBtsgKbE3BVRJXfQSbXDMu54anctYo6DzOszOsGrxIRdCoL2HZnzz1W7sfBX0NlJzjtgrpkRwnj/bP+KraQqPlxI6CkHfBzgaaE9ZXVsRu9NBb9hVnXrR+7v5roeOMaO0uV0u8dEYBnuV/4DMDzjHEJLKlIAaFwrMFSELNJqwBBq8RGEbjUFhEwZ17Bi0kRIcI2wPcVl4rW/MYNnleyE/V6uF9D/ghpGyva/d2fBpZs+ZVl5T5bou7gm9Zn8VHWL7eLcHMzjFp2S1JJF1cIrA9AR/NSjGSDmez/0qZXksxVU9hE="
+    },
+    {
+      "name": "dkp-toolchain-vars",
+      "version": "1.0.5-1",
+      "url": "https://pkg.devkitpro.org/packages/dkp-toolchain-vars-1.0.5-1-any.pkg.tar.zst",
+      "sha256": "e6e26af3147061090572b61c576114ee9a45d5ed8c77c7d93cc5f5559198c288",
+      "signature": "iQIzBAABCgAdFiEEvCb3UtJbks4nLg9E9/1UkiZLudAFAml6Qt4ACgkQ9/1UkiZLudA/ZRAAwbIpfCeBaOW/VoKhGoS45bvgTNBa+ZkrQeEYC+eRJRatZfpqxnoD9y1T1DdwK7iJXppzYw/7NEXKCbdvineQMj9ozjvyAlMNqAjRWEm5ZBD2Ff6xyX4pl1C5VpQAqocmIpCo4WHZuprPqroJGyTuZnXa2sU6VtRZcFcREv1oFHaw2UwAximMfMLogiYehw/JlhUcRn2sWzdTcG2DyxXg+ZWQa1DlqF7A/vq+3mN2oOCZyh1KZ7aUgVPYaTB2/5NmOpPozobv+GhD3OW/rVJuhO1u0Po+69DfT8OvPZEkoyDNFnsoT/WpZ/9FI4gUH0MewRG70rn2JNVPZyTENVX8BYkaOPWt7w/zZ2468m6TrtGHXhyG6vwrp8Ltr3+UXVaeph8suvsMIT5PLsBRmrF2Ox755lEiKN2QnZI+f/lqTbu447WnD1NKNUX8w1jNmoYl69o2pCYT1Jb7SBHwqe052+LTcH8CR3gout0B6T2snT11rqNsksCD0KCkd8Gk+cZE4JNck3ExLUGdrCUdMnKyVjVnK1d78TvaO2H/9wCQkS4SPAdW1iyPhz4/D6cvfsHbnOdNSPaOK7qXtiMdT4SKF+hZgDSI3gjLC3/u5Sjp8BfNG4TzZB99lapn0k8q/+YwOsdlbmvw6bDkRvH7Q3ZgpWVFWTmeJCCd+o6LkNX6Xoc="
+    }
+  ],
+  "libnx": {
+    "url": "https://codeload.github.com/switchbrew/libnx/tar.gz/b156b4774fb2df7b93402169509266da7547fc4c",
+    "commit": "b156b4774fb2df7b93402169509266da7547fc4c",
+    "sha256": "5dc1867045a3875586893c7e1142936725abe523ffe512769108b6f3a8abbf7b",
+    "archive": "third_party/libnx-b156b4774fb2df7b93402169509266da7547fc4c.tar.gz"
+  },
+  "newlib": {
+    "url": "https://codeload.github.com/R-YaTian/newlib/tar.gz/8e4d4166b043622b1fe463dbdb8255a05f0d56b2",
+    "commit": "8e4d4166b043622b1fe463dbdb8255a05f0d56b2",
+    "sha256": "61fdc61da6aacb2523477093d53db2793072ba597e2e4fd2d821bf88c148f936",
+    "archive": "third_party/newlib-8e4d4166b043622b1fe463dbdb8255a05f0d56b2.tar.gz"
+  },
+  "newlibOverlay": "companion/compat/build_argv.c",
+  "keyring": {
+    "archive": "third_party/devkitpro-signing-keys.gpg",
+    "sha256": "3000edebeb67fb226ee9bb7eec9dd98bd5d211f47aa6e152ac3e5056b66c8502",
+    "source": "https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz"
+  },
+  "sources": [
+    {
+      "file": "dr_libs-b962384.zip",
+      "sha256": "1334db789ec16f5be25a50c0acd515201a2ff25e5951a8f88af59546d737cfa0"
+    },
+    {
+      "file": "ftpsrv-7c82402.zip",
+      "sha256": "cf654dc11824869a3045b3947fa2b16dc2f7116a422e94b075df438736f8060f"
+    },
+    {
+      "file": "id3v2lib-43e4592.zip",
+      "sha256": "80667fbe4650e8e3c66542f2d1320d405efe6155f881e533cdd7c22295a68009"
+    },
+    {
+      "file": "libhaze-f1c9c63.zip",
+      "sha256": "f1ffb42444f3e480df87ce9a19d0f089681018bf137fd5e41d2de65f19950b98"
+    },
+    {
+      "file": "libnfs-65f3e11.zip",
+      "sha256": "3b1b9b97031fca652cdc0f57475b896bb2e9f8b1842e27b5515116860f234ccc"
+    },
+    {
+      "file": "libnxtc-aa0a375.zip",
+      "sha256": "3f90a2818aca0a48176074f32fcc87bb1115d8c878deb0d4a4e9ac6623e0c0a5"
+    },
+    {
+      "file": "libpulsar-ac7bc97.zip",
+      "sha256": "b79ed495b1c5f5cae7c11db93e531ca1f02e790d78871a8427ae0b58501806c1"
+    },
+    {
+      "file": "libsmb2-867beea.zip",
+      "sha256": "d03ef3d8a08bad1f60e5d3fa47fe62913a9625d7eeb16d418c136e780daa68eb"
+    },
+    {
+      "file": "libusbdvd-c7598a9.zip",
+      "sha256": "af3e2f3117718b0c02cb92c03ebe372c4d687bd5bcc4a46fc1fa6da87532697c"
+    },
+    {
+      "file": "libusbhsfs-625269b.zip",
+      "sha256": "021fe56d51cbbbbd5c1c5e61aba6a71cdedfabdcd7fac9b82b6043e17771be20"
+    },
+    {
+      "file": "minIni-6e952b6.zip",
+      "sha256": "8ed577ca9006872a981e732e6791f6f367a2ab7725f7dcef51cfb9febdd70116"
+    },
+    {
+      "file": "nanovg-2acb0f3.zip",
+      "sha256": "94a8eda444c41a07935bf3d5c5584697e9434d62a3b01d452602ab5ff14dc998"
+    },
+    {
+      "file": "nvjpg-45680e7.zip",
+      "sha256": "3b488165d4d5e2d3b402a66b392106dd74e37707e5b4156e28633f7232f40abe"
+    },
+    {
+      "file": "pugixml-v1.15.zip",
+      "sha256": "0dd4dc16e38bbc1c889d3a59660072450127bac7d19415f3cf5d5d6b25c58b35"
+    },
+    {
+      "file": "stb-5c20573.zip",
+      "sha256": "0f8a1ecf12d67098166dc677a6b8919afc571d24eb50e81c439713a252502276"
+    },
+    {
+      "file": "stb_nanovg-31c1ad3.zip",
+      "sha256": "9133573544b48031fe57e2b60a3cb1bdeab97aa0e23433e617fb82a871f381fb"
+    },
+    {
+      "file": "yyjson-0.12.0.zip",
+      "sha256": "4dd0ca29fba70f1f1e5ca4de96eae85774a7ff536295b6c02dc10367f7578691"
+    },
+    {
+      "file": "zstd-v1.5.7.zip",
+      "sha256": "7897bc5d620580d9b7cd3539c44b59d78f3657d33663fe97a145e07b4ebd69a4"
+    }
+  ]
+}
