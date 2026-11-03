@@ -7,6 +7,7 @@ config = json.loads((root / "version.json").read_text(encoding="utf-8-sig"))
 excluded = {"bin", "obj", "__pycache__"}
 generated = {"BuildInfo.Generated.cs", "build_info.hpp"}
 inputs = [root / "version.json", root / "build-dependencies.lock.json", root / "Directory.Build.props", root / "global.json"]
+if (root / "streaming-dependencies.lock.json").exists(): inputs.append(root / "streaming-dependencies.lock.json")
 for folder in ("src", "companion", "scripts"):
     inputs.extend(p for p in (root / folder).rglob("*") if p.is_file() and p.name not in generated and not excluded.intersection(p.relative_to(root).parts))
 digest = hashlib.sha256()

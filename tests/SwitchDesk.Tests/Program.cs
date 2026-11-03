@@ -16,6 +16,7 @@ internal static partial class Program
     [STAThread]
     public static int Main(string[] args)
     {
+        if (args.Length > 0 && args[0] == "--native-video-fixture") return RunNativeVideoFixture();
         root = args.Length > 0 ? Path.GetFullPath(args[0]) : Path.Combine(Path.GetTempPath(), "SwitchDesk-tests-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root); Run().GetAwaiter().GetResult();
         Console.WriteLine($"RESULT {passed} passed, {failed} failed; fixtures: {root}"); return failed == 0 ? 0 : 1;
@@ -27,6 +28,8 @@ internal static partial class Program
     private static Task Sync(Action action) { action(); return Task.CompletedTask; }
     private static async Task Run()
     {
+        await RunUsbStreamingTestsAsync();
+        await NativeVideoHostTests();
         await Phase2Tests();
         await ManagedUpdateTests();
         await UiV2Tests();

@@ -89,6 +89,18 @@ public partial class MainWindow
         Width = 1280; DetailsTabs.SelectedIndex = 0; ThemeManager.Apply("Light"); await Render("preview-light"); ThemeManager.Apply("Dark"); await Render("preview-dark");
         Check(!Descendants<TextBlock>(Details).Any(x => x.Text.Contains("SaveChoice {", StringComparison.Ordinal)), "user display contains no internal object dump");
         Check(bindingErrors.Messages.Count == 0, "no WPF binding errors: " + string.Join(" | ", bindingErrors.Messages));
+        vm.CrossSave.Open = false;
+        foreach (var theme in new[] { "Light", "Dark" }) foreach (var width in new[] { 1050, 1280, 1920 })
+        {
+            ThemeManager.Apply(theme); Width = width; Height = 820; vm.StreamGuide = true;
+            await Render($"usb-stream-{theme}-{width}-100"); await Render($"usb-stream-{theme}-{width}-200", 2);
+            var streamBounds = StartStreamButton.TransformToAncestor(Root).TransformBounds(new Rect(StartStreamButton.RenderSize));
+            Check(StreamOverlay.IsVisible && streamBounds.Bottom <= Root.ActualHeight && StreamVideoArea.ActualHeight >= 220, $"{theme} {width} USB viewport and actions fit");
+            Check(!StreamVideoHost.IsVisible, $"{theme} {width} preview does not fake a live native window"); vm.StreamGuide = false;
+        }
+        Width = 1050; Height = 640; vm.StreamGuide = true; await Render("usb-stream-minimum-height");
+        Check(StartStreamButton.TransformToAncestor(Root).TransformBounds(new Rect(StartStreamButton.RenderSize)).Bottom <= Root.ActualHeight, "minimum-height USB stream actions remain visible");
+        vm.StreamGuide = false;
         report.Add("DPI images are WPF render-scale checks at 96/192 DPI, not an OS monitor DPI transition test."); report.Add("All art, records and tasks above are labelled UI fixtures. No Switch hardware validation.");
         File.WriteAllLines(Path.Combine(output, "smoke-result.txt"), report);
     }

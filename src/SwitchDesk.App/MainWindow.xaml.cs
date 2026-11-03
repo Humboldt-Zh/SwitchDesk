@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -69,7 +69,7 @@ public partial class MainWindow : Window
     private void BindCommands()
     {
         void Async(string name, Func<Task> action, Func<bool>? can = null) => vm.Bind(name, p => { _ = Guard(action); }, p => can?.Invoke() ?? true);
-        bool Ready(string capability) => vm.Online && client?.IsBroken == false && device?.Capabilities.Contains(capability) == true;
+        bool Ready(string capability) => !streaming && !closingApplication && vm.Online && client?.IsBroken == false && device?.Capabilities.Contains(capability) == true;
         bool LiveSave() => Ready("saves") && vm.Saves.Selected?.Live != null;
         vm.Bind("Navigate", p => Navigate(p?.ToString() ?? "library"));
         vm.Bind("SelectGame", p => { if (p is GameCard card) { vm.Library.Selected = card; vm.DetailOpen = true; UpdateDetails(); LayoutDetails(); } });
@@ -93,11 +93,12 @@ public partial class MainWindow : Window
         Async("Rename", RenameAsync, () => Ready("files") && FilesGrid.SelectedItem != null); Async("Delete", DeleteAsync, () => Ready("files") && FilesGrid.SelectedItem != null);
         Async("Mkdir", MkdirAsync, () => Ready("files"));
         Async("Refresh", () => RunJob("刷新主机资料", async (_, ct) => { await RefreshDeviceAsync(ct); return true; }), () => vm.Online);
-        Async("Reconnect", async () => { streaming = false; await DisconnectAsync(); }, () => Volatile.Read(ref activeJobs) == 0);
+        Async("Reconnect", async () => { await StopStreamAsync(); await DisconnectAsync(); }, () => Volatile.Read(ref activeJobs) == 0 && !closingApplication);
         vm.Bind("CancelJob", p => { if (p is Job j && j.CanCancel) { j.Cancellation.Cancel(); j.Detail = "正在请求取消"; } }, p => p is Job { CanCancel: true });
         vm.Bind("RetryJob", p => { if (p is Job { Retry: {} retry }) _ = Guard(retry); }, p => p is Job { State: "需要处理", Retry: not null } && Volatile.Read(ref activeJobs) == 0);
-        vm.Bind("StreamGuide", _ => { StreamCondition.Text = Volatile.Read(ref activeJobs) != 0 ? "传输任务正在运行；完成或取消后可启动播放器。" : ""; vm.StreamGuide = true; });
-        vm.Bind("CloseStream", _ => vm.StreamGuide = false); Async("Stream", StreamAsync, () => Volatile.Read(ref activeJobs) == 0 && !streaming);
+        vm.Bind("StreamGuide", _ => ShowStreamGuide());
+        Async("CloseStream", () => StopStreamAsync(true)); Async("StopStream", () => StopStreamAsync(), () => streaming);
+        Async("Stream", StreamAsync, () => Volatile.Read(ref activeJobs) == 0 && !streaming && !closingApplication);
     }
     private async void OnLoaded(object sender, RoutedEventArgs e)
     { LayoutDetails(); if (Environment.GetCommandLineArgs().Contains("--smoke-test")) { await RenderSmokeAsync(); Close(); return; } if (fixtureMode) return; Log(BuildInfo.ClientId + " 启动；等待配套程序。"); _ = Task.Run(ObserveSteamChangesAsync); await MonitorAsync(); }
@@ -164,6 +165,7 @@ public partial class MainWindow : Window
         {
             try
             {
+                if (closingApplication) break;
                 if (streaming || Volatile.Read(ref activeJobs) != 0) { await Task.Delay(1000, lifetime.Token); continue; }
                 if (client?.IsBroken == true) await DisconnectAsync();
                 if (client == null)
@@ -175,7 +177,10 @@ public partial class MainWindow : Window
                         try
                         {
                             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(lifetime.Token); timeout.CancelAfter(TimeSpan.FromSeconds(3));
-                            attempt = new(await Task.Run(() => new WinUsbStream(candidate.Path), timeout.Token)); var info = await attempt.HandshakeAsync(timeout.Token); client = attempt;
+                            if (streaming || closingApplication) break;
+                            attempt = new(await Task.Run(() => new WinUsbStream(candidate.Path), timeout.Token)); var info = await attempt.HandshakeAsync(timeout.Token);
+                            if (streaming || closingApplication) { await attempt.DisposeAsync(); attempt = null; break; }
+                            client = attempt;
                             if (device?.DeviceId != info.DeviceId || device?.Environment != info.Environment) { titles = []; saves = []; vm.Storages = []; }
                             device = info; vm.Online = true; UpdateDevice(info); message = "已连接";
                             await RunJob("读取主机资料", async (_, ct) => { await RefreshDeviceAsync(ct); return true; }); ScheduleAutoBackups(); _ = RefreshCatalogInBackgroundAsync(); break;
@@ -183,7 +188,7 @@ public partial class MainWindow : Window
                         catch (Exception ex)
                         { if (attempt != null) await attempt.DisposeAsync(); if (ReferenceEquals(client, attempt)) { client = null; vm.Online = false; } message = ex is Win32Exception { NativeErrorCode: 5 or 32 } ? "接口被占用 · 打开诊断" : ex.Message; }
                     }
-                    SetConnectionMessage(message);
+                    if (!streaming && !closingApplication) SetConnectionMessage(message);
                 }
                 else
                 {
@@ -192,6 +197,7 @@ public partial class MainWindow : Window
                         if (!await jobsGate.WaitAsync(0, lifetime.Token)) { await Task.Delay(250, lifetime.Token); continue; }
                         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(lifetime.Token); timeout.CancelAfter(TimeSpan.FromSeconds(4));
                         DeviceInfo info; try { info = await client.QueryAsync<DeviceInfo>("device.info", ct: timeout.Token); } finally { jobsGate.Release(); }
+                        if (streaming || closingApplication) continue;
                         var changed = info.DeviceId != device?.DeviceId || info.Environment != device?.Environment; device = info; UpdateDevice(info);
                         if (changed) { titles = []; saves = []; await RunJob("切换系统环境", async (_, ct) => { await RefreshDeviceAsync(ct); return true; }); }
                     }
@@ -207,6 +213,7 @@ public partial class MainWindow : Window
     { var old = client; client = null; vm.Online = false; if (old != null) await old.DisposeAsync(); FilesGrid.ItemsSource = null; SetConnectionMessage(synced != null ? "离线记录 · 等待连接" : "等待配套程序"); UpdateSyncText(); UpdateAutoPolicy(); }
     private (DeviceClient Client, DeviceInfo Device) RequireDevice(string? capability = null)
     {
+        if (streaming || closingApplication) throw new IOException("请先停止 USB 投屏，再执行主机管理操作");
         if (!vm.Online || client == null || client.IsBroken || device == null) throw new IOException("请连接 Switch 并打开配套程序；当前显示的是离线记录");
         if (capability != null && !device.Capabilities.Contains(capability)) throw new DeviceException("Unavailable", "当前主机环境不支持此操作：" + capability); return (client, device);
     }
@@ -249,5 +256,20 @@ public partial class MainWindow : Window
         _ = Dispatcher.BeginInvoke(() => vm.RecordLog(line, text));
     }
     private async void OnClosing(object? sender, CancelEventArgs e)
-    { if (Volatile.Read(ref activeJobs) != 0) { e.Cancel = true; Navigate("diagnostics"); vm.Notify("请等待任务完成，或在连接诊断中取消任务；存档写回期间不可取消"); return; } lifetime.Cancel(); if (client != null) await client.DisposeAsync(); library.Dispose(); phase2.Dispose(); }
+    {
+        if (closeReady) return;
+        e.Cancel = true;
+        if (closingApplication) return;
+        if (Volatile.Read(ref activeJobs) != 0) { Navigate("diagnostics"); vm.Notify("请等待任务完成，或在连接诊断中取消任务；存档写回期间不可取消"); return; }
+        closingApplication = true; Root.IsEnabled = false;
+        try
+        {
+            await StopStreamAsync(true); lifetime.Cancel();
+            var previous = client; client = null; if (previous != null) await previous.DisposeAsync();
+            library.Dispose(); phase2.Dispose(); closeReady = true;
+            _ = Dispatcher.BeginInvoke(Close, System.Windows.Threading.DispatcherPriority.Background);
+        }
+        catch (Exception ex) { closingApplication = false; Root.IsEnabled = true; Log("退出清理失败：" + ex.Message); vm.Notify("投屏清理未完成，请停止投屏后再次退出"); }
+    }
+
 }

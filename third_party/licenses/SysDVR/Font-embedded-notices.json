@@ -1,0 +1,59 @@
+[
+  {
+    "font": "NotoSans-Regular.ttf",
+    "sha256": "d78a4640e19e06c128e2041d480d5ddfd8db4fdecb3d582ca12b26aef1548bf9",
+    "names": {
+      "0": [
+        "Copyright 2019 Google Inc. All Rights Reserved."
+      ],
+      "13": [
+        "This Font Software is licensed under the SIL Open Font License, Version 1.1. This Font Software is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the SIL Open Font License for the specific language, permissions and limitations governing your use of this Font Software."
+      ],
+      "14": [
+        "http://scripts.sil.org/OFL"
+      ]
+    }
+  },
+  {
+    "font": "NotoSansSC-Regular.ttf",
+    "sha256": "ae82f4e2a55e1316a55bcc1d05e9555ce08d8bda07e893b486896b626fd852ff",
+    "names": {
+      "0": [
+        "(c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'."
+      ],
+      "13": [
+        "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL"
+      ],
+      "14": [
+        "http://scripts.sil.org/OFL"
+      ]
+    }
+  },
+  {
+    "font": "NotoSansTC-Regular.ttf",
+    "sha256": "6b137e2eb57a2d1e4cf391c886ab1b783a0e5ddb5c75254748bde00c15cb8ff5",
+    "names": {
+      "0": [
+        "(c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'."
+      ],
+      "13": [
+        "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL"
+      ],
+      "14": [
+        "http://scripts.sil.org/OFL"
+      ]
+    }
+  },
+  {
+    "font": "OpenSans.ttf",
+    "sha256": "6a6555da51334545e149c70c98ed14d30457bdf082bbf7dea22e8846281e43bb",
+    "names": {
+      "0": [
+        "Digitized data copyright © 2010-2011, Google Corporation."
+      ],
+      "14": [
+        "http://www.apache.org/licenses/LICENSE-2.0"
+      ]
+    }
+  }
+]

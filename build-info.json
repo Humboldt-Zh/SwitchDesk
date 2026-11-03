@@ -1,8 +1,8 @@
 {
-  "version": "0.3.0-dev.1",
+  "version": "0.3.0-dev.2",
   "protocol": 1,
   "snapshotFormat": 1,
   "sourceDateEpoch": 1792656000,
-  "sourceId": "39c6a308a1aa",
-  "sourceSha256": "39c6a308a1aabbebaf1091356a113a22703a618c1780223799bc432ee39ddd6c"
+  "sourceId": "74a8c313b325",
+  "sourceSha256": "74a8c313b32583ee5fdc5c0fad8242e087648538c9a6bd6d055a2ce3acac1569"
 }

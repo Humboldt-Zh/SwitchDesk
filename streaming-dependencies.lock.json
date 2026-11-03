@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "name": "SysDVR",
+  "version": "6.3",
+  "commit": "531e9c25c4e5a25954eeec677fe439fe812e9b19",
+  "release": "https://github.com/exelix11/SysDVR/releases/tag/v6.3",
+  "runtime": {
+    "dotnetRuntime": "9.0.13",
+    "sdl": "2.28.5",
+    "ffmpegVersion": "n5.1.2-39-g2953c6381a",
+    "ffmpegSourceCommit": "2953c6381afc3d52f3c97692228a5120fad4e0dd",
+    "ffmpegLicense": "LGPL-3.0-or-later",
+    "requiredFiles": [
+      "SysDVR-Client.exe",
+      "SysDVR-Client.dll",
+      "SysDVR-Client.deps.json",
+      "SysDVR-Client.runtimeconfig.json",
+      "hostfxr.dll",
+      "hostpolicy.dll",
+      "coreclr.dll",
+      "System.Private.CoreLib.dll",
+      "runtimes/win-x64/native/avcodec-59.dll",
+      "runtimes/win-x64/native/avformat-59.dll",
+      "runtimes/win-x64/native/avutil-57.dll",
+      "runtimes/win-x64/native/swscale-6.dll",
+      "runtimes/win-x64/native/swresample-4.dll",
+      "runtimes/win-x64/native/SDL2.dll",
+      "runtimes/win-x64/native/SDL2_image.dll",
+      "runtimes/win-x64/native/libusb-1.0.dll",
+      "runtimes/win-x64/native/cimgui.dll",
+      "runtimes/resources/fonts/NotoSans-Regular.ttf",
+      "runtimes/resources/strings/english.json"
+    ],
+    "ffmpegAutoGenLicense": "LGPL-3.0-or-later",
+    "libusbVersion": "1.0.26",
+    "sdlImageVersion": "2.6.3"
+  },
+  "assets": [
+    {
+      "id": "windows",
+      "file": "SysDVR-Client-Windows-x64-with-framework.7z",
+      "url": "https://github.com/exelix11/SysDVR/releases/download/v6.3/SysDVR-Client-Windows-x64-with-framework.7z",
+      "purpose": "binary",
+      "sha256": "4c5759dc33cc84254793b39a3ff6dedda80cbbe46bc4c15c9cbb32786aa0d775",
+      "size": 40062156
+    },
+    {
+      "id": "switch",
+      "file": "SysDVR.zip",
+      "url": "https://github.com/exelix11/SysDVR/releases/download/v6.3/SysDVR.zip",
+      "purpose": "binary",
+      "sha256": "d86b0d5c88b8882d52d477b6a0892bb406b5999d0bb61e2888ec5beb2428db6f",
+      "size": 3196237
+    },
+    {
+      "id": "sysdvr-source",
+      "file": "SysDVR-531e9c25c4e5a25954eeec677fe439fe812e9b19-source.zip",
+      "url": "https://codeload.github.com/exelix11/SysDVR/zip/531e9c25c4e5a25954eeec677fe439fe812e9b19",
+      "purpose": "source",
+      "sha256": "711d4513ae1e56074cf6ffce33b187ff4afc3b1f2b1d6fc7f10f2c65d690b60b",
+      "size": 23868798
+    },
+    {
+      "id": "libusb-source",
+      "file": "libusb-1.0.26-source.zip",
+      "url": "https://codeload.github.com/libusb/libusb/zip/refs/tags/v1.0.26",
+      "purpose": "source",
+      "sha256": "4175f942e74f3c34b71d01b107d33e713f9ff47563f49bcc6e8b2534f414dd54",
+      "size": 536844
+    },
+    {
+      "id": "sdl-image-source",
+      "file": "SDL_image-2.6.3-source.zip",
+      "url": "https://codeload.github.com/libsdl-org/SDL_image/zip/refs/tags/release-2.6.3",
+      "purpose": "source",
+      "sha256": "250c474e1809e299e7fad8f988529b91bd84111304d2cf06d1765678fa9eea5c",
+      "size": 10050937
+    },
+    {
+      "id": "cimgui-source",
+      "file": "CimguiSDL2Cross-r2-source.zip",
+      "url": "https://codeload.github.com/exelix11/CimguiSDL2Cross/zip/refs/tags/r2",
+      "purpose": "source",
+      "sha256": "d5bea326316cbb1cdfaa0e3f8f30843f449fcd09ccfec1da52d69cf554433a83",
+      "size": 926486
+    },
+    {
+      "id": "ffmpeg-source",
+      "file": "ffmpeg-2953c6381afc3d52f3c97692228a5120fad4e0dd-source.zip",
+      "url": "https://codeload.github.com/FFmpeg/FFmpeg/zip/2953c6381afc3d52f3c97692228a5120fad4e0dd",
+      "purpose": "source",
+      "sha256": "22d7a3a6915ddfb7433e50f6051019ba478574f90926310bed8c9e7b4810d1f4",
+      "size": 19502099
+    }
+  ]
+}
