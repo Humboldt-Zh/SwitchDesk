@@ -3,6 +3,7 @@
 #include "switchdesk/management_view.hpp"
 #include "switchdesk/safety.hpp"
 #include "switchdesk/restore_policy.hpp"
+#include "switchdesk/export_reads.hpp"
 #include "switchdesk/wire.hpp"
 #include "switchdesk/build_info.hpp"
 #include "app.hpp"
@@ -493,6 +494,7 @@ Result Server::Dispatch(const std::string& method, yyjson_val* args, Json& json,
             }
         }));
         if (R_FAILED(rc) || handle->exports.size() != 1) return Fail("ExportUnavailable", "无法打包该组件；请检查主机内容、权限及内容解析所需密钥");
+        if (handle->exports.front().nsp_size <= 0) return Fail("ExportSize", "导出内容大小无效");
         handle->size = handle->exports.front().nsp_size; json.Num(result, "size", handle->size); json.Str(result, "handle", NewHandle(std::move(handle))); return 0;
     }
     if (method == "package.inspect" || method == "titles.install" || method == "titles.install.plan") {
@@ -576,8 +578,21 @@ Result Server::Dispatch(const std::string& method, yyjson_val* args, Json& json,
     if (method == "read.chunk") {
         const auto offset = Number(args, "offset"), length = Number(args, "length"); if (length > Chunk || offset > INT64_MAX) return Fail("ChunkBounds", "文件块越界");
         binary.resize(length); u64 actual{};
-        if (handle.kind == "export") { if (offset > handle.size || length > handle.size - offset) return Fail("ChunkBounds", "内容读取越界");
-        R_TRY(handle.exports.front().Read(binary.data(), offset, length, &actual)); }
+        if (handle.kind == "export") {
+            const auto read = ReadExportChunk(binary, offset, handle.size, [&](std::span<u8> target, std::uint64_t position) {
+                u64 count{};
+                const auto rc = handle.exports.front().Read(target.data(), static_cast<s64>(position), static_cast<s64>(target.size()), &count);
+                return ExportSegmentRead{rc, count};
+            });
+            if (read.state == ExportReadState::OutOfRange) return Fail("ChunkBounds", "内容读取越界");
+            if (read.state != ExportReadState::Complete) {
+                const auto detail = "导出内容读取不完整：偏移 " + std::to_string(offset + read.completed) +
+                    "，请求 " + std::to_string(length) + "，已读 " + std::to_string(read.completed) +
+                    "，本段返回 " + std::to_string(read.reported) + "，底层结果 " + std::to_string(read.error);
+                return Fail(read.state == ExportReadState::ReadError ? "ExportRead" : "ExportShortRead", detail);
+            }
+            actual = read.completed;
+        }
         else if (handle.kind == "file") { if (offset > handle.size || length > handle.size - offset) return Fail("ChunkBounds", "文件读取越界"); if (fseeko(handle.file.get(), offset, SEEK_SET)) return Fail("Seek", "文件定位失败"); actual = std::fread(binary.data(), 1, length, handle.file.get()); }
         else if (handle.kind == "save") {
             const auto path = String(args, "path"); if (!ValidRelative(path)) return Fail("InvalidPath", "存档路径无效"); auto file = Open(handle.root + '/' + path, "rb");

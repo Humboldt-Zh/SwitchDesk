@@ -2,5 +2,5 @@
 #pragma once
 namespace switchdesk {
 inline constexpr char BuildVersion[] = "0.3.0-dev.2";
-inline constexpr char BuildId[] = "acd7abe2e129";
+inline constexpr char BuildId[] = "bc5abe181644";
 }
