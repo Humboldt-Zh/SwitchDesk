@@ -2,7 +2,7 @@
 namespace SwitchDesk.Core;
 public static class BuildInfo
 {
-    public const string Version = "0.2.5";
-    public const string SourceId = "ed793c7b2d73";
-    public const string ClientId = "SwitchDesk/0.2.5+ed793c7b2d73";
+    public const string Version = "0.3.0-dev.1";
+    public const string SourceId = "39c6a308a1aa";
+    public const string ClientId = "SwitchDesk/0.3.0-dev.1+39c6a308a1aa";
 }

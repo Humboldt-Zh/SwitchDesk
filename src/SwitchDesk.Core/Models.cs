@@ -22,7 +22,11 @@ public sealed record StorageInfo(string Id, string Name, long TotalBytes, long F
 }
 public sealed record TitleComponent(string TitleId, string Kind, uint Version, string Storage, long Size)
 {
-    public string KindText => Kind == "Base" ? "本体" : Kind == "Update" ? "更新" : "DLC";
+    public string? ApplicationId { get; init; }
+    public uint? RequiredSystemVersion { get; init; }
+    public uint? RequiredApplicationVersion { get; init; }
+    public string? RequiredContentId { get; init; }
+    public string KindText => Kind == "Base" ? "本体" : Kind == "Update" ? "更新" : Kind == "DataPatch" ? "DLC 更新" : "DLC";
     public string StorageText => Storage == "SdCard" ? "SD 卡" : Storage == "BuiltInUser" ? "用户分区" : Storage == "GameCard" ? "卡带" : Storage;
 }
 public sealed record GameTitle(string TitleId, string Name, string Publisher, string DisplayVersion,
@@ -36,6 +40,7 @@ public sealed record GameTitle(string TitleId, string Name, string Publisher, st
 }
 public sealed record SaveInfo(string Key, string TitleId, string GameName, string UserId, string UserName,
     string Type, long Size, string Environment);
+public sealed record SaveDeviceInspection(string Fingerprint, long? SavedAtUnixSeconds, SaveTimeSource TimeSource, string? CommitId);
 public sealed record RemoteEntry(string Name, string Path, bool IsDirectory, long Size)
 { public string SizeText => IsDirectory ? "文件夹" : Display.Size(Size); }
 public sealed record PackageInfo(string Name, long RequiredBytes, TitleComponent[] Components, string? TitleId,

@@ -1,10 +1,19 @@
 #include "switchdesk/wire.hpp"
 #include "switchdesk/safety.hpp"
+#include "switchdesk/restore_policy.hpp"
 #include <cassert>
 #include <iostream>
 #include <random>
 int main() {
     using namespace switchdesk;
+    assert(RestoreFits(64ULL << 20, 64ULL << 20, 1ULL << 20, 1ULL << 20, 10));
+    assert(!RestoreFits(64ULL << 20, 1ULL << 20, 1ULL << 20, 1ULL << 20, 10));
+    assert(!RestoreFits(1024, 64ULL << 20, 10, 10, 1));
+    assert(!RestoreFits(UINT64_MAX, UINT64_MAX, UINT64_MAX, 1, 1));
+    assert(!RestoreFits(UINT64_MAX, UINT64_MAX, 1, UINT64_MAX, 1));
+    assert(!RestoreFits(UINT64_MAX, UINT64_MAX, 1, 1, UINT64_MAX));
+    assert(ValidOperationId("0123456789abcdef0123456789ABCDEF"));
+    assert(!ValidOperationId("../operations") && !ValidOperationId(std::string(32, 'x')));
     assert(SameDigest(std::string(64, 'a'), std::string(64, 'A')));
     assert(!SameDigest(std::string(64, 'G'), std::string(64, 'g')));
     assert(!SameDigest("", "") && !SameDigest(std::string(64, 'A'), std::string(64, 'B')));

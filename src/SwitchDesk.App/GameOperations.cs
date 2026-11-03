@@ -24,7 +24,7 @@ public partial class MainWindow
     private Task<Snapshot> BackupAsync(SaveInfo save) => RunJob("备份 · " + save.GameName, async (job, ct) =>
     {
         var (peer, info) = RequireDevice("saves"); var store = new SnapshotStore(settings.BackupDirectory);
-        var snapshot = await store.BackupAsync(peer, info, save, Progress(job), ct); store.Prune(settings.Retention, ct); _ = Dispatcher.BeginInvoke(LoadLocalLists); return snapshot;
+        var snapshot = await store.BackupAsync(peer, info, save, Progress(job), ct); store.Prune(settings.Retention, ct, snapshot.Manifest); _ = Dispatcher.BeginInvoke(LoadLocalLists); return snapshot;
     }, async () => { var result = await BackupAsync(save); vm.Notify("已备份", Path.GetDirectoryName(result.Path)!); });
     private async Task RestoreAsync()
     {

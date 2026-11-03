@@ -49,7 +49,7 @@ public partial class MainWindow
     {
         if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control) { Navigate("library"); SearchBox.Focus(); SearchBox.SelectAll(); e.Handled = true; }
         else if (Keyboard.Modifiers == ModifierKeys.Alt && e.SystemKey is >= Key.D1 and <= Key.D4) { Navigate(vm.Navigation[e.SystemKey - Key.D1].Id); e.Handled = true; }
-        else if (e.Key == Key.Escape) { vm.StreamGuide = false; if (!batchRunning && !reviewing) InstallOverlay.Visibility = Visibility.Collapsed; UploadOverlay.Visibility = Visibility.Collapsed; vm.DetailOpen = false; e.Handled = true; }
+        else if (e.Key == Key.Escape) { if (vm.CrossSave.Open) { if (Volatile.Read(ref activeJobs) == 0) vm.CrossSave.Open = false; e.Handled = true; return; } vm.StreamGuide = false; if (!batchRunning && !reviewing) InstallOverlay.Visibility = Visibility.Collapsed; UploadOverlay.Visibility = Visibility.Collapsed; vm.DetailOpen = false; e.Handled = true; }
     }
     private void OnGalleryKey(object sender, KeyEventArgs e)
     {

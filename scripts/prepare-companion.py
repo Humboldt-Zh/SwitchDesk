@@ -65,6 +65,13 @@ def main():
     text = text.replace("R_TRY(yati->RemoveInstalledNcas(cnmt));", "/* SwitchDesk: retain previously registered content. */")
     text = text.replace("[[maybe_unused]] Result Yati::RemoveInstalledNcas(", "Result Yati::RemoveInstalledNcas(").replace("Result Yati::RemoveInstalledNcas(", "[[maybe_unused]] Result Yati::RemoveInstalledNcas(")
     yati.write_text(text, encoding="utf-8")
+    # Managed installs must not inherit another installer's skip/downgrade settings.
+    override_flags = ("allow_downgrade", "skip_if_already_installed", "ticket_only", "skip_base", "skip_patch", "skip_addon", "skip_data_patch", "skip_ticket")
+    override_header = destination / "sphaira/include/yati/yati.hpp"
+    declarations = "".join(f"    std::optional<bool> {flag}{{}};\n" for flag in override_flags)
+    replace(override_header, "struct ConfigOverride {\n", "struct ConfigOverride {\n" + declarations)
+    for flag in override_flags:
+        replace(yati, f"config.{flag} = App::GetApp()->m_{flag}.Get();", f"config.{flag} = override.{flag}.value_or(App::GetApp()->m_{flag}.Get());")
     replace(destination / "sphaira/source/yati/container/xci.cpp", "    R_UNLESS(out.header.magic == HFS0_MAGIC, Result_XciBadMagic);", "    R_UNLESS(out.header.magic == HFS0_MAGIC, Result_XciBadMagic);\n    R_UNLESS(out.header.total_files <= 0x10000 && out.header.string_table_size <= 16 * 1024 * 1024, Result_XciBadMagic);")
     replace(destination / "sphaira/source/yati/container/xci.cpp", "    if (R_SUCCEEDED(rc)) {", "    if (R_SUCCEEDED(rc)) {\n        R_UNLESS(out.hfs0.header.total_files <= 16, Result_XciBadMagic);")
     replace(destination / "sphaira/source/yati/container/xci.cpp", "        out.string_table.emplace_back(string_table.data() + out.file_table[i].name_offset);", "        const auto index = out.file_table[i].name_offset;\n        R_UNLESS(index < string_table.size(), Result_XciBadMagic);\n        const auto end = static_cast<const char*>(std::memchr(string_table.data() + index, '\\0', std::min<std::size_t>(256, string_table.size() - index)));\n        R_UNLESS(end, Result_XciBadMagic);\n        out.string_table.emplace_back(string_table.data() + index, end - string_table.data() - index);")

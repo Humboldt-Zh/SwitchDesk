@@ -41,8 +41,11 @@ public sealed class GameCard : Observable
     public bool OnConsole => Console != null;
     public bool OnComputer => Local.Length != 0;
     public bool Unknown => TitleId == null;
-    public string Source => OnConsole && OnComputer ? "主机 + 电脑" : OnConsole ? "主机" : "电脑";
-    public string Status => Unknown ? "待识别" : Console?.State ?? "电脑中";
+    private bool hasUpdate, hidden;
+    public bool HasUpdate { get => hasUpdate; set { if (Set(ref hasUpdate, value)) { Changed(nameof(Source)); Changed(nameof(Status)); } } }
+    public bool Hidden { get => hidden; set { if (Set(ref hidden, value)) { Changed(nameof(Source)); Changed(nameof(Status)); } } }
+    public string Source => (OnConsole && OnComputer ? "主机 + 电脑" : OnConsole ? "主机" : "电脑") + (Hidden ? " · 已隐藏" : HasUpdate ? " · 有更新" : "");
+    public string Status => (Unknown ? "待识别" : Console?.State ?? "电脑中") + (Hidden ? " · 已隐藏" : HasUpdate ? " · 目录有更新" : "");
     public string SizeText => Console?.SizeText ?? Display.Size(Local.Sum(x => x.Size));
     public string Initial => Unknown ? "◇" : Name[..Math.Min(1, Name.Length)];
     public string Publisher => Console?.Publisher ?? (Unknown ? "连接主机后可识别安装包" : "电脑游戏库");
@@ -63,6 +66,8 @@ public sealed class LibraryViewModel : Observable
     public ObservableCollection<GameCard> Filtered { get; } = [];
     public ObservableCollection<GameRow> Rows { get; } = [];
     private string search = "", source = "全部";
+    private string statusFilter = "全部状态";
+    public string StatusFilter { get => statusFilter; set { if (Set(ref statusFilter, value)) Filter(); } }
     private bool listView, savesOnly; private int columns = 3; private double available = 620;
     public HashSet<string> SaveTitles { get; set; } = new(StringComparer.OrdinalIgnoreCase);
     public bool SavesOnly { get => savesOnly; set { if (Set(ref savesOnly, value)) Filter(); } }
@@ -72,6 +77,8 @@ public sealed class LibraryViewModel : Observable
     public bool ListView { get => listView; set => Set(ref listView, value); }
     public GameCard? Selected { get => selected; set { if (selected != null) selected.IsSelected = false; if (Set(ref selected, value)) SelectionChanged?.Invoke(); if (selected != null) selected.IsSelected = true; } }
     public event Action? SelectionChanged;
+    public void ApplyStates(IReadOnlySet<string> updates, IReadOnlySet<string> hidden)
+    { foreach (var card in all) { card.HasUpdate = card.TitleId != null && updates.Contains(card.TitleId); card.Hidden = card.TitleId != null && hidden.Contains(card.TitleId); } Filter(); }
     public string CountText => $"{Filtered.Count} 个游戏与文件";
     public bool HasEntries => all.Length > 0;
     public string EmptyHeading => all.Length == 0 ? "把游戏放在一起" : savesOnly && SaveTitles.Count == 0 ? "还没有存档记录" : "没有找到匹配的游戏";
@@ -105,7 +112,7 @@ public sealed class LibraryViewModel : Observable
     }
     private void Filter()
     {
-        var match = all.Where(x => (!savesOnly || x.TitleId != null && SaveTitles.Contains(x.TitleId)) && (source != "主机" || x.OnConsole) && (source != "电脑" || x.OnComputer) &&
+        var match = all.Where(x => (statusFilter != "有更新" || x.HasUpdate) && (statusFilter != "已隐藏" || x.Hidden) && (!savesOnly || x.TitleId != null && SaveTitles.Contains(x.TitleId)) && (source != "主机" || x.OnConsole) && (source != "电脑" || x.OnComputer) &&
             (string.IsNullOrWhiteSpace(search) || x.Name.Contains(search, StringComparison.CurrentCultureIgnoreCase) || (x.TitleId?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false))).ToArray();
         Filtered.Clear(); foreach (var item in match) Filtered.Add(item); RebuildRows(); Changed(nameof(CountText)); Changed(nameof(HasEntries)); Changed(nameof(EmptyHeading)); Changed(nameof(EmptyDescription));
     }
@@ -172,13 +179,14 @@ public sealed class Job : Observable
     public string TimeText => CreatedAt.ToLocalTime().ToString("HH:mm:ss");
     public CancellationTokenSource Cancellation { get; } = new();
     public Func<Task>? Retry { get; set; }
-    private string state = "排队", detail = "等待执行", rate = ""; private double percent; private bool indeterminate = true, canCancel = true;
+    private string state = "排队", detail = "等待执行", rate = "", result = ""; private double percent; private bool indeterminate = true, canCancel = true;
+    public string Result { get => result; set { if (Set(ref result, value)) { Changed(nameof(DiagnosticDetail)); Changed(nameof(HasDiagnosticDetail)); } } }
     public string State { get => state; set { if (Set(ref state, value)) { Changed(nameof(Active)); Changed(nameof(CanCancel)); Changed(nameof(CanRetry)); Changed(nameof(DiagnosticDetail)); Changed(nameof(HasDiagnosticDetail)); CommandManager.InvalidateRequerySuggested(); } } }
     public string Detail { get => detail; set { if (Set(ref detail, value)) { Changed(nameof(DiagnosticDetail)); Changed(nameof(HasDiagnosticDetail)); } } }
     public string Rate { get => rate; set => Set(ref rate, value); }
     public bool Active => State is "排队" or "准备" or "传输" or "主机处理";
     public bool CanRetry => State == "需要处理" && Retry != null;
-    public string DiagnosticDetail => State == "完成" || Detail == State || Detail is "等待执行" or "准备中" or "已完成" ? "" : Detail;
+    public string DiagnosticDetail => State == "完成" ? Result : Detail == State || Detail is "等待执行" or "准备中" or "已完成" ? "" : Detail;
     public bool HasDiagnosticDetail => DiagnosticDetail.Length != 0;
     public bool CanCancel { get => canCancel && Active; set { Set(ref canCancel, value); CommandManager.InvalidateRequerySuggested(); } }
     public bool Indeterminate { get => indeterminate; set { if (Set(ref indeterminate, value)) Changed(nameof(ProgressText)); } }
@@ -205,6 +213,15 @@ public sealed class TasksViewModel : Observable
 }
 public sealed class ShellViewModel : Observable
 {
+    public CrossSaveViewModel CrossSave { get; } = new();
+    private ContentSource[] contentSources = []; private ContentSource? selectedSource;
+    public ContentSource[] ContentSources { get => contentSources; set => Set(ref contentSources, value); }
+    public ContentSource? SelectedSource { get => selectedSource; set { Set(ref selectedSource, value); CommandManager.InvalidateRequerySuggested(); } }
+    private string updateSummary = "连接主机后可检查目录；安装包来自你配置的来源";
+    private UpdateChoice[] updateOffers = []; private UpdateChoice? selectedOffer;
+    public string UpdateSummary { get => updateSummary; set => Set(ref updateSummary, value); }
+    public UpdateChoice[] UpdateOffers { get => updateOffers; set => Set(ref updateOffers, value); }
+    public UpdateChoice? SelectedOffer { get => selectedOffer; set { Set(ref selectedOffer, value); CommandManager.InvalidateRequerySuggested(); } }
     public LibraryViewModel Library { get; } = new();
     public SaveViewModel Saves { get; } = new();
     public TasksViewModel Tasks { get; } = new();

@@ -20,3 +20,9 @@
 ## 对应源码与公开密钥
 
 发布二进制分别附带匹配版本的完整对应源码包，包含 vendor/cache 中的固定依赖源码。主仓库可按锁文件重新准备依赖。third_party/devkitpro-signing-keys.gpg 为 devkitPro 的公开验签密钥环，不包含私钥。可读的上游许可证副本和来源清单见 third_party/licenses/；副本不取代源码内逐文件许可。
+
+## 二期存档格式参考
+
+- Stagstation，MIT，Copyright (c) 2025 AJB；固定提交 `475357523442333586ed4c80a96216340903c7ac`，来源 https://github.com/dizzyfrogs/stagstation 。Knight 封装常量和格式说明供本地 C# 实现参考；许可证在 `third_party/licenses/Stagstation-MIT.txt`，Windows 包内为 `licenses/Stagstation-MIT.txt`。没有引入其 Node / Web 运行环境。
+- Vampire Survivors Save Editor、Alive Cells 用于格式说明核对，没有嵌入其 Python 程序；相关来源及适用范围见 `docs/PHASE2.md`。不复制带额外使用限制的转换站点代码。
+- TitleDB 为运行时获取的元数据来源（https://github.com/blawar/titledb）；不随包提供游戏、DLC、主机密钥或用户存档。公开仓库的解析测试数据全部为合成夹具。

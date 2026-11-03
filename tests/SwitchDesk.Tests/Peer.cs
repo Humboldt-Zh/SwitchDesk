@@ -21,6 +21,13 @@ internal sealed class Peer : IAsyncDisposable
     public int WriteOperations, RestoreCommits, ReadOpens;
     public bool FailRead, FailCommit, DirectoryConflict;
     public bool IgnoreClose, MalformedDeviceInfo;
+    public DeviceInfo? DeviceOverride;
+    public string? RestoreFingerprint, RestoreOperation;
+    public PackageInfo? PackageOverride { get; set; }
+    public Dictionary<string, PackageInfo> Packages { get; } = [];
+    public Dictionary<string, string> OperationStates { get; } = [];
+    public bool SkipManagedInstall { get; set; }
+    public int ManagedInstallRequests { get; private set; }
     public int CloseOperations, ExportOpens;
     public int ActiveHandleCount => handles.Count;
     public Action? OnRestoreBegin;
@@ -49,10 +56,18 @@ internal sealed class Peer : IAsyncDisposable
                 switch (method)
                 {
                     case "hello": result = new { protocol = 1 }; break;
-                    case "device.info": result = MalformedDeviceInfo ? new { model = "bad fixture" } : Info; break;
+                    case "device.info": result = MalformedDeviceInfo ? new { model = "bad fixture" } : DeviceOverride ?? Info; break;
+                    case "saves.inspect": result = new SaveDeviceInspection(Fingerprints.Of(JsonSerializer.SerializeToUtf8Bytes(Files, Wire.Json)), null, SaveTimeSource.ObservedOnly, "fixture-commit"); break;
+                    case "operations.status": result = new { state = OperationStates.GetValueOrDefault(Text("operationId"), "unknown") }; break;
                     case "storages.list": result = new[] { new StorageInfo("SdCard", "SD", 256L << 30, FreeBytes) }; break;
                     case "titles.list": result = Titles; break;
-                    case "package.inspect": result = new PackageInfo(Text("name"), 5L << 30, [new("0100000000000000", "Base", 0, "SdCard", 5L << 30)], "0100000000000000", "测试游戏", true); break;
+                    case "package.inspect": result = Packages.GetValueOrDefault(Text("name")) ?? PackageOverride ?? new PackageInfo(Text("name"), 5L << 30, [new("0100000000000000", "Base", 0, "SdCard", 5L << 30)], "0100000000000000", "测试游戏", true); break;
+                    case "titles.install.plan":
+                        ManagedInstallRequests++;
+                        OperationStates[Text("operationId")] = "verify-required";
+                        if (!SkipManagedInstall && (Packages.GetValueOrDefault(Text("name")) ?? PackageOverride) is {} package)
+                            Titles = Titles.Select(g => g.TitleId == package.TitleId ? g with { Components = g.Components.Where(c => !package.Components.Any(p => p.TitleId == c.TitleId)).Concat(package.Components.Select(c => c with { Storage = Text("storage") })).ToArray() } : g).ToArray();
+                        break;
                     case "titles.install": if (Text("name") == FailInstallation) error = "InstallInterrupted"; else InstalledNames.Add(Text("name")); break;
                     case "saves.list": result = new[] { Save }; break;
                     case "fs.stat": result = new { exists = SdFiles.ContainsKey(Text("path")) || SdDirectories.Contains(Text("path")), isDirectory = SdDirectories.Contains(Text("path")), size = SdFiles.GetValueOrDefault(Text("path"))?.Length ?? 0 }; break;
@@ -79,6 +94,8 @@ internal sealed class Peer : IAsyncDisposable
                         ExportOpens++; var exported = (++handleId).ToString(); handles[exported] = "export"; result = new { handle = exported, size = Files["main.dat"].Length }; break;
                     case "handle.close": CloseOperations++; if (IgnoreClose) await Task.Delay(Timeout.Infinite, stop.Token); handles.Remove(Text("handle")); break;
                     case "saves.restore.begin":
+                        RestoreFingerprint = args.TryGetProperty("expectedFingerprint", out var fp) ? fp.GetString() : null;
+                        RestoreOperation = args.TryGetProperty("operationId", out var op) ? op.GetString() : null;
                         WriteOperations++; var restore = (++handleId).ToString(); handles[restore] = "restore"; result = new { handle = restore }; staged.Clear(); OnRestoreBegin?.Invoke(); break;
                     case "saves.restore.file": staged[Text("path")] = new(); break;
                     case "write.chunk":

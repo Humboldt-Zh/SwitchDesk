@@ -11,7 +11,7 @@ if ($TestDirectory) { $testArguments += @('--', $TestDirectory) }
 & $Dotnet @testArguments
 if ($LASTEXITCODE) { throw 'Tests failed' }
 $contained = if ($FrameworkDependent) { 'false' } else { 'true' }
-& $Dotnet publish "$taskRoot\src\SwitchDesk.App\SwitchDesk.App.csproj" -c Release -r win-x64 --self-contained $contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o "$taskRoot\artifacts\Windows" --nologo
+& $Dotnet publish "$taskRoot\src\SwitchDesk.App\SwitchDesk.App.csproj" -c Release -r win-x64 --self-contained $contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false -o "$taskRoot\artifacts\Windows" --nologo
 if ($LASTEXITCODE) { throw 'Publish failed' }
 if (!$SkipUiCheck) {
     $uiRoot = if ($TestDirectory) { Join-Path $TestDirectory 'ui' } else { Join-Path $taskRoot 'artifacts\UiSmoke' }
@@ -39,6 +39,7 @@ New-Item -ItemType Directory -Path "$taskRoot\artifacts\Windows\docs" -Force | O
 Get-ChildItem -LiteralPath "$taskRoot\docs" -File | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination "$taskRoot\artifacts\Windows\docs" -Force }
 $licenseTarget = "$taskRoot\artifacts\Windows\licenses"
 New-Item -ItemType Directory -Path $licenseTarget -Force | Out-Null
+Get-ChildItem -LiteralPath "$taskRoot\third_party\licenses" -File | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $licenseTarget -Force }
 $nugetRoot = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.nuget\packages' }
 foreach ($package in @('microsoft.netcore.app.runtime.win-x64','microsoft.windowsdesktop.app.runtime.win-x64')) {
     $packPath = Join-Path $nugetRoot $package

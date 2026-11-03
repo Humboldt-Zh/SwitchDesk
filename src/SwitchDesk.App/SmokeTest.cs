@@ -65,6 +65,10 @@ public partial class MainWindow
         await Render("09-install-review-dark"); InstallOverlay.Visibility = Visibility.Collapsed;
         vm.StreamGuide = true; await Render("10-stream-guide-dark"); vm.StreamGuide = false;
         DetailsTabs.SelectedIndex = 0;
+        vm.CrossSave.Adapter = SaveAdapters.Get("hollow-knight"); vm.CrossSave.Candidates = [new("hollow-knight", "fixture-only", "Windows 测试用户", "1", "界面夹具")]; vm.CrossSave.SelectedPc = vm.CrossSave.Candidates[0];
+        vm.CrossSave.SwitchFiles = ["user1.dat"]; vm.CrossSave.SelectedSwitchFile = "user1.dat";
+        vm.CrossSave.PcSummary = "游戏记录的保存时间  2026-10-23 12:00\n角色与场景进度（测试数据）"; vm.CrossSave.SwitchSummary = "最近读取时间（保存时间不可用）\n2026-10-23 12:01 · 界面夹具";
+        vm.CrossSave.Comparison = "双方均有变化，请比较后手动选择 · 测试场景"; vm.CrossSave.Gate = "此版本组合未进入迁移支持清单，双端备份可用";
         foreach (var theme in new[] { "Light", "Dark" }) foreach (var width in new[] { 1050, 1280, 1920 })
         {
             ThemeManager.Apply(theme); Width = width; Height = 820; LayoutDetails(); await Idle();
@@ -73,7 +77,15 @@ public partial class MainWindow
             var exportBounds = ExportButton.TransformToAncestor(Root).TransformBounds(new Rect(ExportButton.RenderSize));
             Check(exportBounds.Bottom <= Root.ActualHeight && ExportButton.ActualWidth > 100, $"{theme} {width} DIP export action stays visible");
             await Render($"matrix-{theme}-{width}-100"); await Render($"matrix-{theme}-{width}-200", 2);
+            vm.CrossSave.Open = true; await Render($"cross-save-{theme}-{width}-100"); await Render($"cross-save-{theme}-{width}-200", 2);
+            Check(!Descendants<TextBlock>(CrossSaveOverlay).Any(t => t.Text.Contains("SwitchDesk.Core.", StringComparison.Ordinal) || t.Text.Contains("PcSaveCandidate {", StringComparison.Ordinal)), $"{theme} {width} comparison selectors show human labels");
+            Check(CrossSaveOverlay.IsVisible && !vm.Commands["CrossSaveToSwitch"].CanExecute(null) && !vm.Commands["CrossSaveToPc"].CanExecute(null), $"{theme} {width} unadmitted migration stays disabled");
+            Check(!QueuePanel.IsVisible, $"{theme} {width} cross-save panel keeps task history in diagnostics"); vm.CrossSave.Open = false;
         }
+        Width = 1050; Height = 640; vm.CrossSave.Open = true; await Render("cross-save-minimum-height");
+        var compareAction = Descendants<Button>(CrossSaveOverlay).Single(b => b.Command == vm.Commands["CrossSaveRead"]);
+        Check(compareAction.TransformToAncestor(Root).TransformBounds(new Rect(compareAction.RenderSize)).Bottom <= Root.ActualHeight, "minimum-height comparison action remains visible");
+        vm.CrossSave.Open = false; Height = 820;
         Width = 1280; DetailsTabs.SelectedIndex = 0; ThemeManager.Apply("Light"); await Render("preview-light"); ThemeManager.Apply("Dark"); await Render("preview-dark");
         Check(!Descendants<TextBlock>(Details).Any(x => x.Text.Contains("SaveChoice {", StringComparison.Ordinal)), "user display contains no internal object dump");
         Check(bindingErrors.Messages.Count == 0, "no WPF binding errors: " + string.Join(" | ", bindingErrors.Messages));

@@ -27,6 +27,8 @@ internal static partial class Program
     private static Task Sync(Action action) { action(); return Task.CompletedTask; }
     private static async Task Run()
     {
+        await Phase2Tests();
+        await ManagedUpdateTests();
         await UiV2Tests();
         await AuditRegressionTests();
         await Test("remote path canonicalization", () => Sync(() => Assert(PathSafety.Remote("//switch///games/") == "/switch/games")));
