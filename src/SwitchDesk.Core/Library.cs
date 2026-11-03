@@ -115,7 +115,7 @@ public sealed class LibraryDatabase : IDisposable
         }
     }
     public void Dispose() => Native.sqlite3_close_v2(db);
-    private static class Native
+    internal static class Native
     {
         private const string Dll = "winsqlite3.dll";
         [DllImport(Dll, CallingConvention = CallingConvention.Cdecl)] internal static extern int sqlite3_open_v2([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out nint db, int flags, nint vfs);

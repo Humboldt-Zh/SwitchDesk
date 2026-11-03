@@ -41,10 +41,19 @@ public static class Dialogs
             }; return input;
         }
         var backup = PathRow("存档备份目录", current.BackupDirectory); var library = PathRow("电脑游戏库目录", current.LibraryDirectory);
-        var export = PathRow("游戏导出目录", current.ExportDirectory); var player = PathRow("SysDVR 6.3 Windows 客户端", current.SysDvrClient, true);
+        var export = PathRow("游戏导出目录", current.ExportDirectory);
+        body.Children.Add(new TextBlock { Text = "USB 游戏投屏", Margin = new(0, 18, 0, 6), FontWeight = FontWeights.SemiBold });
+        body.Children.Add(new TextBlock { Text = "完整运行包已内置 SysDVR 6.3 Windows 客户端和运行时，默认自动识别，无需选择文件。", TextWrapping = TextWrapping.Wrap });
+        var advancedBody = new StackPanel { Margin = new(0, 10, 0, 0) };
+        advancedBody.Children.Add(new TextBlock { Text = "留空使用内置客户端。仅在需要其他官方构建时设置。", Margin = new(0, 0, 0, 8) });
+        var player = new TextBox { Text = current.SysDvrClient, ToolTip = "留空自动使用随软件附带的 SysDVR 客户端" };
+        var playerRow = new DockPanel(); var choosePlayer = new Button { Content = "选择", Margin = new(10, 0, 0, 0) }; DockPanel.SetDock(choosePlayer, Dock.Right);
+        choosePlayer.Click += (_, _) => { var pick = new OpenFileDialog { Filter = "SysDVR 官方客户端|SysDVR-Client.exe|Windows 程序|*.exe" }; if (pick.ShowDialog(dialog) == true) player.Text = pick.FileName; };
+        playerRow.Children.Add(choosePlayer); playerRow.Children.Add(player); advancedBody.Children.Add(playerRow);
+        body.Children.Add(new Expander { Header = "高级：使用其他官方客户端", Content = advancedBody, Margin = new(0, 10, 0, 0) });
         body.Children.Add(new TextBlock { Text = "自动备份保留版本数（Recovery 恢复前快照独立保留）", Margin = new(0, 14, 0, 8) });
         var retention = new TextBox { Text = current.Retention.ToString() }; body.Children.Add(retention);
-        var links = new Button { Content = "打开 SysDVR 官方下载与配置说明 ↗", Margin = new(0, 16, 0, 0) };
+        var links = new Button { Content = "打开 Switch 端首次配置说明 ↗", Margin = new(0, 16, 0, 0) };
         links.Click += (_, _) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://github.com/exelix11/SysDVR/releases/tag/v6.3") { UseShellExecute = true }); body.Children.Add(links);
         var ok = new Button { Content = "保存", Margin = new(0, 20, 0, 0), IsDefault = true };
         ok.Click += (_, _) => { if (int.TryParse(retention.Text, out var count) && count is >= 1 and <= 1000) dialog.DialogResult = true; else MessageBox.Show(dialog, "保留版本数应为 1–1000"); }; body.Children.Add(ok);

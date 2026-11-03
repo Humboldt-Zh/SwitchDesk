@@ -45,10 +45,7 @@ public static class Streaming
 {
     public static Process Start(string executable)
     {
-        if (!File.Exists(executable) || !Path.GetExtension(executable).Equals(".exe", StringComparison.OrdinalIgnoreCase))
-            throw new FileNotFoundException("请先选择 SysDVR 官方 Windows 客户端程序", executable);
-        var info = new ProcessStartInfo(executable) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(executable)!, CreateNoWindow = true };
-        info.ArgumentList.Add("usb"); info.ArgumentList.Add("--title"); info.ArgumentList.Add("SwitchDesk · 游戏预览");
+        var info = UsbStreamingRuntime.CreateStartInfo(executable, "SwitchDesk USB " + Guid.NewGuid().ToString("N"));
         return Process.Start(info) ?? throw new IOException("无法启动 SysDVR 客户端");
     }
 }

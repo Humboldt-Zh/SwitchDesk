@@ -6,14 +6,17 @@ root = Path(__file__).resolve().parents[1]
 config = json.loads((root / "version.json").read_text(encoding="utf-8-sig"))
 excluded = {"bin", "obj", "__pycache__"}
 generated = {"BuildInfo.Generated.cs", "build_info.hpp"}
-inputs = [root / "version.json", root / "build-dependencies.lock.json"]
+inputs = [root / "version.json", root / "build-dependencies.lock.json", root / "Directory.Build.props", root / "global.json"]
+if (root / "streaming-dependencies.lock.json").exists(): inputs.append(root / "streaming-dependencies.lock.json")
 for folder in ("src", "companion", "scripts"):
     inputs.extend(p for p in (root / folder).rglob("*") if p.is_file() and p.name not in generated and not excluded.intersection(p.relative_to(root).parts))
 digest = hashlib.sha256()
 for path in sorted(inputs, key=lambda p: p.relative_to(root).as_posix()):
     relative = path.relative_to(root).as_posix().encode()
     # Normalize text line endings so source ZIP and git checkouts identify equally.
-    data = path.read_bytes().replace(b"\r\n", b"\n")
+    data = path.read_bytes()
+    if path.suffix.lower() in {".cs", ".csproj", ".xaml", ".cpp", ".hpp", ".c", ".h", ".json", ".props", ".targets", ".py", ".ps1", ".sh", ".cmake", ".txt"}:
+        data = data.replace(b"\r\n", b"\n")
     digest.update(relative + b"\0" + str(len(data)).encode() + b"\0" + data)
 fingerprint = digest.hexdigest(); short = fingerprint[:12]; version = config["version"]
 def write(path, text):

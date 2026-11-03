@@ -1,0 +1,720 @@
+{
+  "title": "SwitchDesk 全项验收执行记录",
+  "date": "2026-10-30",
+  "createdAt": "2026-10-30T00:14:19+08:00",
+  "updatedAt": "2026-10-30T00:41:25+08:00",
+  "hardwareCaseCount": 34,
+  "computerCaseCount": 8,
+  "sourceId": "39c6a308a1aa",
+  "cases": [
+    {
+      "id": "P00",
+      "title": "准备设备",
+      "scope": "Windows 11 x64、已运行 Atmosphère 的 Switch、可靠的数据 USB 线及稳定供电。先关闭其他会占用管理接口的 USB 客户端。",
+      "group": "hardware",
+      "status": "passed",
+      "result": "已识别 1 个 SwitchDesk PC / WINUSB 接口，问题码 0；用户退出电脑端后实机接口可用。",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/device-inspection.log",
+      "level": "真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "P01",
+      "title": "选定双端程序",
+      "scope": "测 0.3 新能力时使用匹配的双端开发包，记录双方版本和来源标识。更新 NRO 前退出程序、保留旧 NRO，再只替换 SD 上 `/switch/SwitchDesk/SwitchDesk.nro`。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "电脑开发包、配套包与原始摘要已核对；实际主机仍为 0.2.4，协议 1 可连接。",
+      "remaining": "用户本轮无法替换或切换；0.3 NRO 未部署，双端新版验收未完成。",
+      "evidence": "work/full-test-20261030/package-check.json",
+      "level": "资料+真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "P02",
+      "title": "隔离测试资料",
+      "scope": "用 `--data-dir` 指定新的电脑测试数据目录，并在设置中将备份和导出目录也指向独立测试位置；SD 文件仅在新建的 `/SwitchDeskTest` 中测试。",
+      "group": "hardware",
+      "status": "passed",
+      "result": "使用独立电脑目录和每次随机 SD 子目录；所有本轮创建的 SD 测试树均已清理。",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/files-cancel-both/file-test-results.json",
+      "level": "真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "P03",
+      "title": "准备可丢弃的存档与内容",
+      "scope": "选一个支持独立用户存档的测试游戏，使用单独 Switch 用户生成新进度；写回前保留本工具之外的独立备份。另准备少量测试文件及自有测试安装包。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "用户指定《王国之泪》及第一个用户；已读取游戏安装版本 1.1.2。",
+      "remaining": "Applet 未开放存档，无法核对具体用户/槽位或生成保护副本；测试包目录未提供。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "真机+用户指定",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "R01",
+      "title": "启动与退出",
+      "scope": "在 Switch 完整应用模式打开配套，电脑启动 SwitchDesk；按 X 查看连接详情，按 B 退出，再重新打开。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "主机配套已运行并响应本次真实 USB 握手。",
+      "remaining": "X/B、主机退出重开仍需手动操作；用户本轮暂不能配合。",
+      "evidence": "work/full-test-20261030/readonly.log",
+      "level": "真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "R02",
+      "title": "USB 连接",
+      "scope": "直连 USB，在“连接诊断”查看设备名称、握手和能力。",
+      "group": "hardware",
+      "status": "passed",
+      "result": "独立工具真实握手、5 次重复握手和两次重新打开 USB 客户端通过，设备和环境一致。",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/readonly/readonly-test-results.json",
+      "level": "真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "R03",
+      "title": "游戏列表",
+      "scope": "选 3 个有代表性的游戏，查看名称、大小、本体 / 更新 / DLC；切换搜索、来源和网格 / 列表。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "读取 31 条游戏记录及 3 张图标，组件结构/大小边界正确。",
+      "remaining": "1 条游戏内容信息不可读取；3 款游戏的主机界面对照与真实 GUI 切换尚未人工验收。",
+      "evidence": "work/full-test-20261030/readonly/readonly-test-results.json",
+      "level": "真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "R04",
+      "title": "容量",
+      "scope": "对照主机当前环境的存储信息，查看 SD 与当前系统用户分区容量。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "读取 SD 与当前 emuMMC 用户分区，数值有效；SD 剩余约 26.49 GiB，用户分区约 44.57 GiB。",
+      "remaining": "未与主机设置画面人工对照。",
+      "evidence": "work/full-test-20261030/readonly/storages.json",
+      "level": "真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "R05",
+      "title": "空闲拔插",
+      "scope": "确认没有任务运行后，拔掉 USB，再插回；先做 3 次顺畅性检查，后续累计到路线要求的 20 次。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "保持当前连接，未执行物理操作。",
+      "remaining": "20 次真实 USB 拔插需要用户配合；用户本轮暂不能操作。",
+      "evidence": "",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "R06",
+      "title": "空闲休眠 / 唤醒",
+      "scope": "无任务时让主机休眠并唤醒，再检查管理连接，必要时正常重开配套。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "保持当前连接，未执行物理操作。",
+      "remaining": "主机休眠/唤醒需要用户配合；用户本轮暂不能操作。",
+      "evidence": "",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "R07",
+      "title": "退出和旧配套边界",
+      "scope": "无任务时分别正常退出电脑端、主机端并重开；若另测旧 0.2.4，检查新功能是否提示能力不足。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "真实 USB 客户端关闭重开成功；相册模式不开放存档，并返回 ApplicationMode。",
+      "remaining": "电脑/主机正常退出组合及全部旧配套新能力边界仍未实机覆盖。",
+      "evidence": "work/full-test-20261030/readonly/readonly-test-results.json",
+      "level": "真机+电脑夹具",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "F01",
+      "title": "创建与上传",
+      "scope": "在 SD 新建测试目录，上传一个文本文件、一个图片或二进制文件，以及一个含中文名、子目录和空目录的文件夹。",
+      "group": "hardware",
+      "status": "failed",
+      "result": "ASCII、3 MiB 二进制、子目录与空目录上传成功；中文文件名上传返回“无法创建临时文件”。",
+      "remaining": "改用不转义 Unicode 的 JSON 请求后仍失败；旧 NRO 缺少底层错误细节，无法在本轮替换配套继续定位。",
+      "evidence": "work/full-test-20261030/file-suite-diagnostic.log",
+      "level": "真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "F02",
+      "title": "下载与校验",
+      "scope": "将上传的文件 / 文件夹下载到另一个电脑目录，对原文件和回传文件分别计算 SHA-256。",
+      "group": "hardware",
+      "status": "passed",
+      "result": "3 个 ASCII 路径测试文件往返后 SHA-256 全部一致，空目录保留。",
+      "remaining": "中文文件名在 F01 已失败，未将其纳入本条成功范围。",
+      "evidence": "work/full-test-20261030/files-cancel-both/roundtrip-hashes.json",
+      "level": "真机 API",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "F03",
+      "title": "冲突、重命名与删除",
+      "scope": "对测试副本制造同名文件，查看提示；重命名并重新进入目录；仅删除本轮生成的测试文件。",
+      "group": "hardware",
+      "status": "passed",
+      "result": "同名目标拒绝覆盖、测试文件重命名、删除及存在状态复读通过，仅操作本轮自建测试目录。",
+      "remaining": "资源管理器或桌面确认窗口交互另见 L03。",
+      "evidence": "work/full-test-20261030/files-cancel-both/file-test-results.json",
+      "level": "真机 API",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "F04",
+      "title": "取消文件传输",
+      "scope": "用较大但可丢弃的普通测试文件开始传输，通过界面取消，再检查目标文件和任务。",
+      "group": "hardware",
+      "status": "passed",
+      "result": "上传与下载均在首个 1 MiB 后取消；最终文件未发布，临时文件清理，通过后接口仍可用。",
+      "remaining": "此项是普通传输取消，不是存档/安装中断或物理断线。",
+      "evidence": "work/full-test-20261030/files-cancel-both/file-test-results.json",
+      "level": "真机 API",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "S01",
+      "title": "备份 A",
+      "scope": "在游戏内制造一个容易辨认的状态 A，例如某个存档点；截图记录后正常保存、退出游戏。在 SwitchDesk 选对游戏和用户，备份并校验 ZIP。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "已选《王国之泪》，未读取或修改任何真实存档。",
+      "remaining": "当前 0.2.4 Applet 模式未声明 saves；用户本轮不能切换模式。保护备份、A/B 状态及恢复前提未具备。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "S02",
+      "title": "拖出与去重",
+      "scope": "将备份拖到 Windows 资源管理器的测试目录，校验该副本；游戏不变化时再次备份。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "已选《王国之泪》，未读取或修改任何真实存档。",
+      "remaining": "当前 0.2.4 Applet 模式未声明 saves；用户本轮不能切换模式。保护备份、A/B 状态及恢复前提未具备。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "S03",
+      "title": "生成并备份 B",
+      "scope": "回游戏制造与 A 明显不同的状态 B，保存、退出，再备份 B 并校验。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "已选《王国之泪》，未读取或修改任何真实存档。",
+      "remaining": "当前 0.2.4 Applet 模式未声明 saves；用户本轮不能切换模式。保护备份、A/B 状态及恢复前提未具备。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "S04",
+      "title": "B → A",
+      "scope": "选择 A，核对主机 / 环境 / 游戏 / 用户，执行“恢复”；检查是否留下恢复前 B 的 Recovery 保护副本。完成后退出配套、进入游戏。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "已选《王国之泪》，未读取或修改任何真实存档。",
+      "remaining": "当前 0.2.4 Applet 模式未声明 saves；用户本轮不能切换模式。保护备份、A/B 状态及恢复前提未具备。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "S05",
+      "title": "A → B",
+      "scope": "退出游戏、重开配套，使用已校验的 B 副本恢复，再进入游戏检查。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "已选《王国之泪》，未读取或修改任何真实存档。",
+      "remaining": "当前 0.2.4 Applet 模式未声明 saves；用户本轮不能切换模式。保护备份、A/B 状态及恢复前提未具备。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "S06",
+      "title": "自动备份",
+      "scope": "仅为测试用户 / 游戏启用连接后自动备份，在游戏内保存新状态、退出后重连。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "已选《王国之泪》，未读取或修改任何真实存档。",
+      "remaining": "当前 0.2.4 Applet 模式未声明 saves；用户本轮不能切换模式。保护备份、A/B 状态及恢复前提未具备。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "I01",
+      "title": "仅做安装预检",
+      "scope": "点击“安装游戏”，加入一个测试包，在“整理安装清单”核对组件、本体归属、目标 SD / 当前系统用户分区及空间。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "没有发出真实安装、导出、卸载或重复安装请求。",
+      "remaining": "当前模式未声明 inspect/install/export；无法切换且无选定测试包，导出重装和游戏内检查未具备条件。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "I02",
+      "title": "安装一个独立测试组件",
+      "scope": "确认测试目标后只安装一项；完成后刷新组件信息，退出配套并在主机启动游戏。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "没有发出真实安装、导出、卸载或重复安装请求。",
+      "remaining": "当前模式未声明 inspect/install/export；无法切换且无选定测试包，导出重装和游戏内检查未具备条件。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "I03",
+      "title": "更新与 DLC",
+      "scope": "给同一测试游戏加入已匹配的更新 / DLC，核对预检、集中确认和执行结果；新版管理流程先确认配套具备所需能力。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "没有发出真实安装、导出、卸载或重复安装请求。",
+      "remaining": "当前模式未声明 inspect/install/export；无法切换且无选定测试包，导出重装和游戏内检查未具备条件。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "I04",
+      "title": "自有来源",
+      "scope": "先测本地索引与下载缓存，再测真实 NAS / HTTPS。核对长度和 SHA-256、来源和目录时间；同版内容再次操作应如实显示无变化。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "当前公共目录实际读取成功，解析 35,724 条组件；本地/回环 HTTP 来源与下载保护的电脑回归通过。",
+      "remaining": "真实 NAS/HTTPS 自有安装包来源、凭据服务器及真实内容闭环未提供环境。",
+      "evidence": "work/full-test-20261030/catalog-check.log；windows-build.log",
+      "level": "联网+电脑夹具",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "I05",
+      "title": "导出",
+      "scope": "先导出本体，再分别导出更新 / DLC，核对文件与来源清单。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "没有发出真实安装、导出、卸载或重复安装请求。",
+      "remaining": "当前模式未声明 inspect/install/export；无法切换且无选定测试包，导出重装和游戏内检查未具备条件。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "I06",
+      "title": "导出后重新安装",
+      "scope": "在已备份、可丢弃的测试环境中使用导出包完成重装、启动与存档检查；不为测试随意删除日常游戏。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "没有发出真实安装、导出、卸载或重复安装请求。",
+      "remaining": "当前模式未声明 inspect/install/export；无法切换且无选定测试包，导出重装和游戏内检查未具备条件。",
+      "evidence": "work/full-test-20261030/device/console-inspection.json",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "G01",
+      "title": "双端样本与比较",
+      "scope": "对具备双端新存档的目标游戏，退出游戏后选对 PC 路径和 Switch 用户，点击“读取并比较 · 同时备份双端”。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "只读发现并检查 3 款实际 PC 存档；与原指纹对照无变化。",
+      "remaining": "Switch 端存档不可读取，六款双端配对/版本/DLC登记及比较未完成；《王国之泪》也不在六款跨平台适配目标中。",
+      "evidence": "work/full-test-20261030/pc-save-inspection.log",
+      "level": "实际 PC 只读",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "G02",
+      "title": "迁移保持关闭",
+      "scope": "查看“迁移到 Switch”和“迁移到电脑”的状态及原因。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "空兼容表和迁移保护由本轮电脑回归核对；实机 Applet 存档请求被拒绝。",
+      "remaining": "真实桌面按钮与提示尚未人工检查；没有可开放的真实迁移组合。",
+      "evidence": "work/full-test-20261030/windows-build.log；readonly.log",
+      "level": "电脑夹具+真机拒绝",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "G03",
+      "title": "精选保持关闭",
+      "scope": "检查原生隐藏相关状态或禁用提示。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "原生隐藏关闭的实现边界及 WPF 禁用状态已核对；未发送隐藏请求。",
+      "remaining": "原生接口与离线恢复尚未实现/准入，当前真实桌面交互未人工检查。",
+      "evidence": "docs/PHASE2-COMPATIBILITY.md；work/full-test-20261030/windows-build.log",
+      "level": "代码+电脑夹具",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "L01",
+      "title": "故障恢复",
+      "scope": "专用环境准备好独立可恢复副本后，再分别安排文件传输断线、存档写回中断、安装中断、主机退出与供电中断；每次只注入一种故障，先核对实际内容与操作状态，不自动重复写入。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "普通文件取消及清理已在 F04 实测。",
+      "remaining": "物理断线/掉电/存档或安装中断需要专用恢复条件与用户操作，本轮均不具备。",
+      "evidence": "",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "L02",
+      "title": "边界与性能",
+      "scope": "专门安排空间不足、大文件、FAT32、损坏数据、错误用户 / 环境、版本 / DLC 不符，以及 Windows 11 / SSD / USB 2.0 下 ≤32 MiB 存档的 30 秒目标测量。记录文件大小和计时起止，不能先宣布达标。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "本轮电脑回归覆盖 64 位大文件、边界与故障夹具；真实 3 MiB 文件双向传输通过。",
+      "remaining": "真实 >4 GiB、FAT32、空间不足、版本/DLC拒绝及 ≤32 MiB 存档 30 秒目标未完成，不能由夹具替代。",
+      "evidence": "work/full-test-20261030/windows-build.log；files-cancel-both/file-test-results.json",
+      "level": "电脑夹具+有限真机",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "L03",
+      "title": "桌面交互",
+      "scope": "实际显示器 DPI 切换、键盘焦点、多用户拖放；正常退出与异常退出分开记录。",
+      "group": "hardware",
+      "status": "partial",
+      "result": "实际 WPF 离屏渲染生成 39 张检查图，多窗口/主题/渲染比例通过。",
+      "remaining": "真实显示器 DPI 切换、焦点、Explorer 拖放仍需交互条件；用户本轮暂不能配合。",
+      "evidence": "work/full-test-20261030/windows-build.log",
+      "level": "电脑渲染",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "L04",
+      "title": "SysDVR",
+      "scope": "已独立配置好官方客户端和模块时，再验管理连接释放、游戏预览、声音、30 分钟稳定性以及返回管理。新安装模块或重启不是本次清单编写已经执行的动作。",
+      "group": "hardware",
+      "status": "blocked",
+      "result": "当前设置未配置 SysDVR 客户端。",
+      "remaining": "独立模块、客户端、模式切换及持续 30 分钟音画环境未建立；本轮无法部署或重启。",
+      "evidence": "",
+      "level": "未执行",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    },
+    {
+      "id": "C01",
+      "title": "Windows 严格构建",
+      "scope": "当前源码，零警告和零错误",
+      "group": "computer",
+      "status": "passed",
+      "result": "Windows 严格构建通过，0 警告、0 错误",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/windows-build.log",
+      "updatedAt": "2026-10-30T00:16:18+08:00"
+    },
+    {
+      "id": "C02",
+      "title": "电脑自动化回归",
+      "scope": "实际测试程序，记录通过及失败数量",
+      "group": "computer",
+      "status": "passed",
+      "result": "117 项实际自动化测试通过，0 失败；为电脑夹具",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/windows-build.log",
+      "updatedAt": "2026-10-30T00:16:18+08:00"
+    },
+    {
+      "id": "C03",
+      "title": "WPF 界面渲染",
+      "scope": "500 游戏夹具、主题、窗口和渲染比例；不代替真实 DPI",
+      "group": "computer",
+      "status": "passed",
+      "result": "WPF 渲染矩阵通过；不代替真实显示器或 Explorer",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/windows-build.log",
+      "updatedAt": "2026-10-30T00:16:18+08:00"
+    },
+    {
+      "id": "C04",
+      "title": "原生 ASan / UBSan",
+      "scope": "当前便携 C++、argv 与管理界面逻辑；不代替 Horizon",
+      "group": "computer",
+      "status": "passed",
+      "result": "隔离 Linux 对当前源码执行 3 组 ASan/UBSan：协议/路径/恢复预算、argv、管理页状态；均成功退出，无 sanitizer 错误。",
+      "remaining": "不覆盖 Horizon 服务或真实 GPU/输入行为。",
+      "evidence": "work/full-test-20261030/current-sanitizers.log",
+      "updatedAt": "2026-10-30T00:40:41+08:00",
+      "level": "电脑 Linux"
+    },
+    {
+      "id": "C05",
+      "title": "Switch NRO 目标构建",
+      "scope": "当前源码交叉编译、打包；不代替部署",
+      "group": "computer",
+      "status": "passed",
+      "result": "当前 NRO 编译及打包通过；未部署",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/switch-build.log",
+      "updatedAt": "2026-10-30T00:16:18+08:00"
+    },
+    {
+      "id": "C06",
+      "title": "来源及开发包核对",
+      "scope": "源码指纹、已有双端开发包摘要和已部署版本分开",
+      "group": "computer",
+      "status": "passed",
+      "result": "3 个开发 ZIP 的摘要、大小、CRC 与 2 个原开发包二进制摘要核对一致；不把新构建 NRO 冒充原部署版本。",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/package-check.json",
+      "updatedAt": "2026-10-30T00:17:28+08:00"
+    },
+    {
+      "id": "C07",
+      "title": "实际公共元数据请求",
+      "scope": "TitleDB 当前网络结果；不包含游戏包下载",
+      "group": "computer",
+      "status": "passed",
+      "result": "本次实际读取并解析 35,724 条公共元数据组件；对照 31 条已有缓存游戏，未连接主机或安装。",
+      "remaining": "",
+      "evidence": "work/full-test-20261030/catalog-check.log",
+      "updatedAt": "2026-10-30T00:17:28+08:00"
+    },
+    {
+      "id": "C08",
+      "title": "既有问题复核",
+      "scope": "游戏不可读记录和已知边界，禁止把异常算成功",
+      "group": "computer",
+      "status": "partial",
+      "result": "复现中文上传失败，并再次确认 1 条游戏内容不可读取；公共目录此前不可用的问题本次未复现。",
+      "remaining": "中文写入的底层原因、不可读内容的归档/卡带/数据原因未定位；不删除或重装用户内容。",
+      "evidence": "work/full-test-20261030/file-suite-diagnostic.log；readonly-test-results.json",
+      "level": "真机+联网",
+      "updatedAt": "2026-10-30T00:40:41+08:00"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "M0-OPEN-01",
+      "text": "六款游戏的双端初始化样本、地区、版本、DLC、用户和槽位登记。",
+      "status": "blocked",
+      "result": "G01/P03：缺双端样本与主机存档能力"
+    },
+    {
+      "id": "M0-OPEN-02",
+      "text": "吸血鬼 Switch 数据封装、完整进度与目标配置边界；双向转换准入。",
+      "status": "not_implemented",
+      "result": "吸血鬼 Switch 字段转换仍缺实现与样本"
+    },
+    {
+      "id": "M0-OPEN-03",
+      "text": "原生 HideApplicationRecord / ShowApplicationRecord 在 HOME / 全部软件 / 分组中的效果、恢复与重启准入。",
+      "status": "not_implemented",
+      "result": "原生 HOME 行为及接口仍未准入"
+    },
+    {
+      "id": "M1-OPEN-01",
+      "text": "实际 Explorer / 键盘焦点 / 显示器 DPI 切换人工检查；WPF 渲染比例检查单独记录。",
+      "status": "partial",
+      "result": "L03：渲染通过，真实交互待测"
+    },
+    {
+      "id": "M1-OPEN-02",
+      "text": "在专用存档上检查拔线、供电中断、主机退出、日志空间不足及从保护副本恢复。",
+      "status": "blocked",
+      "result": "L01：物理故障及恢复条件未具备"
+    },
+    {
+      "id": "M1-OPEN-03",
+      "text": "约定 Windows 11 / SSD / USB 2.0、≤32 MiB 存档的 30 秒性能目标测量。",
+      "status": "blocked",
+      "result": "L02：真实存档写入与计时不可执行"
+    },
+    {
+      "id": "M2-OPEN-01",
+      "text": "吸血鬼旧引擎／Unity／Switch 的字段归属与转换实现。",
+      "status": "not_implemented",
+      "result": "吸血鬼字段转换未完成"
+    },
+    {
+      "id": "M2-OPEN-02",
+      "text": "哈迪斯 1 原生 Profile 的格式、槽位、进度及配置归属；目前仅发现和备份。",
+      "status": "not_implemented",
+      "result": "Hades 1 格式及转换未完成"
+    },
+    {
+      "id": "M2-OPEN-03",
+      "text": "哈迪斯 2 独立 Profile 准入；不从一代推断二代兼容。",
+      "status": "not_implemented",
+      "result": "Hades 2 独立转换未完成"
+    },
+    {
+      "id": "M2-OPEN-04",
+      "text": "空洞骑士与丝之歌分别登记真实版本组合和槽位规则，不因共享封装就共用准入。",
+      "status": "blocked",
+      "result": "缺双端真实版本/槽位登记"
+    },
+    {
+      "id": "M2-OPEN-05",
+      "text": "每个准入组合至少五次双向往返，在游戏内检查完整进度或声明的永久进度范围。",
+      "status": "blocked",
+      "result": "没有已准入组合可做游戏内往返"
+    },
+    {
+      "id": "M2-OPEN-06",
+      "text": "错误用户／槽位／游戏、损坏数据、DLC 不符、分支不符、运行中游戏、时钟偏差、双方冲突与云替换验收。",
+      "status": "partial",
+      "result": "电脑故障夹具通过，真实游戏组合未验收"
+    },
+    {
+      "id": "M2-OPEN-07",
+      "text": "加入 `CompatibilityCatalog.Released` 的实际支持规则。当前为空，迁移不开放。",
+      "status": "blocked",
+      "result": "实际迁移支持规则仍为 0"
+    },
+    {
+      "id": "M3-OPEN-01",
+      "text": "M0 通过后实现并启用原生逐应用接口与全量应用枚举。",
+      "status": "not_implemented",
+      "result": "原生接口尚未实现和启用"
+    },
+    {
+      "id": "M3-OPEN-02",
+      "text": "主机无电脑连接时的恢复入口及日志异常路径。",
+      "status": "not_implemented",
+      "result": "主机离线恢复及异常路径未完成"
+    },
+    {
+      "id": "M3-OPEN-03",
+      "text": "至少十轮隐藏／恢复与三次重启，覆盖休眠、已有分组、全部软件、新安装及游戏更新。",
+      "status": "blocked",
+      "result": "依赖原生实现及手动重启/休眠"
+    },
+    {
+      "id": "M3-OPEN-04",
+      "text": "核对应用记录、NCA 和存档未删除／归档／注销／改写。",
+      "status": "blocked",
+      "result": "原生功能未具备，不能以未操作代替验收"
+    },
+    {
+      "id": "M3-OPEN-05",
+      "text": "更新后恢复原隐藏状态；依赖原生显示接口的准入。",
+      "status": "not_implemented",
+      "result": "更新后隐藏保持依赖尚未具备的原生能力"
+    },
+    {
+      "id": "M4-OPEN-01",
+      "text": "实际 NSP / XCI / NSZ / XCZ 样本的更新与 DLC 安装闭环，覆盖地区及组合依赖。",
+      "status": "blocked",
+      "result": "I01–I06：模式和真实包闭环受阻"
+    },
+    {
+      "id": "M4-OPEN-02",
+      "text": ">4 GiB、真实 NAS、服务器资源变化、断线、主机空间不足和程序退出检查。",
+      "status": "partial",
+      "result": "电脑 HTTP/资源变化夹具通过，真实大文件/NAS/主机故障未完成"
+    },
+    {
+      "id": "M4-OPEN-03",
+      "text": "隐藏状态在更新后的保持：等待 M3 准入，不以电脑缓存状态代替原生状态。",
+      "status": "blocked",
+      "result": "依赖 M3 隐藏准入"
+    },
+    {
+      "id": "M5-OPEN-01",
+      "text": "六款游戏及三个功能的交叉回归。",
+      "status": "partial",
+      "result": "电脑回归通过，六款/三个功能的实机交叉回归未完成"
+    },
+    {
+      "id": "M5-OPEN-02",
+      "text": "补齐源目录、首次配置、实际支持矩阵及设备证据。",
+      "status": "partial",
+      "result": "来源格式与本次设备证据已有，实际支持矩阵未具备"
+    },
+    {
+      "id": "M5-OPEN-03",
+      "text": "通过准入后发布 0.3 预览版及匹配的完整对应源码；不更改现有 0.2.5 发布记录。",
+      "status": "blocked",
+      "result": "完整准入未通过，且本轮不发布版本"
+    }
+  ],
+  "findings": [
+    {
+      "id": "BUG-001",
+      "severity": "失败",
+      "title": "中文文件名上传失败",
+      "evidence": "4 字节 ASCII 与 3 MiB 二进制上传成功；中文路径在默认及未转义 Unicode JSON 下均返回 WriteOpen。",
+      "scope": "已部署 Switch 配套 0.2.4 / Applet；未验证 0.3 实机是否同样发生",
+      "next": "配套可替换后增加底层 errno/FS Result 诊断并修复，再重跑 F01/F02。"
+    },
+    {
+      "id": "INV-001",
+      "severity": "待查",
+      "title": "1 条游戏内容信息不可读取",
+      "evidence": "31 条记录中仍有 1 条内容不可读，未改动或判定损坏。",
+      "scope": "旧配套读取结果",
+      "next": "需要更详细的主机内容查询结果或系统画面对照，保留原内容。"
+    },
+    {
+      "id": "ENV-001",
+      "severity": "本次恢复",
+      "title": "公共元数据目录本次访问成功",
+      "evidence": "实际解析 35,724 条组件；此前失败的历史记录保留。",
+      "scope": "本次联网请求，不代表长期可用或安装已验证",
+      "next": "自有 NAS/HTTPS 内容仍需真实环境。"
+    }
+  ],
+  "environment": {
+    "desktopVersion": "0.3.0-dev.1",
+    "sourceId": "39c6a308a1aa",
+    "consoleCompanion": "0.2.4+fea84dae275e / Sphaira 1.0.8",
+    "mode": "Applet / 相册",
+    "model": "Nintendo Switch OLED",
+    "firmware": "20.4.0",
+    "atmosphere": "1.9.4",
+    "environment": "emuMMC",
+    "usbSpeed": "USB 2.0 High Speed",
+    "capabilities": [
+      "files",
+      "titles"
+    ],
+    "selectedGame": "塞尔达传说 王国之泪",
+    "selectedGameVersion": "1.1.2",
+    "selectedUser": "用户指定第一个；本轮无法读取并确认其身份",
+    "nroBuildSha256": "139B51C266FB972EF30BD2F02B84E4C6FE76BB452109527F202B581F8D8375BF"
+  },
+  "limits": [
+    "不将电脑夹具、编译或模式拒绝当作真实写入通过",
+    "不绕过迁移准入和原生隐藏保护",
+    "实际写入需要选定专用测试用户、游戏与包"
+  ],
+  "audit": {
+    "checkedAt": "2026-10-30T00:41:25+08:00",
+    "caseIdsUnique": true,
+    "hardwareCases": 34,
+    "computerCases": 8,
+    "phase2Requirements": 24,
+    "noPendingOrRunningCases": true,
+    "sourceFingerprintMatches": true,
+    "pcOriginalsUnchanged": 3,
+    "testDirectoriesCleaned": true,
+    "noSaveInstallHideWrites": true,
+    "physicalUnplugOrSleepNotSimulated": true,
+    "finalCleanupRequeried": true,
+    "finalCleanupEvidence": "work/full-test-20261030/final-check/final-device-cleanup-check.json"
+  }
+}

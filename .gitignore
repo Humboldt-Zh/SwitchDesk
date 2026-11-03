@@ -28,6 +28,14 @@ Validation/
 Backups/
 Exports/
 ConsoleCache/
+Phase2/
+ConsoleSamples/
+local-save-inspection.json
+console-inspection.json
+catalog-check.json
+credential-check.json
+*.sav
+SaveData
 settings.json
 local.*
 .env

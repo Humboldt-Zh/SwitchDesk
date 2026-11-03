@@ -13,6 +13,7 @@ with zipfile.ZipFile(args.output / "SwitchDesk-Windows-x64.zip", "w", zipfile.ZI
             z.write(source, "SwitchDesk/" + source.relative_to(windows).as_posix())
 directories = ["src", "companion", "scripts", "docs", "tests", "third_party", ".github"]
 files = ["README.md", "LICENSE", "THIRD-PARTY-NOTICES.md", "Directory.Build.props", "global.json", "SwitchDesk.slnx", ".gitignore", "version.json", "build-info.json", "build-dependencies.lock.json"]
+if (root / "streaming-dependencies.lock.json").exists(): files.append("streaming-dependencies.lock.json")
 with zipfile.ZipFile(args.output / "SwitchDesk-Source.zip", "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
     for name in files: z.write(root / name, "SwitchDesk/" + name)
     for directory in directories:

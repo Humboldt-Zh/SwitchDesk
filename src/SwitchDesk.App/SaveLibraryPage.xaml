@@ -1,0 +1,75 @@
+<UserControl x:Class="SwitchDesk.App.SaveLibraryPage"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+ <Grid>
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+  <StackPanel>
+   <DockPanel Margin="0,0,0,16">
+    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+     <Button Content="刷新存档" Command="{Binding Commands[SaveLibraryRefresh]}" Margin="0,0,8,0"/>
+     <Button Content="备份目录 ↗" Command="{Binding Commands[SaveLibraryReveal]}"/>
+    </StackPanel>
+    <TextBlock Text="主机存档与电脑备份" Foreground="{DynamicResource Secondary}" VerticalAlignment="Center"/>
+   </DockPanel>
+   <Expander Header="{Binding SaveLibrary.IssueSummary}" Visibility="{Binding SaveLibrary.HasIssues,Converter={StaticResource Visible}}" Margin="0,0,0,16">
+    <Border Background="{DynamicResource Subtle}" Padding="12" Margin="0,8,0,0"><ScrollViewer MaxHeight="140"><TextBlock Text="{Binding SaveLibrary.IssueDetails}" Style="{StaticResource Muted}"/></ScrollViewer></Border>
+   </Expander>
+  </StackPanel>
+  <Grid Grid.Row="1" Visibility="{Binding SaveLibrary.TimelineOpen,Converter={StaticResource Visible},ConverterParameter=not}">
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+   <TextBox x:Name="SaveSearchBox" Text="{Binding SaveLibrary.Search,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource SearchField}" AutomationProperties.Name="搜索存档游戏名称或标识" Margin="0,0,0,16"/>
+   <DockPanel Grid.Row="1" Margin="0,0,0,16">
+    <ComboBox ItemsSource="{Binding SaveLibrary.SourceFilters}" SelectedItem="{Binding SaveLibrary.SourceFilter}" Width="128" HorizontalAlignment="Left" DockPanel.Dock="Left" AutomationProperties.Name="存档来源筛选"/>
+    <TextBlock Text="{Binding SaveLibrary.CountText}" Style="{StaticResource Muted}" Margin="16,0,0,0" VerticalAlignment="Center"/>
+   </DockPanel>
+   <Grid Grid.Row="2">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+     <ItemsControl ItemsSource="{Binding SaveLibrary.Games}">
+      <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate><DataTemplate>
+       <Button Width="244" Margin="0,0,16,16" Padding="16" HorizontalContentAlignment="Stretch"
+        Command="{Binding DataContext.SaveLibrary.OpenGameCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+        <StackPanel>
+         <Border Height="90" Background="{DynamicResource Selected}" CornerRadius="6" Margin="0,0,0,12"><TextBlock Text="{Binding Initial}" Foreground="{DynamicResource Accent}" FontSize="34" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+         <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="16" MinHeight="44"/>
+         <TextBlock Text="{Binding Status}" Foreground="{DynamicResource Secondary}" Margin="0,8,0,6"/>
+         <TextBlock Text="{Binding CountText}" Style="{StaticResource Muted}"/>
+         <TextBlock Text="{Binding LatestText}" Style="{StaticResource Muted}" Margin="0,6,0,0"/>
+        </StackPanel>
+       </Button>
+      </DataTemplate></ItemsControl.ItemTemplate>
+     </ItemsControl>
+    </ScrollViewer>
+    <StackPanel MaxWidth="420" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding SaveLibrary.Empty,Converter={StaticResource Visible}}">
+     <TextBlock Text="{Binding SaveLibrary.EmptyHeading}" FontSize="24" FontWeight="SemiBold" TextAlignment="Center"/>
+     <TextBlock Text="{Binding SaveLibrary.EmptyDescription}" Foreground="{DynamicResource Secondary}" TextAlignment="Center" Margin="0,16,0,24"/>
+     <Button Content="清除存档筛选" Command="{Binding SaveLibrary.ClearFiltersCommand}"/>
+    </StackPanel>
+   </Grid>
+  </Grid>
+  <Grid Grid.Row="1" Visibility="{Binding SaveLibrary.TimelineOpen,Converter={StaticResource Visible}}">
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+   <DockPanel Margin="0,0,0,16"><Button Content="← 全部存档" Command="{Binding SaveLibrary.BackCommand}" DockPanel.Dock="Left" Margin="0,0,16,0"/><StackPanel><TextBlock Text="{Binding SaveLibrary.SelectedGame.Name}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="{Binding SaveLibrary.SelectedGame.CountText}" Style="{StaticResource Muted}"/></StackPanel></DockPanel>
+   <StackPanel Grid.Row="1" Margin="0,0,0,16">
+    <TextBlock Text="设备、系统环境与用户" FontWeight="SemiBold"/>
+    <ComboBox ItemsSource="{Binding SaveLibrary.Sources}" SelectedItem="{Binding SaveLibrary.SelectedSource}" DisplayMemberPath="Label" ToolTip="{Binding SaveLibrary.SelectedSource.IdentityText}" AutomationProperties.Name="时间线存档来源" Margin="0,8,0,10"/>
+    <TextBlock Text="{Binding SaveLibrary.SourceStatus}" Style="{StaticResource Muted}"/>
+    <WrapPanel Margin="0,12,0,0"><Button Content="立即备份" Style="{StaticResource Primary}" Command="{Binding Commands[Backup]}"/><CheckBox Content="连接后自动备份" Style="{StaticResource Switch}" Margin="16,8,0,0" IsChecked="{Binding SaveLibrary.Detail.AutoBackup}" IsEnabled="{Binding SaveLibrary.Detail.HasLive}"/></WrapPanel>
+   </StackPanel>
+   <Grid Grid.Row="2">
+    <ListBox x:Name="SaveTimeline" ItemsSource="{Binding SaveLibrary.Versions}" SelectedValuePath="Snapshot" SelectedValue="{Binding SaveLibrary.SelectedSnapshot}" PreviewMouseLeftButtonDown="OnHistoryMouseDown" PreviewMouseMove="OnHistoryMouseMove" AutomationProperties.Name="存档备份时间线">
+     <ListBox.ItemTemplate><DataTemplate>
+      <Border BorderBrush="{DynamicResource Line}" BorderThickness="2,0,0,0" Background="{DynamicResource Surface}" CornerRadius="0,6,6,0" Margin="0,0,0,12" Padding="16">
+       <DockPanel>
+        <Button Content="恢复此版本…" DockPanel.Dock="Right" VerticalAlignment="Top" Command="{Binding DataContext.Commands[RestoreVersion],RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Snapshot}"/>
+        <StackPanel><TextBlock Text="{Binding TimeText}" FontWeight="SemiBold" FontSize="16"/><TextBlock Text="{Binding KindText}" Foreground="{DynamicResource Secondary}" Margin="0,6,0,4"/><TextBlock Text="{Binding SizeText}" Style="{StaticResource Muted}"/></StackPanel>
+       </DockPanel>
+      </Border>
+     </DataTemplate></ListBox.ItemTemplate>
+    </ListBox>
+    <TextBlock Text="{Binding SaveLibrary.HistoryEmptyText}" Foreground="{DynamicResource Secondary}" Visibility="{Binding SaveLibrary.HistoryEmpty,Converter={StaticResource Visible}}" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="420" TextAlignment="Center"/>
+   </Grid>
+   <DockPanel Grid.Row="3" Margin="0,16,0,0"><Button Content="校验所选快照" Command="{Binding Commands[VerifySnapshot]}" DockPanel.Dock="Right"/><TextBlock Text="选择历史版本后可校验或恢复，也可拖到资源管理器。恢复前会保留当前存档。" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,16,0"/></DockPanel>
+  </Grid>
+ </Grid>
+</UserControl>

@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -33,13 +35,28 @@ public partial class MainWindow
         var locals = new[] { new LibraryItem(Path.Combine(output, "test.nsp"), titles[1].Name, titles[1].TitleId, "Base", "0", 5L << 30, null, "已识别 · 测试"), new LibraryItem(Path.Combine(output, "unknown.xcz"), "未识别文件.xcz", null, "", "", 2L << 30, null, "待识别") };
         vm.Library.SaveTitles = saves.Select(x => x.TitleId).ToHashSet(StringComparer.OrdinalIgnoreCase);
         vm.Library.Merge(titles, locals); foreach (var card in vm.Library.All.Where(x => !x.Unknown)) card.Icon = FixtureIcon(Array.IndexOf(titles, card.Console));
-        vm.Saves.SetData(saves, Enumerable.Range(0, 5).Select(i => new Snapshot(Path.Combine(output, "fixture-" + i + ".zip"), new SaveManifest(1, device.DeviceId, device.Environment, titles[1].TitleId, titles[1].Name, "USER-A", "小林 · 测试用户", "Account", DateTimeOffset.Now.AddDays(-i), [new("main.dat", 2L << 20, "fixture")], "fixture"))).ToArray());
+        settings = settings with { BackupDirectory = Path.Combine(output, "fixture-backups") };
+        Directory.CreateDirectory(settings.BackupDirectory);
+        for (var i = 0; i < 5; i++)
+        {
+            byte[] bytes = [(byte)i, 2, 3, 4]; SnapshotFile[] files = [new("main.dat", bytes.Length, Fingerprints.Of(bytes))];
+            var hash = Fingerprints.Of(JsonSerializer.SerializeToUtf8Bytes(new { files, directories = Array.Empty<string>() }, Wire.Json));
+            var manifest = new SaveManifest(1, device.DeviceId, device.Environment, titles[1].TitleId, titles[1].Name,
+                "USER-A", "小林 · 测试用户", "Account", DateTimeOffset.Now.AddDays(-i), files, hash, []);
+            using var zip = ZipFile.Open(Path.Combine(settings.BackupDirectory, $"fixture-{i}.zip"), ZipArchiveMode.Create);
+            using (var entry = zip.CreateEntry("manifest.json").Open()) JsonSerializer.Serialize(entry, manifest, Wire.Json);
+            using (var entry = zip.CreateEntry("data/main.dat").Open()) entry.Write(bytes);
+        }
+        vm.Saves.SetData(saves, new SnapshotStore(settings.BackupDirectory).List().ToArray());
         vm.Library.Selected = vm.Library.All.First(x => x.TitleId == titles[1].TitleId); UpdateDetails(); UpdateSyncText();
         await Idle(); Check(vm.Library.All.Count == 501, "500 games plus unknown file; known local content merged");
         Check(Descendants<Button>(Gallery).Count() < 70, "recycling gallery realizes fewer than 70 cards");
         var watch = Stopwatch.StartNew(); vm.Library.Search = "星海"; await Idle(); watch.Stop(); Check(vm.Library.Filtered.Count == 63 && watch.ElapsedMilliseconds < 1000, $"500-item search {watch.ElapsedMilliseconds} ms"); vm.Library.Search = "";
         await Render("01-library-light"); ThemeManager.Apply("Dark"); await Render("02-library-dark");
-        Navigate("saves"); await Render("03-saves-dark"); Check(vm.Saves.History.Count == 5, "save history filters by selected game and user");
+        Navigate("saves"); await Render("03-saves-dark");
+        Check(vm.SaveLibrary.Games.Single().BackupCount == 5, "save directory discovers all five fixture backups independently of game packages");
+        vm.SaveLibrary.OpenGameCommand.Execute(vm.SaveLibrary.Games[0]); await Render("03-save-timeline-dark");
+        Check(vm.SaveLibrary.Detail.History.Count == 5, "save timeline filters by full source identity");
         var selectedKey = vm.Library.Selected!.Key; var search = vm.Library.Search; await DisconnectAsync(); Check(vm.Library.Selected.Key == selectedKey && vm.Library.Search == search && vm.Library.All.Count == 501, "disconnect preserves inventory, filters and selection");
         Navigate("files"); FilesGrid.ItemsSource = new[] { new RemoteEntry("switch", "/switch", true, 0), new RemoteEntry("config", "/config", true, 0), new RemoteEntry("测试文件.bin", "/测试文件.bin", false, 128L << 20) }; await Render("04-files-dark");
         Navigate("console"); await Render("05-console-dark"); Navigate("settings"); await Render("06-settings-dark");
@@ -63,8 +80,27 @@ public partial class MainWindow
         InstallOverlay.Visibility = Visibility.Visible; InstallContext.Text = "界面测试清单 · Switch OLED / emuMMC · 不执行真实安装";
         installEntries.Add(new("原创建模测试.nsp") { State = "就绪" }); installEntries.Add(new("测试更新.nsz") { State = "空间不足（测试）" }); InstallSummary.Text = "预计需要 8 GiB · 可用 6 GiB"; InstallError.Text = "目标空间不足，请更换存储位置"; StartInstall.Content = "开始安装 2 项"; StartInstall.IsEnabled = false;
         await Render("09-install-review-dark"); InstallOverlay.Visibility = Visibility.Collapsed;
-        vm.StreamGuide = true; await Render("10-stream-guide-dark"); vm.StreamGuide = false;
+        vm.StreamGuide = true; StreamStatusText.Text = "投屏页面布局检查 · 非真实游戏画面"; await Render("10-stream-guide-dark"); vm.StreamGuide = false;
         DetailsTabs.SelectedIndex = 0;
+        OpenCrossSaveHome(); await Render("cross-save-home-dark");
+        Check(vm.CrossSave.Games.Count == 6, "cross-save navigation exposes six games without a library selection");
+        vm.CrossSave.SelectedGame = vm.CrossSave.Games.First(g => g.Definition.AdapterId == "vampire-survivors");
+        crossContextUpdating = true;
+        try
+        {
+            vm.CrossSave.TargetGames = [new("010089A0197E4000", "吸血鬼幸存者（界面夹具）")];
+            vm.CrossSave.SelectedTargetGame = vm.CrossSave.TargetGames[0];
+            vm.CrossSave.Users = [new("fixture-cross", "小林 · 测试用户", "Account",
+                new("fixture-cross", "010089A0197E4000", "吸血鬼幸存者（界面夹具）", "USER-A", "小林 · 测试用户", "Account", 1024, device.Environment))];
+            vm.CrossSave.SelectedUser = vm.CrossSave.Users[0];
+        }
+        finally { crossContextUpdating = false; }
+        vm.CrossSave.Candidates = [new("vampire-survivors", "fixture-only", "Windows 测试用户", "1", "界面夹具")]; vm.CrossSave.SelectedPc = vm.CrossSave.Candidates[0];
+        vm.CrossSave.SwitchFiles = ["user1.dat"]; vm.CrossSave.SelectedSwitchFile = "user1.dat";
+        vm.CrossSave.FileStatus = "已发现 1 个进度文件 · 界面夹具";
+        vm.CrossSave.PcSummary = "游戏记录的保存时间  2026-10-23 12:00\n角色与场景进度（测试数据）"; vm.CrossSave.SwitchSummary = "最近读取时间（保存时间不可用）\n2026-10-23 12:01 · 界面夹具";
+        vm.CrossSave.Comparison = "双方均有变化，请比较后手动选择 · 测试场景"; vm.CrossSave.Gate = "此版本组合未进入迁移支持清单，双端备份可用";
+        Navigate("library");
         foreach (var theme in new[] { "Light", "Dark" }) foreach (var width in new[] { 1050, 1280, 1920 })
         {
             ThemeManager.Apply(theme); Width = width; Height = 820; LayoutDetails(); await Idle();
@@ -73,7 +109,26 @@ public partial class MainWindow
             var exportBounds = ExportButton.TransformToAncestor(Root).TransformBounds(new Rect(ExportButton.RenderSize));
             Check(exportBounds.Bottom <= Root.ActualHeight && ExportButton.ActualWidth > 100, $"{theme} {width} DIP export action stays visible");
             await Render($"matrix-{theme}-{width}-100"); await Render($"matrix-{theme}-{width}-200", 2);
+            Navigate("saves"); await Render($"saves-{theme}-{width}-100"); await Render($"saves-{theme}-{width}-200", 2);
+            Navigate("cross-save"); await Render($"cross-save-{theme}-{width}-100"); await Render($"cross-save-{theme}-{width}-200", 2);
+            var filePicker = Descendants<ComboBox>(CrossSavePage).Single(c => System.Windows.Automation.AutomationProperties.GetName(c) == "Switch 进度文件与槽位");
+            filePicker.BringIntoView(); await Idle();
+            Check(filePicker.SelectedValue?.ToString() == "user1.dat", $"{theme} {width} file selector displays a selected file");
+            await Render($"cross-save-files-{theme}-{width}");
+            Check(!Descendants<TextBlock>(CrossSavePage).Any(t => t.Text.Contains("SwitchDesk.Core.", StringComparison.Ordinal) || t.Text.Contains("PcSaveCandidate {", StringComparison.Ordinal)), $"{theme} {width} comparison selectors show human labels");
+            Check(CrossSavePage.IsVisible && !vm.Commands["CrossSaveToSwitch"].CanExecute(null) && !vm.Commands["CrossSaveToPc"].CanExecute(null), $"{theme} {width} unadmitted migration stays disabled");
+            Check(!QueuePanel.IsVisible, $"{theme} {width} cross-save page keeps task history in diagnostics"); Navigate("library");
+            vm.StreamGuide = true; await Render($"usb-stream-{theme}-{width}-100"); await Render($"usb-stream-{theme}-{width}-200", 2);
+            var streamActionBounds = StartStreamButton.TransformToAncestor(Root).TransformBounds(new Rect(StartStreamButton.RenderSize));
+            Check(StreamOverlay.IsVisible && streamActionBounds.Bottom <= Root.ActualHeight && StreamVideoArea.ActualHeight >= 220, $"{theme} {width} USB viewport and actions fit");
+            Check(!StreamVideoHost.IsVisible, $"{theme} {width} USB page does not fake a live video window"); vm.StreamGuide = false;
         }
+        Width = 1050; Height = 640; Navigate("cross-save"); await Render("cross-save-minimum-height");
+        var compareAction = Descendants<Button>(CrossSavePage).Single(b => b.Command == vm.Commands["CrossSaveRead"]);
+        Check(compareAction.TransformToAncestor(Root).TransformBounds(new Rect(compareAction.RenderSize)).Bottom <= Root.ActualHeight, "minimum-height comparison action remains visible");
+        Navigate("library"); vm.StreamGuide = true; await Render("usb-stream-minimum-height");
+        Check(StartStreamButton.TransformToAncestor(Root).TransformBounds(new Rect(StartStreamButton.RenderSize)).Bottom <= Root.ActualHeight && StreamVideoArea.ActualHeight >= 220, "minimum-height USB stream controls remain visible");
+        vm.StreamGuide = false; Height = 820;
         Width = 1280; DetailsTabs.SelectedIndex = 0; ThemeManager.Apply("Light"); await Render("preview-light"); ThemeManager.Apply("Dark"); await Render("preview-dark");
         Check(!Descendants<TextBlock>(Details).Any(x => x.Text.Contains("SaveChoice {", StringComparison.Ordinal)), "user display contains no internal object dump");
         Check(bindingErrors.Messages.Count == 0, "no WPF binding errors: " + string.Join(" | ", bindingErrors.Messages));

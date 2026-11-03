@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="SwitchDesk 开发进度可视化报告：功能实现、游戏适配、验证证据与后续验收。2026-10-29。">
+<title>SwitchDesk · 开发进度总览 · 2026.10.29</title>
+<style>
+:root{color-scheme:light;--bg:#f7f8fa;--paper:#fff;--text:#192631;--muted:#617080;--line:#dce2e8;--accent:#225bca;--soft:#eaf0fc;--green:#146b53;--green-bg:#e8f4ef;--amber:#895c12;--amber-bg:#fbf1db;--closed:#6c4c9b;--closed-bg:#f0eaf8;--track:#e9edf1;--hover:#f2f5f9}
+html[data-theme=dark]{color-scheme:dark;--bg:#13191f;--paper:#1b232c;--text:#e7edf5;--muted:#a5b3c4;--line:#354150;--accent:#97b9ff;--soft:#263959;--green:#91d8b9;--green-bg:#1c3b32;--amber:#e9c47a;--amber-bg:#40351f;--closed:#c9b1ef;--closed-bg:#352c46;--track:#303b47;--hover:#25313d}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:95px}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.7 'Segoe UI','Microsoft YaHei UI','Microsoft YaHei',sans-serif}a{color:var(--accent);text-underline-offset:3px}button,input{font:inherit}button,a,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}button:disabled{cursor:default}button{border:0}.wrap{max-width:1192px;margin:auto;padding:0 36px}.topbar{background:var(--paper);border-bottom:1px solid var(--line)}.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:78px}.brand{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:650;letter-spacing:-.5px}.brand-mark{display:grid;grid-template-columns:8px 8px;gap:3px;align-items:center;height:30px;width:31px;justify-content:center;background:var(--accent);border-radius:8px}.brand-mark:before,.brand-mark:after{content:'';height:18px;border:2px solid var(--paper);border-radius:4px}.brand-mark:after{height:22px}.brand small{font-size:13px;font-weight:400;color:var(--muted);margin-left:2px;letter-spacing:0}.actions{display:flex;align-items:center;gap:10px}.action{background:transparent;color:var(--text);border:1px solid var(--line);padding:7px 13px;border-radius:7px;white-space:nowrap}.action:hover{background:var(--hover)}.date{font-size:12px;color:var(--muted);margin-right:5px}.eyebrow{font-size:12px;letter-spacing:1.2px;color:var(--accent);font-weight:650}.hero{padding:49px 0 25px}.hero-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(240px,1fr);gap:52px;align-items:center}.hero h1{font-size:37px;font-weight:650;line-height:1.42;letter-spacing:-1.2px;margin:11px 0 17px}.hero p{color:var(--muted);margin:0;max-width:660px;font-size:14px}.version{display:flex;gap:10px;align-items:center;margin-top:23px;flex-wrap:wrap}.tag{display:inline-flex;gap:6px;align-items:center;line-height:1.5;font-size:12px;padding:4px 8px;border-radius:5px;color:var(--muted);background:var(--track);white-space:normal}.tag-blue{background:var(--soft);color:var(--accent)}.tag-read{background:var(--green-bg);color:var(--green)}.tag-test{background:var(--amber-bg);color:var(--amber)}.tag-closed{background:var(--closed-bg);color:var(--closed)}.brief{padding-left:28px;border-left:2px solid var(--line);align-self:center}.brief-title{font-size:12px;color:var(--muted);margin-bottom:12px}.brief ul{list-style:none;padding:0;margin:0}.brief li{margin:11px 0;font-size:13px}.brief li:before{content:'·';margin-right:8px;color:var(--accent);font-weight:700}.facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:35px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0}.fact{padding:0 24px;border-right:1px solid var(--line)}.fact:first-child{padding-left:0}.fact:last-child{border:0}.fact-value{font-size:31px;line-height:1.3;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-1px}.fact-value span{font-size:13px;font-weight:400;letter-spacing:0;margin-left:8px}.fact-label{font-size:12px;color:var(--muted);margin-top:6px}.section-nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}.section-nav .wrap{display:flex;gap:29px;align-items:center;min-height:57px;flex-wrap:wrap;padding-top:5px;padding-bottom:5px}.section-nav a{color:var(--muted);text-decoration:none;font-size:13px;padding:9px 0;white-space:nowrap}.section-nav a:hover{color:var(--accent)}.section-nav a.active{color:var(--accent);font-weight:650}.section-nav .nav-right{margin-left:auto;color:var(--muted);font-size:11px}section{padding-top:43px}.section-heading{display:flex;gap:20px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}.section-kicker{font-size:11px;color:var(--accent);letter-spacing:1px;font-weight:650}.section-heading h2{font-size:23px;line-height:1.4;font-weight:650;margin:5px 0 8px;letter-spacing:-.4px}.section-heading p{color:var(--muted);font-size:13px;margin:0}.section-heading .side-note{font-size:12px;text-align:right;max-width:260px;color:var(--muted)}.filters{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:0 0 16px}.filter{padding:7px 11px;border-radius:6px;color:var(--muted);background:transparent;font-size:12px}.filter:hover{background:var(--hover)}.filter[aria-pressed=true]{background:var(--text);color:var(--paper)}.result-count{margin-left:auto;font-size:12px;color:var(--muted)}.feature-list{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}.feature-head,.feature-summary{display:grid;grid-template-columns:minmax(190px,1.35fr) minmax(135px,.9fr) minmax(160px,1fr) 20px;gap:18px;align-items:center}.feature-head{padding:12px 23px;color:var(--muted);font-size:11px;background:var(--hover)}.feature{border-top:1px solid var(--line)}.feature[hidden]{display:none}.feature-summary{padding:19px 23px;list-style:none;cursor:pointer}.feature-summary::-webkit-details-marker{display:none}.feature-summary:hover{background:var(--hover)}.feature-name{font-size:14px;font-weight:600}.feature-name small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:2px}.feature-code{font-size:12px}.evidence{font-size:12px;color:var(--muted)}.chevron{font-size:19px;font-weight:400;justify-self:end;color:var(--muted);line-height:1;transition:transform .15s}.feature[open] .chevron{transform:rotate(90deg)}.feature-body{display:grid;grid-template-columns:1fr 1fr;gap:30px;padding:4px 23px 21px;font-size:12px}.feature-body h4{font-size:11px;font-weight:600;color:var(--muted);margin:0 0 7px}.feature-body p{margin:0}.feature-body a{display:inline-block;margin-top:8px;font-size:11px}.section-caption{font-size:11px;color:var(--muted);margin:12px 0}.games-top{display:flex;align-items:center;gap:11px;color:var(--muted);font-size:12px;margin-bottom:15px;flex-wrap:wrap}.games-top strong{color:var(--text);font-weight:600}.table-wrap{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}table{width:100%;border-collapse:collapse;text-align:left;font-size:12px}th{font-size:11px;font-weight:500;color:var(--muted);padding:12px 15px;background:var(--hover)}td{padding:19px 15px;border-top:1px solid var(--line);vertical-align:top}td:first-child{font-size:14px;font-weight:600;min-width:160px}td small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:3px}td .pending{color:var(--muted)}.game-note{font-size:11px;color:var(--muted);line-height:1.65;margin-top:4px;max-width:240px}.legend{display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:14px}.legend span{display:flex;align-items:center;gap:6px}.dot{height:7px;width:7px;border-radius:50%;background:var(--muted);display:inline-block;flex:none}.dot.read{background:var(--green)}.dot.test{background:var(--amber)}.dot.closed{background:var(--closed)}.evidence-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:48px}.timeline{position:relative}.time-item{display:grid;grid-template-columns:100px 1fr;gap:20px;padding:0 0 29px;position:relative}.time-date{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}.time-body{position:relative;padding-left:24px;border-left:1px solid var(--line)}.time-body:before{content:'';position:absolute;left:-4px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--accent)}.time-body h3{font-size:14px;font-weight:600;margin:0 0 7px}.time-body p{font-size:12px;color:var(--muted);margin:0}.time-body .tag{margin:11px 0 0;font-size:11px}.device-note{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:23px;align-self:start}.device-note .label{font-size:11px;color:var(--green);font-weight:600}.device-note h3{font-size:19px;margin:11px 0 16px;font-weight:600}.device-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;font-size:12px}.device-grid small{display:block;color:var(--muted);font-size:10px;margin-bottom:2px}.device-note p{font-size:12px;color:var(--muted);margin:18px 0 0;padding-top:17px;border-top:1px solid var(--line)}.roadmap{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}.road-row{display:grid;grid-template-columns:37px 1fr;gap:16px;padding:21px 0;border-top:1px solid var(--line)}.road-id{font-size:14px;font-variant-numeric:tabular-nums;color:var(--accent);padding-top:1px}.road-row h3{font-size:14px;font-weight:600;margin:0 0 6px}.road-row p{font-size:12px;color:var(--muted);margin:0}.road-row .tag{margin-top:12px;font-size:11px}.next{margin-top:28px;background:var(--soft);padding:20px 24px;font-size:13px;display:flex;gap:20px;align-items:flex-start;border-radius:8px}.next strong{flex:none;font-size:12px;color:var(--accent)}.next p{margin:0}.sources{border-top:1px solid var(--line);margin-top:42px;padding-top:27px}.source-links{display:flex;gap:12px 23px;flex-wrap:wrap;font-size:12px;margin:12px 0 24px}.full-report{border:1px solid var(--line);border-radius:8px;background:var(--paper)}.full-report>summary{cursor:pointer;padding:15px 20px;font-size:13px}.full-content{padding:0 27px 27px;font-size:13px;line-height:1.9}.full-content h1{font-size:24px}.full-content h2{font-size:19px;border-top:1px solid var(--line);padding-top:22px;margin-top:29px}.full-content h3{font-size:15px}.full-content li{margin:8px 0}.full-content code{overflow-wrap:anywhere;font-size:11px}.footer{padding:28px 0 38px;display:flex;gap:16px;justify-content:space-between;font-size:11px;color:var(--muted)}.footer code{font-family:Consolas,monospace}.js-fallback{padding:15px;color:var(--amber);background:var(--amber-bg)}
+@media(max-width:950px){.hero-grid{grid-template-columns:1fr}.brief{display:none}.hero h1{font-size:33px}.feature-head,.feature-summary{grid-template-columns:minmax(150px,1.2fr) minmax(110px,.8fr) minmax(140px,1fr) 16px;gap:12px}.evidence-layout{gap:24px}.time-item{grid-template-columns:84px 1fr;gap:12px}.section-nav .nav-right{display:none}.wrap{padding:0 24px}.date{display:none}}
+@media(max-width:700px){html{scroll-padding-top:70px}.wrap{padding:0 18px}.brand small{display:none}.topbar .wrap{min-height:69px;gap:12px}.actions{gap:7px}.action{font-size:11px;padding:7px 10px}.hero{padding-top:31px}.hero h1{font-size:29px;letter-spacing:-.8px}.hero h1 br{display:none}.hero p{font-size:13px}.facts{padding:18px 0;margin-top:27px}.fact{padding:0 14px}.fact-value{font-size:26px}.fact-value span{display:block;font-size:11px;margin:3px 0 0}.fact-label{font-size:10px;line-height:1.6}.section-nav .wrap{gap:19px;min-height:52px}.section-nav a{font-size:12px}.section-heading{display:block}.section-heading .side-note{display:none}.section-heading h2{font-size:22px}.filter{font-size:11px;padding:7px 8px}.result-count{width:100%;margin:5px 0 0}.feature-head{display:none}.feature-summary{grid-template-columns:1fr 18px;gap:11px;padding:17px 18px}.feature-name{grid-column:1}.feature-code{grid-column:1;grid-row:2;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.evidence{grid-column:1;grid-row:3;font-size:11px}.chevron{grid-column:2;grid-row:1/4}.feature-body{grid-template-columns:1fr;gap:15px;padding:0 18px 18px}.evidence-layout{grid-template-columns:1fr}.device-note{margin-top:0}.time-item{padding-bottom:23px}.roadmap{grid-template-columns:1fr}.next{display:block;padding:18px}.next p{margin-top:7px;font-size:12px}.footer{display:block}.footer span{display:block;margin:5px 0}.full-content{padding:0 19px 20px}.full-content h1{font-size:21px}.games-table thead{display:none}.games-table,.games-table tbody{display:block}.games-table tr{display:grid;grid-template-columns:1fr 1fr;padding:16px 0;border-top:1px solid var(--line)}.games-table tr:first-child{border:0}.games-table td{display:block;border:0;padding:8px 13px;min-width:0;font-size:11px}.games-table td:first-child{grid-column:1/-1;font-size:15px;padding-top:0}.games-table td:not(:first-child):before{content:attr(data-label);display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.games-table td small{font-size:10px}.games-table .tag{font-size:11px}.game-note{font-size:10px}.section-kicker{font-size:10px}.section-caption{line-height:1.8}}
+@media(max-width:360px){.wrap{padding:0 14px}.brand{font-size:17px;gap:7px}.brand-mark{width:27px;height:28px}.action{padding:7px 8px}.section-nav .wrap{gap:15px}.section-nav a{font-size:11px}.hero h1{font-size:27px}.facts .fact{padding:0 10px}.facts .fact:first-child{padding-left:0}.feature-code .tag{font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chevron{transition:none}}
+@page{size:A4;margin:15mm}
+@media print{:root,html[data-theme=dark]{color-scheme:light;--bg:#fff;--paper:#fff;--text:#000;--muted:#444;--line:#ccc;--accent:#18467e;--soft:#f1f4f8;--green:#205742;--green-bg:#eff5f1;--amber:#664712;--amber-bg:#f6f2e9;--closed:#57406e;--closed-bg:#f3f0f6;--hover:#f7f7f7}.wrap{max-width:none;padding:0}.topbar .wrap{min-height:45px}.actions,.section-nav,.filters,.full-report,.chevron,.feature-body a,.brief{display:none!important}.hero{padding-top:20px}.hero h1{font-size:25px}.facts{margin-top:18px}.fact-value{font-size:24px}section{padding-top:24px}.section-heading h2{font-size:18px}.section-heading{break-after:avoid}.feature[hidden]{display:block}.feature-summary{grid-template-columns:1.3fr 1fr 1fr;padding:12px}.feature-head{grid-template-columns:1.3fr 1fr 1fr;padding:10px 12px}.feature-body{font-size:10px;padding:0 12px 12px;gap:18px}.feature-name{font-size:12px}.feature{break-inside:avoid}.feature-body h4{font-size:10px}.feature-code,.evidence{font-size:10px}.tag{font-size:10px}.evidence-layout{grid-template-columns:1.5fr 1fr;gap:25px}.device-note{padding:16px}.time-item{break-inside:avoid;padding-bottom:17px;grid-template-columns:80px 1fr}.roadmap{gap:0 24px}.road-row{break-inside:avoid;padding:14px 0}.games-table tr{break-inside:avoid}td{padding:12px 10px}a{color:inherit;text-decoration:none}.source-links{font-size:10px}.footer{padding-bottom:0;font-size:9px}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="wrap"><div class="brand"><span class="brand-mark" aria-hidden="true"></span>SwitchDesk <small>开发进度报告</small></div><div class="actions"><span class="date">2026 年 10 月 29 日</span><button class="action" id="theme-toggle" type="button" aria-pressed="false">深色模式</button><button class="action" id="print-button" type="button">打印 / PDF</button></div></div></header>
+<main>
+<div class="wrap"><div class="hero"><div class="hero-grid"><div><div class="eyebrow">DEVELOPMENT STATUS / 2026.10.29</div><h1>基础功能已落地，<br>真机验收是下一道门槛。</h1><p>Windows 管理界面与 Switch 配套程序已形成开发预览。基础管理和二期主要软件流程已有实现，实际设备写入与游戏内兼容仍待逐项确认。</p><div class="version"><span class="tag tag-blue">本地开发版 0.3.0-dev.1</span><span class="tag">公开记录 Windows 0.2.5 / Switch 0.2.4</span></div></div><div class="brief"><div class="brief-title">当前最需要知道的三件事</div><ul><li>基础功能已有实现，真机证据限于旧版只读</li><li>六款游戏的跨平台迁移均未开放</li><li>原生 HOME 隐藏仍关闭</li></ul></div></div><div class="facts"><div class="fact"><div class="fact-value">117<span>项电脑测试通过</span></div><div class="fact-label">2026-10-29 重跑 · 0 失败</div></div><div class="fact"><div class="fact-value">0<span>个已开放迁移组合</span></div><div class="fact-label">六款目标游戏 · 兼容准入表为空</div></div><div class="fact"><div class="fact-value">1<span>台真机的旧版只读验证</span></div><div class="fact-label">2026-10-23 · Switch 配套 0.2.4</div></div></div></div></div>
+<nav class="section-nav" aria-label="报告导航"><div class="wrap"><a class="active" href="#features">功能进度</a><a href="#games">六款游戏</a><a href="#evidence">验证记录</a><a href="#next">下一步</a><span class="nav-right">实现 ≠ 实机验收 · 不估算完成百分比</span></div></nav>
+<div class="wrap">
+<section id="features"><div class="section-heading"><div><div class="section-kicker">01 / CAPABILITIES</div><h2>哪些已经实现，哪些还没完成</h2><p>点击功能展开实现范围与缺口。颜色表示当前验收类别。</p></div><div class="side-note">源码与证据截至 2026-10-29<br>已有实现不代表写入已经实机通过</div></div><div class="filters" role="group" aria-label="按功能状态筛选"><button class="filter" data-filter="all" aria-pressed="true" type="button">全部功能</button><button class="filter" data-filter="read" aria-pressed="false" type="button">已有真机只读证据</button><button class="filter" data-filter="test" aria-pressed="false" type="button">软件已有，待验收</button><button class="filter" data-filter="closed" aria-pressed="false" type="button">未开放</button><span id="result-count" class="result-count" aria-live="polite"></span></div><div class="feature-list"><div class="feature-head" aria-hidden="true"><span>功能 / 范围</span><span>软件实现</span><span>当前验证状态</span><span></span></div><div id="features-body"></div><noscript><div class="js-fallback">交互总览需要 JavaScript；完整文字报告在页面底部，仍可直接阅读。</div></noscript></div><p class="section-caption">“真机只读”来自一台 OLED 的旧版 0.2.4；“待验收”包含专用测试存档、安装包、文件与实际操作验证。未开放功能仍缺关键实现或准入。</p></section>
+<section id="games"><div class="section-heading"><div><div class="section-kicker">02 / CROSS-PLATFORM SAVES</div><h2>六款游戏，逐款看实际进度</h2><p>发现存档、解析格式、转换成功与游戏内续玩，是不同的验收步骤。</p></div><div class="side-note">每个拟开放版本组合<br>至少 5 次游戏内双向往返</div></div><div class="games-top"><span class="tag tag-closed">当前全部未开放迁移</span><span>比较、配对、冲突判断和保护副本的<strong>公共基础已有实现</strong></span></div><div class="table-wrap"><table class="games-table"><thead><tr><th scope="col">游戏</th><th scope="col">PC 发现 / 样本</th><th scope="col">转换实现</th><th scope="col">游戏内往返</th><th scope="col">实际迁移开放</th></tr></thead><tbody id="games-body"></tbody></table></div><div class="legend"><span><i class="dot read"></i>已有 PC 只读样本</span><span><i class="dot test"></i>候选转换，非兼容承诺</span><span><i class="dot closed"></i>未开放 / 缺关键准入</span></div><p class="section-caption">死亡细胞的候选转换只处理声明的永久进度，并重置当前一局。丝之歌需独立核对版本与槽位，不能继承空洞骑士的兼容结论。</p></section>
+<section id="evidence"><div class="section-heading"><div><div class="section-kicker">03 / EVIDENCE</div><h2>测试做到了哪一层</h2><p>电脑测试、目标编译与真机结果分开记录。</p></div></div><div class="evidence-layout"><div class="timeline"><div class="time-item"><div class="time-date">2026.10.23</div><div class="time-body"><h3>旧配套完成一次真实设备只读检查</h3><p>NRO 启动、X / B 操作、退出重开，以及设备、存储、游戏与存档清单读取。31 条游戏记录中 1 条内容不可读，原因未定。</p><span class="tag tag-read">真实 OLED · 配套 0.2.4</span></div></div><div class="time-item"><div class="time-date">2026.10.24</div><div class="time-body"><h3>二期电脑流程、界面与目标构建通过</h3><p>117 项测试、500 项游戏夹具的 WPF 渲染、便携 C++ ASan / UBSan、回环 HTTP 合成下载与 NRO 目标构建。未覆盖主机写入行为。</p><span class="tag tag-test">电脑夹具 / 目标编译</span></div></div><div class="time-item"><div class="time-date">2026.10.28</div><div class="time-body"><h3>迁入当前工作区后重新构建检查</h3><p>Windows 构建、117 项测试、WPF 检查与 NRO 生成通过；源码标识保持一致，原开发包未替换，新 NRO 未部署。</p></div></div><div class="time-item"><div class="time-date">2026.10.29</div><div class="time-body"><h3>当前源码再次通过 117 项电脑测试</h3><p>0 项失败；只读重算的完整源码摘要与构建来源记录一致。没有新增模拟器或真机结果。</p><span class="tag tag-blue">来源标识 39c6a308a1aa</span></div></div></div><aside class="device-note"><div class="label">唯一已记录的 SwitchDesk 真机环境</div><h3>OLED / emuMMC</h3><div class="device-grid"><div><small>系统固件 HOS</small>20.4.0</div><div><small>Atmosphère</small>1.9.4</div><div><small>配套版本</small>0.2.4</div><div><small>运行模式</small>完整应用模式</div><div><small>连接</small>USB 2.0 High Speed</div><div><small>记录日期</small>2026-10-23</div></div><p>只证明这台设备上的旧版只读结果。备份恢复、安装导出、跨平台迁移及原生隐藏，还没有完整真机通过记录。</p><p>本地 0.3 开发包已构建，尚未部署。编译成功不会自动增加设备兼容范围。</p></aside></div></section>
+<section id="next"><div class="section-heading"><div><div class="section-kicker">04 / NEXT MILESTONES</div><h2>接下来怎样达到可验收状态</h2><p>M0–M5 有交叉推进；下面按当前阶段列出剩余门槛，不计算完成百分比。</p></div></div><div class="roadmap"><div class="road-row"><div class="road-id">M0</div><div><h3>技术准入</h3><p>补六款游戏双端样本、版本、DLC、用户和槽位登记；核对吸血鬼 Switch 封装与原生隐藏路线。</p><span class="tag tag-test">部分完成</span></div></div><div class="road-row"><div class="road-id">M1</div><div><h3>迁移公共基础</h3><p>软件流程已有；仍需专用存档的真实写入、中断恢复、Explorer / DPI 人工检查和性能测量。</p><span class="tag tag-test">软件基础已有 · 实机待验收</span></div></div><div class="road-row"><div class="road-id">M2</div><div><h3>六款游戏适配</h3><p>完成吸血鬼与哈迪斯转换；逐个版本组合完成至少 5 次游戏内双向往返，再加入支持表。</p><span class="tag tag-closed">候选转换已有 · 0 组合开放</span></div></div><div class="road-row"><div class="road-id">M3</div><div><h3>原生 HOME 精选</h3><p>补原生接口与离线恢复；至少 10 轮隐藏 / 恢复和 3 次重启，确认内容未被改动。</p><span class="tag tag-closed">模型已有 · 原生能力未准入</span></div></div><div class="road-row"><div class="road-id">M4</div><div><h3>更新与 DLC</h3><p>真实 NAS、外部来源、真实安装包、大文件、断线、空间不足及安装后启动和存档延续验证。</p><span class="tag tag-test">软件流程已有 · 闭环待验证</span></div></div><div class="road-row"><div class="road-id">M5</div><div><h3>回归与 0.3 交付</h3><p>补跨功能回归和实际兼容矩阵，通过后发布 0.3 预览版、匹配源码与摘要清单。</p><span class="tag tag-test">本地开发包已有 · 尚未公开发布</span></div></div></div><div class="next"><strong>建议下一步</strong><p>先完成基础管理的真机闭环：连接稳定性 → SD 文件 → 专用存档备份与恢复 → 安装和导出。当前仍按既有安排暂缓真机步骤，本报告没有启动部署或写入。</p></div><p class="section-caption">相册管理、卸载 / 自动残留回收、MOD / 汉化管理及 Wi-Fi 传输仍是后续候选；应用内自动更新、签名更新和回退事务尚未实现。</p></section>
+<section class="sources" id="sources"><div class="section-kicker">SOURCE / SNAPSHOT</div><div class="source-links"><a href="HARDWARE-TEST-CHECKLIST.md">真机测试清单与操作步骤</a><a href="DEVELOPMENT-REPORT-2026-10-29.md">原始文字报告</a><a href="../PROGRESS.md">项目当前进度</a><a href="PHASE2-TASKS.md">逐项任务</a><a href="PHASE2-COMPATIBILITY.md">兼容规则</a><a href="PHASE2-VALIDATION.md">电脑验证</a><a href="STATUS.md">旧版真机记录</a></div><details class="full-report" id="full-report"><summary>展开完整文字报告与全部依据</summary><article class="full-content"><h1 id="report-section-1">SwitchDesk 开发进度报告</h1><p>核对日期：<strong>2026 年 10 月 29 日（北京时间）</strong><br>本地开发版本：<strong>0.3.0-dev.1</strong> · 分支：<code>phase2-foundation</code> · 源码标识：<code>39c6a308a1aa</code></p>
+<h2 id="report-section-2">1. 现在开发到了什么程度</h2><p><strong>已经从方案调研进入可运行的开发预览阶段：Windows 图形界面、Switch 配套程序、基础管理功能和二期主要软件流程都已写出；距离“主要功能在真实 Switch 上完整验收、可以放心日常使用”还有明显差距。</strong></p>
+<ul>
+<li><strong>基础功能</strong>：USB 识别、主机资料、游戏列表和容量查看已获得一次真实设备只读证据。备份、恢复、文件传输、安装、导出等已有代码和电脑测试，尚未完成真机写入闭环。</li>
+<li><strong>二期存档互通</strong>：比较、冲突判断、保护副本与写入基础已实现，部分游戏已有候选转换；<strong>目前开放的跨平台迁移组合为 0</strong>。</li>
+<li><strong>二期精选游戏</strong>：方案和恢复模型已实现；<strong>原生 HOME 隐藏接口与恢复验收未完成，功能关闭</strong>。</li>
+<li><strong>二期更新 / DLC</strong>：自有来源、下载校验、预检、安装排序及结果复核的软件流程已实现；真实内容安装、真实 NAS 和外部服务器仍待验证。</li>
+<li><strong>交付状态</strong>：已有本地 0.3 开发包、配套 NRO 和对应源码；项目记录中的公开预览版仍是 Windows 0.2.5 / Switch 0.2.4，未完成 0.3 公开发布。</li>
+</ul>
+<p>本报告不按任务勾选数量计算整体完成百分比：格式转换、断电恢复和游戏内续玩等关键门槛，不能用界面或测试数量抵消。本文为日期快照；持续进度仍以 <a href="../PROGRESS.md">PROGRESS</a>、<a href="PHASE2-TASKS.md">二期任务</a>和<a href="PHASE2-COMPATIBILITY.md">兼容规则</a>为准。</p>
+<h2 id="report-section-3">2. 最初想做的功能，分别实现了吗</h2><h3 id="report-section-4">2.1 插线识别 Switch，查看系统和大气层版本</h3><p><strong>实现状态：已实现，有有限真机只读验证。</strong></p>
+<p>已有 USB 连接与诊断、设备识别、型号、系统固件、大气层和系统环境显示；emuMMC 有明确标记，断线后保留带同步时间的离线记录。</p>
+<p>已有设备证据来自 2026-10-23 的旧配套 0.2.4。连接条件包括支持数据传输的 USB 线、正确的 WinUSB 驱动，以及在 Switch 上启动配套程序；不是只插线就能管理任意原厂系统。连续拔插、休眠恢复、其他型号和固件尚未验收。</p>
+<h3 id="report-section-5">2.2 查看主机游戏列表、大小、更新与 DLC</h3><p><strong>实现状态：已实现，有有限真机只读验证。</strong></p>
+<p>已有游戏封面与列表、大小、组件信息、本体 / 更新 / DLC 展开；电脑文件与主机内容合并展示，支持搜索、来源筛选和网格 / 列表切换。</p>
+<p>一次真实读取获得 31 条游戏记录，其中 1 条内容信息不可读取，原因仍未查明。这个结果不能直接解释成游戏损坏。跨存储组件、归档内容和卡带等情况还需补充检查。</p>
+<h3 id="report-section-6">2.3 查看 SD 卡与内部存储剩余空间</h3><p><strong>实现状态：已实现，有有限真机只读验证。</strong></p>
+<p>可以查看 SD 卡与当前系统用户分区的总量和剩余容量。emuMMC 环境下显示的是当前环境信息，不能自动当作另一套 sysMMC 环境的容量结果。</p>
+<h3 id="report-section-7">2.4 存档备份，并拖到电脑保存</h3><p><strong>实现状态：备份、拖出、历史与恢复流程已实现；完整真机验收未完成。</strong></p>
+<p>已有按游戏 / Switch 用户读取存档、生成带文件清单和校验信息的 ZIP、备份历史、连接后自动备份、相同内容去重、保留策略，以及恢复前保护副本和恢复入口。拖到资源管理器的代码与隔离测试已有。</p>
+<p>真实设备目前只证明读取过存档清单，没有证明实际备份、拖出、恢复及 A→B→A 往返全部成功。真实 Explorer 拖放、多用户备份、掉线和保护副本恢复仍待验收。旧版恢复也没有掉电自动回滚保证。</p>
+<h3 id="report-section-8">2.5 不拔 SD 卡，向 Switch 安装游戏</h3><p><strong>实现状态：安装路径和队列已实现；真实安装闭环未验收。</strong></p>
+<p>已有 USB 流式安装入口，选择或拖入 NSP / XCI / NSZ / XCZ，解析组件、集中预检空间、进入队列，并处理停止、跳过和失败状态。本地更新包可走这条路径。</p>
+<p>这些格式进入解析与安装代码，不等于每种真实包都已成功安装。压缩格式预检有未压缩 <code>.cnmt.nca</code> 等条件。还缺真实样本安装、版本变化、启动、存档延续、大文件和中断验证。</p>
+<h3 id="report-section-9">2.6 把主机游戏本体保存到电脑</h3><p><strong>实现状态：按组件导出功能已实现；真实导出与重新安装闭环未验收。</strong></p>
+<p>可以选择本体、更新和 DLC 组件，走导出 NSP 与电脑库登记的流程。仍需实际导出、校验、重新安装并启动，才能确认完整可用。</p>
+<h2 id="report-section-10">3. 已扩展实现的软件功能</h2><p>以下描述代码和电脑验证范围，除第 2 节标明的只读项目外，不新增真机通过结论。</p>
+<ul>
+<li><strong>SD 文件管理</strong>：目录浏览、文件和目录双向传输、新建目录、重命名、删除、受保护路径检查及中断清理。真实 FAT32、超过 4 GiB、冲突和断线仍待验证。</li>
+<li><strong>电脑游戏库</strong>：目录扫描、本地索引、摘要校验、导出清单读取、待识别状态。已移动或删除的文件记录尚不能自动清理。</li>
+<li><strong>界面与操作</strong>：澄空主题、浅色 / 深色 / 跟随系统、游戏详情、离线资料、连接诊断和任务结果。真实键盘焦点、显示器 DPI 切换与可访问性仍需人工检查。</li>
+<li><strong>画面预览入口</strong>：可启动独立官方 SysDVR 客户端并提供配置引导；不是内置完成的串流系统，尚缺持续 30 分钟音画等验收。</li>
+<li><strong>新版保护流程</strong>：能力协商、操作 ID、持久日志、断线后只读核对。旧配套不声明新能力时，新写入入口会禁用。</li>
+</ul>
+<h2 id="report-section-11">4. Steam 与 Switch 存档互通</h2><h3 id="report-section-12">已实现的公共基础</h3><ul>
+<li>按有效路径、账号和槽位发现 PC 存档，并与 Switch 存档配对。</li>
+<li>区分游戏保存时间、观察时间和迁移时间，以内容指纹判断单边变化、双方冲突和内容未变；不按“较新时间”自动覆盖。</li>
+<li>迁移前保存双方原始副本，生成完整目标快照；保留未选槽位、目标其他数据与设备 / 用户身份检查。</li>
+<li>PC 单槽原子替换；新版 Switch 端暂存、完整校验、空间预检、SD 保护副本、一次提交和提交后读回的代码已实现。</li>
+<li>操作状态可持久保存；异常或重连后先核对，不自动重试写入。普通历史去重，Recovery 保护副本独立保留。</li>
+<li>PC 写入要求退出 Steam；观察到可疑云替换时保留副本并提示比较，不修改 Steam 云设置。</li>
+<li>游戏详情中的跨平台比较面板、固定操作区、迁移范围提示和未准入禁用逻辑已实现。</li>
+</ul>
+<h3 id="report-section-13">六款游戏的实际状态</h3><ol>
+<li><strong>吸血鬼幸存者</strong>：有效 PC 存档发现、只读检查、精确字节摘要和备份基础已有；Switch 封装、旧引擎 / Unity 差异、字段归属及双向转换未完成。文件中的 <code>Version</code> 不能代替游戏安装版本。</li>
+<li><strong>死亡细胞</strong>：格式 1 解析、摘要校验、限额分块解压与永久进度候选转换已有，PC 样本只读检查和合成数据测试通过。候选转换会重置当前一局，保留目标版本与 DLC 标记；未获得游戏内兼容结论。</li>
+<li><strong>哈迪斯 1</strong>：PC 用户与 Profile 槽位发现、只读检查和备份入口已有；Profile 格式、进度 / 配置归属和转换未完成。</li>
+<li><strong>哈迪斯 2</strong>：独立标识、目录与候选入口已注册；双端 Profile、格式和转换准入未完成，不能沿用一代结论。</li>
+<li><strong>空洞骑士</strong>：有边界的字符串封装、AES / JSON 候选转换及合成数据双向测试已有；真实版本、槽位与游戏内续玩未准入。</li>
+<li><strong>丝之歌</strong>：独立标识和路径、共享封装转换基础已有；真实版本和槽位必须独立验证，不能直接继承空洞骑士的支持规则。</li>
+</ol>
+<p><strong>结论：六款均未开放跨平台迁移。</strong> 源码 <code>CompatibilityCatalog.Released</code> 当前为空，应用需要查到符合版本、分支、DLC 和证据条件的规则才能写入。注册六个适配器不等于支持六款迁移。</p>
+<p>仍需为每个拟开放组合登记双端样本、地区、版本、DLC、用户和槽位；至少完成 5 次游戏内双向往返，并覆盖错误身份、损坏存档、运行中游戏、冲突、断线、空间不足和恢复。≤32 MiB 存档的 30 秒目标也尚未测量。</p>
+<h2 id="report-section-14">5. 原生 HOME 精选 / 隐藏游戏</h2><p><strong>目前：模型已有，原生能力未完成准入，操作关闭。</strong></p>
+<p>已实现精选方案、设备 / 环境绑定、入口保护、PC 与 SD 日志契约、撤销和部分失败回退模型；电脑模拟后端测试通过。</p>
+<p>尚未完成原生逐应用隐藏 / 显示接口及全量枚举、脱离电脑的主机恢复入口、日志异常路径，以及 HOME / 全部软件 / 分组的实际效果核对。还需至少 10 轮隐藏 / 恢复与 3 次重启，并覆盖休眠、新安装、更新后状态保持及内容未改动检查。</p>
+<p>因此，目前不能使用它隐藏原生 HOME 游戏图标，也不能把电脑端筛选当作这项功能完成。</p>
+<h2 id="report-section-15">6. 游戏更新与 DLC 管理</h2><h3 id="report-section-16">已实现的软件流程</h3><ul>
+<li><strong>目录与内容分开</strong>：TitleDB 提供元数据；自己的本地目录、已连接 NAS / UNC、HTTP / HTTPS 索引提供安装包。</li>
+<li><strong>更新比较</strong>：按组件数字版本区分游戏更新、新 DLC 与 DLC 更新；保留来源和获取时间，目录未知不会当作没有更新。</li>
+<li><strong>来源配置与索引</strong>：索引格式 1、从主机解析真实包生成索引、HTTPS 凭据的 Windows 安全存储引用。</li>
+<li><strong>下载与校验</strong>：最多两个并行下载；强 ETag 条件续传、资源变化重来、超时 / 取消、长度与 SHA-256 校验，以及来源范围与重定向限制。</li>
+<li><strong>安装前检查</strong>：复核真实包身份、组件归属、系统与游戏版本依赖、空间和降级；无法精确筛选的混合包拒绝安装。</li>
+<li><strong>集中执行</strong>：一次确认后先保护相关所有用户存档，再按更新 → DLC → DLC 更新串行安装；之后复读数字版本，区分升级、同版无变化和失败。</li>
+<li><strong>异常核对</strong>：保留部分完成结果，重连先读取操作状态和实际版本，不直接重复安装。</li>
+</ul>
+<h3 id="report-section-17">仍没有完成的部分</h3><ul>
+<li>实际 NSP / XCI / NSZ / XCZ 内容的更新与 DLC 安装、启动及存档延续闭环。</li>
+<li>真实 NAS、外部服务器、超过 4 GiB、资源变化、空间不足、拔线和程序退出验证。</li>
+<li>更新后保持原隐藏状态；这一项依赖第 5 节原生隐藏准入。</li>
+<li>公共 TitleDB 的最近实际请求在此前验证中失败；缓存及解析分支有电脑测试，不能声称当前公共目录联网可用。本次没有重新访问该服务。</li>
+</ul>
+<p>现有本地来源及本机回环 HTTP 的合成下载已经通过。它不是公网游戏包搜索器，也不提供 DLC 授权解锁。新版管理流程还要求配套声明 <code>install.plan.v1</code>、<code>package.dependencies.v1</code>、<code>operations.status</code>；不能用电脑端升级代替主机配套升级。</p>
+<h2 id="report-section-18">7. 验证到底做到了哪一层</h2><h3 id="report-section-19">本次重新核对：2026-10-29</h3><ul>
+<li>在 Windows 当前主仓库运行实际测试程序：<strong>117 项通过，0 项失败</strong>，使用隔离夹具；没有连接真实 Switch。</li>
+<li>使用与构建脚本一致的输入和换行归一规则，只读重算源码摘要，与 <code>build-info.json</code> 的完整记录一致，短标识为 <code>39c6a308a1aa</code>。</li>
+<li>核对版本文件、实现入口、迁移空准入表、原生隐藏保护和阶段任务；保留原有未提交修改。</li>
+<li>本次没有执行 Switch 部署、存档写回、安装、隐藏、删除，也没有新增模拟器或真机结果。</li>
+</ul>
+<h3 id="report-section-20">已有电脑与编译记录：2026-10-24，迁移后于 2026-10-28 重查</h3><ul>
+<li>.NET SDK 10.0.402，Windows 构建零警告、零错误；117 项自动化测试通过。</li>
+<li>WPF 使用 500 项游戏夹具，覆盖浅 / 深主题、1050 / 1280 / 1920 DIP 和 96 / 192 DPI 渲染比例；这不是实际显示器 DPI 切换。</li>
+<li>协议夹具覆盖备份、安装停止 / 跳过、旧配套禁用、离线重连和跨平台比较；夹具中的设备返回值不是真机资料。</li>
+<li>本机回环 HTTP 合成下载及 SHA-256、随机临时 Windows 凭据写入 / 读回 / 删除通过；未读取用户原有凭据。</li>
+<li>三款实际 PC 存档只读核对，检查前后内容摘要相同；私有路径和样本不纳入报告。</li>
+<li>devkitA64 GCC 16.1.0 的 NRO 目标构建通过；电脑 Linux 环境的便携 C++ ASan / UBSan 通过，未覆盖 Horizon 系统服务行为。</li>
+<li>2026-10-28 目录迁移后重新完成 Windows 构建、117 项测试、WPF 检查和 NRO 生成；原开发包未被重新编译产物替换。</li>
+</ul>
+<h3 id="report-section-21">已有真机证据：2026-10-23，旧配套 0.2.4</h3><p>仅一台 <strong>OLED / HOS 20.4.0 / Atmosphère 1.9.4 / emuMMC / 完整应用模式 / USB 2.0 High Speed</strong>。</p>
+<p>已确认 NRO 启动、X 连接详情、B 退出、重新打开，以及一次设备 / 存储 / 游戏清单 / 存档清单读取。31 条游戏记录中 1 条内容不可读，原因未定。</p>
+<p><strong>这些是旧版、单台设备、只读验证。</strong> 不能据此宣布新版已部署、主机写入已通过、六款游戏可迁移，或所有型号和固件兼容。共享设备表中其他项目的未确认版本、模拟器返回版本，也不替代本项目这条有明确日期的旧设备记录。</p>
+<h2 id="report-section-22">8. 哪些仍未实现，哪些只是缺验收</h2><h3 id="report-section-23">仍缺实现或关键准入</h3><ul>
+<li>吸血鬼幸存者的字段转换、哈迪斯 1 / 2 的格式与迁移转换。</li>
+<li>六款游戏的实际可发布迁移规则，当前为 0。</li>
+<li>原生 HOME 隐藏 / 显示能力、主机离线恢复和更新后的隐藏状态保持。</li>
+<li>电脑库缺失文件状态与用户可控清理。</li>
+<li>应用内自动更新、签名更新包和自动回退事务。</li>
+<li>0.3 实际支持矩阵、交叉回归及公开预览发布。</li>
+</ul>
+<h3 id="report-section-24">代码已有，仍缺真实场景验收</h3><ul>
+<li>存档实际备份、恢复、Explorer 拖出、多用户保护及中断恢复。</li>
+<li>SD 双向传输、FAT32 / 大文件、路径冲突与连接故障。</li>
+<li>游戏安装 / 更新 / DLC、导出后重新安装、启动和存档延续。</li>
+<li>PC 与 Switch 的真实版本存档往返、Steam 云替换与性能。</li>
+<li>原生隐藏的实际效果、重复恢复与重启；其模型测试不能代替原生实现。</li>
+<li>SysDVR 持续音画、实际键盘 / DPI 操作、Applet 提示、其他设备兼容。</li>
+</ul>
+<h3 id="report-section-25">后续候选，尚未承诺完成</h3><p>相册管理、卸载与自动残留回收、MOD / 汉化管理、Wi-Fi 传输。星露谷、蔚蓝、传说之下等也不在首批已支持迁移范围。</p>
+<h2 id="report-section-26">9. 接下来怎样推进</h2><ol>
+<li><strong>先补基础管理的真实验收</strong>：连接稳定性 → SD 文件 → 专用测试存档备份与恢复 → 安装和导出闭环，逐项记录设备、版本和结果。</li>
+<li><strong>逐款开放迁移</strong>：先准备双端样本，对候选转换验证游戏内进度；每个版本组合过关后再加入支持表。吸血鬼与哈迪斯继续补格式实现。</li>
+<li><strong>独立验证原生隐藏</strong>：先证明能可靠恢复，再启用精选入口和更新后的隐藏保持。</li>
+<li><strong>验收更新来源与队列</strong>：接真实 NAS / 外部服务器和自有测试包，覆盖大文件、依赖、失败、重连及版本复核。</li>
+<li><strong>通过后再发布 0.3</strong>：补实际兼容矩阵、交叉回归、匹配源码和校验清单。</li>
+</ol>
+<p>以上是建议的验收顺序，不是发布日期承诺。当前仍按既有安排暂缓真机步骤；本报告没有启动部署或写入。</p>
+<h2 id="report-section-27">10. 报告依据与版本说明</h2><ul>
+<li><a href="../PROGRESS.md">当前项目进度</a>：开发版本、阶段与 2026-10-28 目录迁移后的结果。</li>
+<li><a href="STATUS.md">基础能力和旧版真机记录</a>、<a href="KNOWN-ISSUES.md">已知问题</a>、<a href="ROADMAP.md">基础功能路线</a>。</li>
+<li><a href="PHASE2-TASKS.md">二期逐项任务</a>、<a href="PHASE2-COMPATIBILITY.md">兼容规则</a>、<a href="PHASE2-VALIDATION.md">开发验证</a>。</li>
+<li><a href="PHASE2.md">二期实现说明</a>、<a href="CONTENT-SOURCES.md">内容来源</a>、<a href="PHASE2-DEVELOPMENT-PACK.md">开发包范围</a>、<a href="WORKSPACE-MIGRATION.md">工作区迁移</a>。</li>
+<li><a href="../src/SwitchDesk.Core/CrossSave.cs">存档准入源码</a>、<a href="../src/SwitchDesk.Core/SaveAdapters.cs">适配器源码</a>、<a href="../src/SwitchDesk.Core/Visibility.cs">隐藏保护源码</a>、<a href="../companion/source/server.cpp">Switch 服务源码</a>。</li>
+<li><a href="../version.json">当前版本文件</a>、<a href="../build-info.json">构建来源记录</a>、<a href="../tests/SwitchDesk.Tests/Program.cs">测试入口</a>。</li>
+<li>已读取引用聊天“调研 Switch 管理工具方案”，用于核对原始需求与迁移背景；功能状态以本地当前文件及上述证据为准。</li>
+</ul>
+<p>本次测试原始日志在项目被忽略的 <code>work/status-report-20261029-*/tests.log</code> 中。报告只保留脱敏结果，不包含账户、设备唯一身份、私人存档、密钥或原始设备日志。</p>
+<p>本地版本文件为 0.3.0-dev.1，但 Git HEAD 仍是此前的 <code>83f9f9c</code>，二期修改含未提交及未跟踪文件；不能仅用 HEAD 认定完整开发源码已推送。本文引用“公开预览版”的版本依据是项目现有发布记录，本次未联网审计远端 Release。</p>
+</article></details></section>
+<footer class="footer"><span>日期快照 · 2026-10-29（北京时间） · 可离线打开</span><span>phase2-foundation · <code>39c6a308a1aa</code> · 本地修改尚未完整提交</span></footer>
+</div></main>
+<script>
+(() => {
+  'use strict';
+  const features = [
+    {id:'usb',name:'USB 连接与主机资料',scope:'识别、固件、大气层、系统环境',code:'已实现',category:'read',evidence:'旧版真机只读通过',done:'USB 连接诊断，读取型号、系统固件、Atmosphère 和当前系统环境；断线后保留带时间的缓存。',todo:'20 次实际拔插、休眠唤醒、协议不匹配、其他型号及固件。需正确驱动并启动 Switch 配套。',source:'STATUS.md'},
+    {id:'titles',name:'主机游戏清单',scope:'列表、大小、本体 / 更新 / DLC',code:'已实现',category:'read',evidence:'一次真实读取 31 条记录',done:'封面、搜索、网格 / 列表、组件展开及电脑 / 主机内容合并；真实只读数据已有。',todo:'1 条内容不可读原因待查；补卡带、归档及跨存储组件检查。不能据此判断游戏损坏。',source:'STATUS.md'},
+    {id:'storage',name:'SD 卡与内部存储容量',scope:'总量、剩余空间、当前环境',code:'已实现',category:'read',evidence:'旧版真机只读通过',done:'读取 SD 卡和当前系统用户分区的总量与剩余容量，标记 emuMMC。',todo:'其他存储环境及空间不足场景；当前 emuMMC 的容量不能代替另一套 sysMMC。',source:'STATUS.md'},
+    {id:'saves',name:'Switch 存档备份与恢复',scope:'ZIP、拖出、历史、自动备份',code:'已实现',category:'test',evidence:'电脑 / 协议夹具通过',done:'按游戏与用户备份、校验清单、历史去重、自动备份与保留策略；恢复前保护副本和 Explorer 拖出入口。',todo:'真机备份与 A→B→A 恢复、Explorer 实际拖放、多用户、掉线和保护副本恢复。旧版不保证掉电自动回滚。',source:'ROADMAP.md'},
+    {id:'files',name:'SD 文件管理',scope:'上传、下载、目录、重命名、删除',code:'已实现',category:'test',evidence:'电脑 / 协议夹具通过',done:'目录浏览、双向文件和目录传输、新建目录、重命名、删除、受保护路径检查与中断清理。',todo:'真实 SD 双向传输、FAT32、超过 4 GiB、冲突、空间不足和物理断线。',source:'ROADMAP.md'},
+    {id:'install',name:'USB 游戏安装',scope:'NSP / XCI / NSZ / XCZ',code:'已实现',category:'test',evidence:'队列和预检的电脑测试',done:'选择或拖入安装包、解析真实组件、空间集中预检、串行队列、停止 / 跳过；本地更新包可进入安装路径。',todo:'各格式真实样本的安装、启动、更新前后版本、存档延续和中断。压缩格式预检有额外条件。',source:'GAME-UPDATES.md'},
+    {id:'export',name:'游戏导出到电脑',scope:'本体、更新、DLC 组件',code:'已实现',category:'test',evidence:'实现与电脑流程检查',done:'按内容组件选择导出 NSP，并登记到电脑库。',todo:'真实导出、校验、重新安装、启动及来源清单完整闭环。',source:'ROADMAP.md'},
+    {id:'library',name:'电脑游戏库',scope:'扫描、本地索引、摘要校验',code:'已实现',category:'test',evidence:'电脑测试 / 500 项界面夹具',done:'扫描目录、持久索引、摘要校验、导出清单读取；未知文件保留待识别状态。',todo:'缺失文件状态和用户可控清理尚未实现；大规模真实备份性能仍未测量。',source:'KNOWN-ISSUES.md'},
+    {id:'ui',name:'界面与离线使用',scope:'澄空主题、详情、诊断',code:'界面已实现',category:'test',evidence:'WPF 渲染矩阵通过',done:'浅 / 深色及跟随系统、游戏详情、离线缓存、连接诊断与任务状态；覆盖多窗口尺寸和渲染比例。',todo:'真实键盘焦点、Explorer、显示器 DPI 切换及可访问性人工检查。渲染比例不等于真实 DPI 切换。',source:'PHASE2-VALIDATION.md'},
+    {id:'stream',name:'画面预览',scope:'独立官方 SysDVR 客户端',code:'调用入口已实现',category:'test',evidence:'持续音画尚待验证',done:'从应用启动独立官方 SysDVR 客户端，提供配置引导。',todo:'客户端参数兼容、模式切换及 30 分钟连续音画；不能当作内置串流已经完成。',source:'ROADMAP.md'},
+    {id:'updates',name:'更新与 DLC 管理',scope:'自有来源、下载、预检、队列',code:'软件流程已实现',category:'test',evidence:'合成下载与电脑流程通过',done:'自有本地 / NAS / HTTP(S) 索引、双下载、ETag 条件续传、SHA-256；保护全部用户存档、依赖排序和安装后版本复读。',todo:'真实 NAS / 外部来源、各格式安装闭环、大文件与故障恢复；此前公共 TitleDB 请求失败，本次未重测。需新配套声明能力。',source:'PHASE2-VALIDATION.md'},
+    {id:'crosssave',name:'Steam ↔ Switch 存档迁移',scope:'六款目标游戏',code:'基础与部分候选转换',category:'closed',evidence:'0 个迁移组合开放',done:'发现、配对、冲突判断、保护快照、状态核对；空洞骑士 / 丝之歌封装转换与死亡细胞永久进度候选转换。',todo:'补吸血鬼与哈迪斯转换、双端样本及游戏内往返。兼容表为空，迁移按钮禁用。',source:'PHASE2-COMPATIBILITY.md'},
+    {id:'home',name:'原生 HOME 精选 / 隐藏',scope:'主机图标隐藏、恢复',code:'模型与保护已有',category:'closed',evidence:'原生接口与准入未完成',done:'方案、设备 / 环境绑定、双端日志契约、撤销、入口保护和部分失败回退模型。',todo:'原生接口、全量枚举、离线恢复；HOME / 全部软件 / 分组效果、10 轮恢复和 3 次重启。操作保持关闭。',source:'PHASE2-TASKS.md'}
+  ];
+  const games = [
+    {name:'吸血鬼幸存者',app:'1794680',pc:'发现 + PC 样本已读',sample:true,conversion:'未完成',candidate:false,note:'摘要校验已有；Switch 封装与字段转换待补'},
+    {name:'死亡细胞',app:'588650',pc:'发现 + PC 样本已读',sample:true,conversion:'永久进度候选转换',candidate:true,note:'合成数据通过；会重置当前一局'},
+    {name:'哈迪斯 1',app:'1145360',pc:'发现 + PC 样本已读',sample:true,conversion:'未完成',candidate:false,note:'Profile 格式、进度与配置归属待确认'},
+    {name:'哈迪斯 2',app:'1145350',pc:'独立目录与入口',sample:false,conversion:'未完成',candidate:false,note:'双端 Profile 待登记，不能沿用一代结论'},
+    {name:'空洞骑士',app:'367520',pc:'已知路径 / 候选入口',sample:false,conversion:'封装候选转换',candidate:true,note:'AES / JSON 与合成数据双向测试已有'},
+    {name:'丝之歌',app:'1030300',pc:'独立路径 / 候选入口',sample:false,conversion:'共享封装转换基础',candidate:true,note:'真实版本与槽位必须独立准入'}
+  ];
+  const escape = value => String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const labels={read:'真机只读已有',test:'待真实场景验收',closed:'未开放'};
+  const list=document.getElementById('features-body');
+  list.innerHTML=features.map(f=>`<details class="feature" data-category="${f.category}" id="feature-${f.id}"><summary class="feature-summary"><span class="feature-name">${escape(f.name)}<small>${escape(f.scope)}</small></span><span class="feature-code">${escape(f.code)}</span><span class="evidence"><span class="tag tag-${f.category}">${escape(f.evidence)}</span></span><span class="chevron" aria-hidden="true">›</span></summary><div class="feature-body"><div><h4>已经实现</h4><p>${escape(f.done)}</p></div><div><h4>还缺什么</h4><p>${escape(f.todo)}</p><a href="${f.source}">查看任务与依据</a></div></div></details>`).join('');
+  document.getElementById('games-body').innerHTML=games.map(g=>`<tr><td>${escape(g.name)}<small>Steam ${g.app}</small></td><td data-label="PC 发现 / 样本"><span class="${g.sample?'tag tag-read':''}">${escape(g.pc)}</span></td><td data-label="转换实现"><span class="tag tag-${g.candidate?'test':'closed'}">${escape(g.conversion)}</span><div class="game-note">${escape(g.note)}</div></td><td data-label="游戏内往返"><span class="pending">未准入</span><small>真实版本组合待验证</small></td><td data-label="实际迁移开放"><span class="tag tag-closed">未开放</span></td></tr>`).join('');
+  function filter(category){
+    let count=0;
+    for(const element of list.querySelectorAll('.feature')){element.hidden=category!=='all'&&element.dataset.category!==category;if(!element.hidden)count++;}
+    for(const button of document.querySelectorAll('[data-filter]'))button.setAttribute('aria-pressed',String(button.dataset.filter===category));
+    document.getElementById('result-count').textContent=`${category==='all'?'全部功能':labels[category]} · ${count} 项`;
+  }
+  document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>filter(button.dataset.filter)));
+  filter('all');
+  const toggle=document.getElementById('theme-toggle');
+  function theme(dark){document.documentElement.dataset.theme=dark?'dark':'light';toggle.setAttribute('aria-pressed',String(dark));toggle.textContent=dark?'浅色模式':'深色模式';}
+  theme(window.matchMedia('(prefers-color-scheme: dark)').matches);
+  toggle.addEventListener('click',()=>theme(document.documentElement.dataset.theme!=='dark'));
+  document.getElementById('print-button').addEventListener('click',()=>window.print());
+  let openBefore=[];
+  window.addEventListener('beforeprint',()=>{openBefore=[...list.querySelectorAll('details')].map(el=>[el,el.open]);openBefore.forEach(([el])=>{el.open=true;});});
+  window.addEventListener('afterprint',()=>{openBefore.forEach(([el,open])=>{el.open=open;});});
+  if('IntersectionObserver' in window){
+    const navLinks=[...document.querySelectorAll('.section-nav a')];
+    const observer=new IntersectionObserver(entries=>{const active=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(active)navLinks.forEach(link=>link.classList.toggle('active',link.hash==='#'+active.target.id));},{rootMargin:'-10% 0px -65% 0px',threshold:0});
+    ['features','games','evidence','next'].forEach(id=>observer.observe(document.getElementById(id)));
+  }
+})();
+</script>
+</body>
+</html>

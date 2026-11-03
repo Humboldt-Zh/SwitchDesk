@@ -1,0 +1,342 @@
+{
+  "date": "2026-11-01",
+  "createdAt": "2026-11-01T11:03:28+08:00",
+  "phase": "collecting",
+  "productChangesAllowedDuringCollection": false,
+  "desktopBuild": {
+    "version": "0.3.0-dev.1",
+    "protocol": 1,
+    "snapshotFormat": 1,
+    "sourceDateEpoch": 1792656000,
+    "sourceId": "39c6a308a1aa",
+    "sourceSha256": "39c6a308a1aabbebaf1091356a113a22703a618c1780223799bc432ee39ddd6c"
+  },
+  "device": null,
+  "currentInstruction": "P00：请连接 Switch 与电脑的数据 USB 线，在主机上打开现有 SwitchDesk 配套并保持唤醒；先不更新程序。电脑端先保持退出，便于独立工具握手。",
+  "cases": [
+    {
+      "id": "P00",
+      "title": "准备设备",
+      "scope": "Windows 11 x64、已运行 Atmosphère 的 Switch、可靠的数据 USB 线及稳定供电。先关闭其他会占用管理接口的 USB 客户端。",
+      "status": "waiting",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "passed"
+    },
+    {
+      "id": "P01",
+      "title": "选定双端程序",
+      "scope": "测 0.3 新能力时使用匹配的双端开发包，记录双方版本和来源标识。更新 NRO 前退出程序、保留旧 NRO，再只替换 SD 上 `/switch/SwitchDesk/SwitchDesk.nro`。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "P02",
+      "title": "隔离测试资料",
+      "scope": "用 `--data-dir` 指定新的电脑测试数据目录，并在设置中将备份和导出目录也指向独立测试位置；SD 文件仅在新建的 `/SwitchDeskTest` 中测试。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "passed"
+    },
+    {
+      "id": "P03",
+      "title": "准备可丢弃的存档与内容",
+      "scope": "选一个支持独立用户存档的测试游戏，使用单独 Switch 用户生成新进度；写回前保留本工具之外的独立备份。另准备少量测试文件及自有测试安装包。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "R01",
+      "title": "启动与退出",
+      "scope": "在 Switch 完整应用模式打开配套，电脑启动 SwitchDesk；按 X 查看连接详情，按 B 退出，再重新打开。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "R02",
+      "title": "USB 连接",
+      "scope": "直连 USB，在“连接诊断”查看设备名称、握手和能力。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "passed"
+    },
+    {
+      "id": "R03",
+      "title": "游戏列表",
+      "scope": "选 3 个有代表性的游戏，查看名称、大小、本体 / 更新 / DLC；切换搜索、来源和网格 / 列表。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "R04",
+      "title": "容量",
+      "scope": "对照主机当前环境的存储信息，查看 SD 与当前系统用户分区容量。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "R05",
+      "title": "空闲拔插",
+      "scope": "确认没有任务运行后，拔掉 USB，再插回；先做 3 次顺畅性检查，后续累计到路线要求的 20 次。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "R06",
+      "title": "空闲休眠 / 唤醒",
+      "scope": "无任务时让主机休眠并唤醒，再检查管理连接，必要时正常重开配套。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "R07",
+      "title": "退出和旧配套边界",
+      "scope": "无任务时分别正常退出电脑端、主机端并重开；若另测旧 0.2.4，检查新功能是否提示能力不足。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "F01",
+      "title": "创建与上传",
+      "scope": "在 SD 新建测试目录，上传一个文本文件、一个图片或二进制文件，以及一个含中文名、子目录和空目录的文件夹。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "failed"
+    },
+    {
+      "id": "F02",
+      "title": "下载与校验",
+      "scope": "将上传的文件 / 文件夹下载到另一个电脑目录，对原文件和回传文件分别计算 SHA-256。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "passed"
+    },
+    {
+      "id": "F03",
+      "title": "冲突、重命名与删除",
+      "scope": "对测试副本制造同名文件，查看提示；重命名并重新进入目录；仅删除本轮生成的测试文件。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "passed"
+    },
+    {
+      "id": "F04",
+      "title": "取消文件传输",
+      "scope": "用较大但可丢弃的普通测试文件开始传输，通过界面取消，再检查目标文件和任务。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "passed"
+    },
+    {
+      "id": "S01",
+      "title": "备份 A",
+      "scope": "在游戏内制造一个容易辨认的状态 A，例如某个存档点；截图记录后正常保存、退出游戏。在 SwitchDesk 选对游戏和用户，备份并校验 ZIP。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "S02",
+      "title": "拖出与去重",
+      "scope": "将备份拖到 Windows 资源管理器的测试目录，校验该副本；游戏不变化时再次备份。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "S03",
+      "title": "生成并备份 B",
+      "scope": "回游戏制造与 A 明显不同的状态 B，保存、退出，再备份 B 并校验。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "S04",
+      "title": "B → A",
+      "scope": "选择 A，核对主机 / 环境 / 游戏 / 用户，执行“恢复”；检查是否留下恢复前 B 的 Recovery 保护副本。完成后退出配套、进入游戏。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "S05",
+      "title": "A → B",
+      "scope": "退出游戏、重开配套，使用已校验的 B 副本恢复，再进入游戏检查。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "S06",
+      "title": "自动备份",
+      "scope": "仅为测试用户 / 游戏启用连接后自动备份，在游戏内保存新状态、退出后重连。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "I01",
+      "title": "仅做安装预检",
+      "scope": "点击“安装游戏”，加入一个测试包，在“整理安装清单”核对组件、本体归属、目标 SD / 当前系统用户分区及空间。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "I02",
+      "title": "安装一个独立测试组件",
+      "scope": "确认测试目标后只安装一项；完成后刷新组件信息，退出配套并在主机启动游戏。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "I03",
+      "title": "更新与 DLC",
+      "scope": "给同一测试游戏加入已匹配的更新 / DLC，核对预检、集中确认和执行结果；新版管理流程先确认配套具备所需能力。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "I04",
+      "title": "自有来源",
+      "scope": "先测本地索引与下载缓存，再测真实 NAS / HTTPS。核对长度和 SHA-256、来源和目录时间；同版内容再次操作应如实显示无变化。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "I05",
+      "title": "导出",
+      "scope": "先导出本体，再分别导出更新 / DLC，核对文件与来源清单。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "I06",
+      "title": "导出后重新安装",
+      "scope": "在已备份、可丢弃的测试环境中使用导出包完成重装、启动与存档检查；不为测试随意删除日常游戏。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "G01",
+      "title": "双端样本与比较",
+      "scope": "对具备双端新存档的目标游戏，退出游戏后选对 PC 路径和 Switch 用户，点击“读取并比较 · 同时备份双端”。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "G02",
+      "title": "迁移保持关闭",
+      "scope": "查看“迁移到 Switch”和“迁移到电脑”的状态及原因。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "G03",
+      "title": "精选保持关闭",
+      "scope": "检查原生隐藏相关状态或禁用提示。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "L01",
+      "title": "故障恢复",
+      "scope": "专用环境准备好独立可恢复副本后，再分别安排文件传输断线、存档写回中断、安装中断、主机退出与供电中断；每次只注入一种故障，先核对实际内容与操作状态，不自动重复写入。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    },
+    {
+      "id": "L02",
+      "title": "边界与性能",
+      "scope": "专门安排空间不足、大文件、FAT32、损坏数据、错误用户 / 环境、版本 / DLC 不符，以及 Windows 11 / SSD / USB 2.0 下 ≤32 MiB 存档的 30 秒目标测量。记录文件大小和计时起止，不能先宣布达标。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "L03",
+      "title": "桌面交互",
+      "scope": "实际显示器 DPI 切换、键盘焦点、多用户拖放；正常退出与异常退出分开记录。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "partial"
+    },
+    {
+      "id": "L04",
+      "title": "SysDVR",
+      "scope": "已独立配置好官方客户端和模块时，再验管理连接释放、游戏预览、声音、30 分钟稳定性以及返回管理。新安装模块或重启不是本次清单编写已经执行的动作。",
+      "status": "pending",
+      "result": "",
+      "evidence": "",
+      "previousStatus": "blocked"
+    }
+  ],
+  "issues": [
+    {
+      "id": "BUG-001",
+      "title": "中文文件名上传失败",
+      "origin": "2026-10-30",
+      "status": "pending_recheck",
+      "occurrencesThisSession": 0
+    },
+    {
+      "id": "INV-001",
+      "title": "1 条游戏内容信息不可读取",
+      "origin": "2026-10-30",
+      "status": "pending_recheck",
+      "occurrencesThisSession": 0
+    }
+  ],
+  "events": [],
+  "updatedAt": "2026-11-01T11:03:28+08:00"
+}
