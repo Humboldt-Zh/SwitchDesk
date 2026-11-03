@@ -51,7 +51,6 @@ public partial class MainWindow
         }
         updateTitle = id;
         vm.UpdateOffers = []; vm.SelectedOffer = null; vm.UpdateSummary = "检查更新可查询目录；安装包来自你配置的来源";
-        vm.CrossSave.Open = false; vm.CrossSave.SwitchFiles = []; vm.CrossSave.SelectedSwitchFile = null; vm.CrossSave.Invalidate();
     }
     private async Task CheckUpdatesAsync()
     {

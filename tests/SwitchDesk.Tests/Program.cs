@@ -17,6 +17,12 @@ internal static partial class Program
     public static int Main(string[] args)
     {
         if (args.Length > 0 && args[0] == "--native-video-fixture") return RunNativeVideoFixture();
+        if (args.Length > 0 && args[0] == "--ui-integration-only")
+        {
+            root = args.Length > 1 ? Path.GetFullPath(args[1]) : Path.Combine(Path.GetTempPath(), "SwitchDesk-ui-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(root); Test("WPF command integration", RunUiIntegrationAsync).GetAwaiter().GetResult();
+            Console.WriteLine($"RESULT {passed} passed, {failed} failed; fixtures: {root}"); return failed == 0 ? 0 : 1;
+        }
         root = args.Length > 0 ? Path.GetFullPath(args[0]) : Path.Combine(Path.GetTempPath(), "SwitchDesk-tests-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root); Run().GetAwaiter().GetResult();
         Console.WriteLine($"RESULT {passed} passed, {failed} failed; fixtures: {root}"); return failed == 0 ? 0 : 1;
@@ -28,6 +34,9 @@ internal static partial class Program
     private static Task Sync(Action action) { action(); return Task.CompletedTask; }
     private static async Task Run()
     {
+        await RunSaveLibraryTestsAsync();
+        await RunCrossSaveWorkflowTestsAsync();
+        await ExportFailureTestsAsync();
         await RunUsbStreamingTestsAsync();
         await NativeVideoHostTests();
         await Phase2Tests();

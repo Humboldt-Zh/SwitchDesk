@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
@@ -47,15 +47,24 @@ public partial class MainWindow
     { using var data = new MemoryStream(bytes); var image = new BitmapImage(); image.BeginInit(); image.CacheOption = BitmapCacheOption.OnLoad; image.DecodePixelWidth = 256; image.StreamSource = data; image.EndInit(); image.Freeze(); return image; }
     private async void OnWindowKey(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control) { Navigate("library"); SearchBox.Focus(); SearchBox.SelectAll(); e.Handled = true; }
-        else if (Keyboard.Modifiers == ModifierKeys.Alt && e.SystemKey is >= Key.D1 and <= Key.D4) { Navigate(vm.Navigation[e.SystemKey - Key.D1].Id); e.Handled = true; }
+        if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            if (vm.Page == "saves") SavesPage.FocusSearch();
+            else { Navigate("library"); SearchBox.Focus(); SearchBox.SelectAll(); }
+            e.Handled = true;
+        }
+        else if (Keyboard.Modifiers == ModifierKeys.Alt && e.SystemKey is >= Key.D1 and <= Key.D5)
+        { var page = vm.Navigation[e.SystemKey - Key.D1].Id; if (page == "cross-save" && vm.CrossSave.CanSelect) OpenCrossSaveHome(); else Navigate(page); e.Handled = true; }
         else if (e.Key == Key.Escape)
         {
             e.Handled = true;
+            // Close the visible overlay before changing the page behind it.
             if (vm.StreamGuide) { await Guard(() => StopStreamAsync(true)); return; }
-            if (vm.CrossSave.Open) { if (Volatile.Read(ref activeJobs) == 0) vm.CrossSave.Open = false; return; }
-            if (!batchRunning && !reviewing) InstallOverlay.Visibility = Visibility.Collapsed;
-            UploadOverlay.Visibility = Visibility.Collapsed; vm.DetailOpen = false;
+            if (InstallOverlay.IsVisible) { if (!batchRunning && !reviewing) InstallOverlay.Visibility = Visibility.Collapsed; return; }
+            if (UploadOverlay.IsVisible) { UploadOverlay.Visibility = Visibility.Collapsed; return; }
+            if (vm.Page == "cross-save" && vm.CrossSave.HasSelection) { if (vm.CrossSave.CanSelect) OpenCrossSaveHome(); return; }
+            if (vm.Page == "saves" && vm.SaveLibrary.SelectedGame != null) { vm.SaveLibrary.SelectedGame = null; return; }
+            vm.DetailOpen = false;
         }
     }
     private void OnGalleryKey(object sender, KeyEventArgs e)
@@ -164,6 +173,4 @@ public partial class MainWindow
     private static void Reveal(string path) { if (path.Length == 0) return; Directory.CreateDirectory(path); Process.Start(new ProcessStartInfo("explorer.exe") { ArgumentList = { path }, UseShellExecute = false }); }
     private void OnCopyDiagnostics(object sender, RoutedEventArgs e) => Clipboard.SetText($"{BuildInfo.ClientId}\nWindows: {Environment.OSVersion}\nConnection: {vm.Connection}\nCached: {!vm.Online}\nDevice: {(device == null ? "未连接" : JsonSerializer.Serialize(device, Wire.Json))}\n\n" + string.Join('\n', vm.Logs.TakeLast(100)));
     private void OnSysDvrHelp(object sender, RoutedEventArgs e) => Process.Start(new ProcessStartInfo("https://github.com/exelix11/SysDVR/wiki") { UseShellExecute = true });
-
-
 }

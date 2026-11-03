@@ -7,12 +7,25 @@ namespace SwitchDesk.App;
 public partial class MainWindow
 {
     private string AutoKey(SaveInfo save, DeviceInfo info) => info.DeviceId + "|" + info.Environment + "|" + save.Key;
-    private SaveInfo SelectedSave() => vm.Saves.Selected?.Live ?? throw new IOException("请选择此游戏的主机存档");
+    private SaveViewModel ActiveSaves => vm.Page == "saves" ? vm.SaveLibrary.Detail : vm.Saves;
+    private Snapshot? ActiveSnapshot
+    {
+        get => vm.Page == "saves" ? vm.SaveLibrary.SelectedSnapshot : SnapshotsGrid.SelectedItem as Snapshot;
+        set { if (vm.Page == "saves") vm.SaveLibrary.SelectedSnapshot = value; else SnapshotsGrid.SelectedItem = value; }
+    }
+    private bool CanRestoreSnapshot(Snapshot? snapshot)
+    {
+        if (snapshot == null || device == null || ActiveSaves.Selected?.Live is not {} save) return false;
+        var manifest = snapshot.Manifest;
+        return manifest.DeviceId == device.DeviceId && manifest.Environment == device.Environment &&
+            manifest.TitleId == save.TitleId && manifest.UserId == save.UserId && manifest.SaveType == save.Type;
+    }
+    private SaveInfo SelectedSave() => ActiveSaves.Selected?.Live ?? throw new IOException("请选择此游戏的主机存档");
     private void UpdateAutoPolicy()
-    { vm.Saves.SetAutomatic(vm.Saves.Selected?.Live is {} save && device != null && settings.AutoBackupKeys.Contains(AutoKey(save, device))); UpdateSettingsText(); }
+    { ActiveSaves.SetAutomatic(ActiveSaves.Selected?.Live is {} save && device != null && settings.AutoBackupKeys.Contains(AutoKey(save, device))); UpdateSettingsText(); }
     private void SetAutoPolicy(bool enabled)
     {
-        if (device == null || vm.Saves.Selected?.Live is not {} save) { vm.Saves.SetAutomatic(false); return; }
+        if (!vm.Online || device == null || ActiveSaves.Selected?.Live is not {} save) { ActiveSaves.SetAutomatic(false); return; }
         var keys = settings.AutoBackupKeys.ToHashSet(); var key = AutoKey(save, device); if (enabled) keys.Add(key); else keys.Remove(key);
         settings = settings with { AutoBackupKeys = keys.ToArray() }; settingsStore.Save(settings); UpdateSettingsText();
     }
@@ -28,14 +41,14 @@ public partial class MainWindow
     }, async () => { var result = await BackupAsync(save); vm.Notify("已备份", Path.GetDirectoryName(result.Path)!); });
     private async Task RestoreAsync()
     {
-        var save = SelectedSave(); var snapshot = SnapshotsGrid.SelectedItem as Snapshot ?? throw new IOException("请选择历史版本"); var (_, info) = RequireDevice("saves"); var m = snapshot.Manifest;
+        var save = SelectedSave(); var snapshot = ActiveSnapshot ?? throw new IOException("请选择历史版本"); var (_, info) = RequireDevice("saves"); var m = snapshot.Manifest;
         if (m.DeviceId != info.DeviceId || m.Environment != info.Environment || m.TitleId != save.TitleId || m.UserId != save.UserId || m.SaveType != save.Type) throw new IOException("所选版本与当前主机、系统环境或用户不匹配");
         if (!Dialogs.Confirm(this, "恢复存档", $"游戏  {save.GameName}\n用户  {save.UserName}\n系统  {info.Environment}\n版本  {snapshot.TimeText}\n\n先完整备份当前存档，再恢复所选版本。", "备份当前存档并恢复")) return;
         await RunJob("恢复 · " + save.GameName, async (job, ct) => { var (peer, current) = RequireDevice("saves"); await new SnapshotStore(settings.BackupDirectory).RestoreAsync(peer, current, save, snapshot.Path, Progress(job), ct); _ = Dispatcher.BeginInvoke(LoadLocalLists); return true; });
         vm.Notify("存档已恢复 · 恢复前备份保留在 Recovery", Path.Combine(settings.BackupDirectory, "Recovery"));
     }
     private async Task VerifySnapshotAsync()
-    { var snapshot = SnapshotsGrid.SelectedItem as Snapshot ?? throw new IOException("请选择历史版本"); await RunJob("校验存档快照", async (_, ct) => await SnapshotStore.VerifyAsync(snapshot.Path, ct)); vm.Notify("快照校验通过", Path.GetDirectoryName(snapshot.Path)!); }
+    { var snapshot = ActiveSnapshot ?? throw new IOException("请选择历史版本"); await RunJob("校验存档快照", async (_, ct) => await SnapshotStore.VerifyAsync(snapshot.Path, ct)); vm.Notify("快照校验通过", Path.GetDirectoryName(snapshot.Path)!); }
     private async Task PickInstallAsync()
     { var pick = new OpenFileDialog { Filter = "Switch 安装包|*.nsp;*.xci;*.nsz;*.xcz", Multiselect = true }; if (pick.ShowDialog(this) == true) await ReviewInstallAsync(pick.FileNames); }
     private string TargetStorage => InstallStorage.SelectedValue?.ToString() ?? "SdCard";

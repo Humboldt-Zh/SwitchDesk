@@ -31,9 +31,11 @@ internal sealed class Peer : IAsyncDisposable
     public int CloseOperations, ExportOpens;
     public int ActiveHandleCount => handles.Count;
     public Action? OnRestoreBegin;
+    public Func<Task>? BeforeHandleTree;
     public string? FailInstallation;
     public long FreeBytes = 120L << 30;
     public GameTitle[] Titles = [];
+    public SaveInfo[] SaveRecords = [Save];
     public List<string> InstalledNames { get; } = [];
     public static readonly DeviceInfo Info = new("TEST-DEVICE", "协议测试设备", "测试固件", "测试 AMS", "0.1.0", "emuMMC", "协议模拟", ["files", "titles", "saves", "inspect", "install", "export"], true);
     public static readonly SaveInfo Save = new("save-1", "0100000000000000", "测试游戏", "USER-A", "测试用户", "Account", 32 * 1024 * 1024, "emuMMC");
@@ -69,7 +71,7 @@ internal sealed class Peer : IAsyncDisposable
                             Titles = Titles.Select(g => g.TitleId == package.TitleId ? g with { Components = g.Components.Where(c => !package.Components.Any(p => p.TitleId == c.TitleId)).Concat(package.Components.Select(c => c with { Storage = Text("storage") })).ToArray() } : g).ToArray();
                         break;
                     case "titles.install": if (Text("name") == FailInstallation) error = "InstallInterrupted"; else InstalledNames.Add(Text("name")); break;
-                    case "saves.list": result = new[] { Save }; break;
+                    case "saves.list": result = SaveRecords; break;
                     case "fs.stat": result = new { exists = SdFiles.ContainsKey(Text("path")) || SdDirectories.Contains(Text("path")), isDirectory = SdDirectories.Contains(Text("path")), size = SdFiles.GetValueOrDefault(Text("path"))?.Length ?? 0 }; break;
                     case "fs.mkdir": SdDirectories.Add(Text("path")); break;
                     case "fs.list":
@@ -84,7 +86,9 @@ internal sealed class Peer : IAsyncDisposable
                         goto case "saves.read.open";
                     case "saves.read.open":
                         ReadOpens++; var h = (++handleId).ToString(); handles[h] = method == "fs.read.open" ? "file" : "save"; result = new { handle = h, size = Files["main.dat"].Length }; break;
-                    case "handle.tree": result = Files.Select(f => new RemoteEntry(f.Key, f.Key, false, f.Value.Length)).Append(new(DirectoryConflict ? "main.dat" : "empty", DirectoryConflict ? "main.dat" : "empty", true, 0)).ToArray(); break;
+                    case "handle.tree":
+                        if (BeforeHandleTree != null) await BeforeHandleTree().WaitAsync(stop.Token);
+                        result = Files.Select(f => new RemoteEntry(f.Key, f.Key, false, f.Value.Length)).Append(new(DirectoryConflict ? "main.dat" : "empty", DirectoryConflict ? "main.dat" : "empty", true, 0)).ToArray(); break;
                     case "read.chunk":
                         var name = Text("path"); if (name == "") name = "main.dat";
                         if (FailRead) { error = "ReadInterrupted"; break; }

@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -51,10 +51,11 @@ public partial class MainWindow : Window
         library = new(Path.Combine(root, "library.db")); cache = new(Path.Combine(root, "ConsoleCache"));
         phase2 = new(Path.Combine(root, "Phase2", "state.db"));
         new MigrationWorkspace(phase2, Path.Combine(root, "Phase2"), CompatibilityCatalog.Released).RecoverInterruptedOperations();
-        ThemeManager.Apply(settings.Theme); InitializeComponent(); SourceInitialized += (_, _) => ThemeManager.ApplyCaption(this); BindCommands(); InitializePhase2(); DataContext = vm;
+        ThemeManager.Apply(settings.Theme); InitializeComponent(); SourceInitialized += (_, _) => ThemeManager.ApplyCaption(this); BindCommands(); InitializePhase2(); InitializeSaveLibrary(); DataContext = vm;
         vm.Library.ListView = settings.ListView;
         vm.Library.SelectionChanged += () => { if (vm.Library.Selected != null) { vm.DetailOpen = true; UpdateDetails(); Animate(Details); } LayoutDetails(); };
-        vm.Saves.SelectionChanged += () => { UpdateAutoPolicy(); vm.CrossSave.Invalidate(); }; vm.Saves.AutoChanged += SetAutoPolicy;
+        vm.Saves.SelectionChanged += UpdateAutoPolicy; vm.Saves.AutoChanged += SetAutoPolicy;
+        vm.SaveLibrary.Detail.SelectionChanged += UpdateAutoPolicy; vm.SaveLibrary.Detail.AutoChanged += SetAutoPolicy;
         vm.Tasks.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(vm.Tasks.HasActions)) JobActionsColumn.Visibility = vm.Tasks.HasActions ? Visibility.Visible : Visibility.Collapsed; };
         vm.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(vm.Notice)) UpdateNotice(); if (e.PropertyName == nameof(vm.DetailOpen)) LayoutDetails(); };
         vm.Library.Filtered.CollectionChanged += (_, _) => EmptyLibrary.Visibility = vm.Library.Filtered.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -70,8 +71,8 @@ public partial class MainWindow : Window
     {
         void Async(string name, Func<Task> action, Func<bool>? can = null) => vm.Bind(name, p => { _ = Guard(action); }, p => can?.Invoke() ?? true);
         bool Ready(string capability) => !streaming && !closingApplication && vm.Online && client?.IsBroken == false && device?.Capabilities.Contains(capability) == true;
-        bool LiveSave() => Ready("saves") && vm.Saves.Selected?.Live != null;
-        vm.Bind("Navigate", p => Navigate(p?.ToString() ?? "library"));
+        bool LiveSave() => Ready("saves") && Volatile.Read(ref activeJobs) == 0 && ActiveSaves.Selected?.Live != null;
+        vm.Bind("Navigate", p => { if (p?.ToString() == "cross-save" && vm.CrossSave.CanSelect) OpenCrossSaveHome(); else Navigate(p?.ToString() ?? "library"); });
         vm.Bind("SelectGame", p => { if (p is GameCard card) { vm.Library.Selected = card; vm.DetailOpen = true; UpdateDetails(); LayoutDetails(); } });
         vm.Bind("CloseDetails", _ => vm.DetailOpen = false);
         vm.Bind("Source", p => { vm.Library.Source = p?.ToString() ?? "全部"; MarkFilters(); });
@@ -82,9 +83,9 @@ public partial class MainWindow : Window
         Async("Export", ExportAsync, () => Ready("export") && vm.Library.Selected?.Console?.Components.Length > 0);
         Async("ExportDirectory", () => { var pick = new OpenFolderDialog { Title = "选择游戏导出目录", InitialDirectory = settings.ExportDirectory }; if (pick.ShowDialog(this) == true) { settings = settings with { ExportDirectory = pick.FolderName }; settingsStore.Save(settings); UpdateSettingsText(); } return Task.CompletedTask; });
         Async("Backup", async () => { var result = await BackupAsync(SelectedSave()); vm.Notify("已备份 · " + result.Manifest.GameName, Path.GetDirectoryName(result.Path)!); }, LiveSave);
-        Async("Restore", RestoreAsync, () => LiveSave() && SnapshotsGrid.SelectedItem is Snapshot);
-        vm.Bind("RestoreVersion", p => { if (p is Snapshot snapshot) { SnapshotsGrid.SelectedItem = snapshot; _ = Guard(RestoreAsync); } }, p => LiveSave() && p is Snapshot);
-        Async("VerifySnapshot", VerifySnapshotAsync, () => SnapshotsGrid.SelectedItem is Snapshot);
+        Async("Restore", RestoreAsync, () => LiveSave() && CanRestoreSnapshot(ActiveSnapshot));
+        vm.Bind("RestoreVersion", p => { if (p is Snapshot snapshot) { ActiveSnapshot = snapshot; _ = Guard(RestoreAsync); } }, p => LiveSave() && p is Snapshot snapshot && CanRestoreSnapshot(snapshot));
+        Async("VerifySnapshot", VerifySnapshotAsync, () => ActiveSnapshot != null);
         Async("AddLibrary", AddLibraryAsync); Async("ScanLibrary", () => ScanLibraryAsync(settings.LibraryDirectory));
         Async("VerifyLocal", VerifyLocalAsync, () => LocalFiles.SelectedItem is LibraryItem);
         Async("InspectLocal", InspectLocalAsync, () => Ready("inspect") && LocalFiles.SelectedItem is LibraryItem);
@@ -104,14 +105,16 @@ public partial class MainWindow : Window
     { LayoutDetails(); if (Environment.GetCommandLineArgs().Contains("--smoke-test")) { await RenderSmokeAsync(); Close(); return; } if (fixtureMode) return; Log(BuildInfo.ClientId + " 启动；等待配套程序。"); _ = Task.Run(ObserveSteamChangesAsync); await MonitorAsync(); }
     private void Navigate(string page)
     {
-        SearchHeader.Visibility = page is "library" or "saves" ? Visibility.Visible : Visibility.Collapsed;
+        SearchHeader.Visibility = page == "library" ? Visibility.Visible : Visibility.Collapsed;
         HeaderInstall.Visibility = SearchHeader.Visibility;
-        vm.Page = page; vm.Library.SavesOnly = page == "saves"; LibraryPage.Visibility = page is "library" or "saves" ? Visibility.Visible : Visibility.Collapsed;
+        vm.Page = page; vm.Library.SavesOnly = false; LibraryPage.Visibility = page == "library" ? Visibility.Visible : Visibility.Collapsed;
+        SavesPage.Visibility = page == "saves" ? Visibility.Visible : Visibility.Collapsed;
+        CrossSavePage.Visibility = page == "cross-save" ? Visibility.Visible : Visibility.Collapsed;
         FilesPage.Visibility = page == "files" ? Visibility.Visible : Visibility.Collapsed; ConsolePage.Visibility = page == "console" ? Visibility.Visible : Visibility.Collapsed;
         SettingsPage.Visibility = page == "settings" ? Visibility.Visible : Visibility.Collapsed; DiagnosticsPage.Visibility = page == "diagnostics" ? Visibility.Visible : Visibility.Collapsed;
-        if (page == "saves") { DetailsTabs.SelectedIndex = 1; if (vm.Library.Selected != null) vm.DetailOpen = true; }
+        if (page == "saves") { RefreshSaveLibrary(); UpdateAutoPolicy(); }
         if (page == "files" && vm.Online && FilesGrid.ItemsSource == null) _ = Guard(async () => await RunJob("打开 SD 目录", async (_, ct) => { await LoadFilesAsync(ct); return true; }));
-        LayoutDetails(); MarkNavigation(); UpdateNotice();
+        UpdateAutoPolicy(); LayoutDetails(); MarkNavigation(); UpdateNotice();
     }
     private void MarkNavigation()
     { foreach (var button in Descendants<Button>(Root).Where(b => b.Command == vm.Commands["Navigate"])) { var selected = button.CommandParameter?.ToString() == vm.Page; button.SetResourceReference(BackgroundProperty, selected ? "Selected" : "Rail"); button.SetResourceReference(ForegroundProperty, selected ? "Accent" : "Secondary"); } }
@@ -124,7 +127,7 @@ public partial class MainWindow : Window
     {
         if (!initialized) return; vm.Compact = ActualWidth < 1180; NavigationColumn.Width = new(vm.Compact ? 72 : 198);
         foreach (var element in new FrameworkElement[] { BrandLabel, ConsoleLabel, ConsoleStatusLabels, VersionLabel, WorkspaceLabel }) element.Visibility = vm.Compact ? Visibility.Collapsed : Visibility.Visible;
-        var show = vm.DetailOpen && vm.Library.Selected != null && vm.Page is "library" or "saves";
+        var show = vm.DetailOpen && vm.Library.Selected != null && vm.Page == "library";
         DetailColumn.Width = new(show ? 304 : 0); Details.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         Dispatcher.BeginInvoke(() => { ResizeGallery(Math.Max(180, LibraryPage.ActualWidth - 20)); MarkNavigation(); MarkFilters(); });
     }
@@ -148,11 +151,10 @@ public partial class MainWindow : Window
     {
         var scroll = Descendants<ScrollViewer>(Gallery).FirstOrDefault(); var offset = scroll?.VerticalOffset ?? 0;
         var anchor = vm.Library.Rows.ElementAtOrDefault((int)offset)?.Cards.FirstOrDefault()?.Key;
-        var history = new SnapshotStore(settings.BackupDirectory).List().ToArray(); vm.Saves.SetData(saves, history);
+        var scan = new SnapshotStore(settings.BackupDirectory).Scan(); var history = scan.Snapshots.ToArray(); vm.Saves.SetData(saves, history);
+        vm.SaveLibrary.SetData(saves, scan, device, vm.Online, synced);
         vm.Library.SaveTitles = saves.Select(x => x.TitleId).Concat(history.Select(x => x.Manifest.TitleId)).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var known = titles.Select(x => x.TitleId).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var archiveGames = history.Where(x => !known.Contains(x.Manifest.TitleId)).GroupBy(x => x.Manifest.TitleId).Select(x => new GameTitle(x.Key, x.First().Manifest.GameName, "历史存档", "—", "仅历史存档", []));
-        vm.Library.Merge(titles.Concat(archiveGames), library.List()); ApplyCatalogLabels(); UpdateDetails(); UpdateSyncText(); UpdateSettingsText();
+        vm.Library.Merge(titles, library.List()); ApplyCatalogLabels(); UpdateDetails(); RefreshCrossSaveContext(); UpdateSyncText(); UpdateSettingsText();
         if (scroll != null) Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () => { var row = anchor == null ? -1 : vm.Library.Rows.ToList().FindIndex(r => r.Cards.Any(c => c.Key == anchor)); scroll.ScrollToVerticalOffset(row >= 0 ? row : offset); });
     }
     private void UpdateDetails() { vm.Saves.SetContext(vm.Library.Selected?.TitleId, device); UpdateAutoPolicy(); UpdatePhase2Details(); CommandManager.InvalidateRequerySuggested(); }
@@ -199,7 +201,7 @@ public partial class MainWindow : Window
                         DeviceInfo info; try { info = await client.QueryAsync<DeviceInfo>("device.info", ct: timeout.Token); } finally { jobsGate.Release(); }
                         if (streaming || closingApplication) continue;
                         var changed = info.DeviceId != device?.DeviceId || info.Environment != device?.Environment; device = info; UpdateDevice(info);
-                        if (changed) { titles = []; saves = []; await RunJob("切换系统环境", async (_, ct) => { await RefreshDeviceAsync(ct); return true; }); }
+                        if (changed) { InvalidateCrossSaveConnection(); titles = []; saves = []; await RunJob("切换系统环境", async (_, ct) => { await RefreshDeviceAsync(ct); return true; }); }
                     }
                     catch (Exception ex) when (ex is IOException or InvalidDataException or OperationCanceledException or JsonException or InvalidOperationException) { Log("连接中断：" + ex.Message); await DisconnectAsync(); }
                 }
@@ -210,7 +212,7 @@ public partial class MainWindow : Window
         }
     }
     private async Task DisconnectAsync()
-    { var old = client; client = null; vm.Online = false; if (old != null) await old.DisposeAsync(); FilesGrid.ItemsSource = null; SetConnectionMessage(synced != null ? "离线记录 · 等待连接" : "等待配套程序"); UpdateSyncText(); UpdateAutoPolicy(); }
+    { var old = client; client = null; vm.Online = false; InvalidateCrossSaveConnection(); if (old != null) await old.DisposeAsync(); FilesGrid.ItemsSource = null; SetConnectionMessage(synced != null ? "离线记录 · 等待连接" : "等待配套程序"); RefreshSaveLibrary(); RefreshCrossSaveContext(); UpdateSyncText(); UpdateAutoPolicy(); }
     private (DeviceClient Client, DeviceInfo Device) RequireDevice(string? capability = null)
     {
         if (streaming || closingApplication) throw new IOException("请先停止 USB 投屏，再执行主机管理操作");
@@ -227,6 +229,7 @@ public partial class MainWindow : Window
     {
         var job = new Job { Name = name, Retry = retry }; if (Dispatcher.CheckAccess()) vm.Tasks.Add(job); else await Dispatcher.InvokeAsync(() => vm.Tasks.Add(job)).Task.ConfigureAwait(false);
         Interlocked.Increment(ref activeJobs); using var linked = CancellationTokenSource.CreateLinkedTokenSource(lifetime.Token, job.Cancellation.Token);
+        _ = Dispatcher.BeginInvoke(RefreshCrossSaveAvailability);
         try
         {
             await jobsGate.WaitAsync(linked.Token).ConfigureAwait(false);
@@ -237,7 +240,7 @@ public partial class MainWindow : Window
         }
         catch (OperationCanceledException) { _ = Dispatcher.BeginInvoke(() => { job.State = "已取消"; job.CanCancel = false; job.Detail = "可重新执行；保留已完成结果"; }); Log("取消：" + name); throw; }
         catch (Exception ex) { _ = Dispatcher.BeginInvoke(() => { job.State = "需要处理"; job.CanCancel = false; job.Detail = ex.Message; }); Log($"失败：{name} · {ex.Message}"); throw; }
-        finally { Interlocked.Decrement(ref activeJobs); _ = Dispatcher.BeginInvoke(() => { vm.Tasks.Refresh(); CommandManager.InvalidateRequerySuggested(); }); }
+        finally { Interlocked.Decrement(ref activeJobs); _ = Dispatcher.BeginInvoke(() => { vm.Tasks.Refresh(); RefreshCrossSaveAvailability(); CommandManager.InvalidateRequerySuggested(); }); }
     }
     private IProgress<TransferProgress> Progress(Job job)
     {
@@ -271,5 +274,4 @@ public partial class MainWindow : Window
         }
         catch (Exception ex) { closingApplication = false; Root.IsEnabled = true; Log("退出清理失败：" + ex.Message); vm.Notify("投屏清理未完成，请停止投屏后再次退出"); }
     }
-
 }

@@ -4,27 +4,55 @@ using System.Text.Json;
 
 namespace SwitchDesk.Core;
 
+public sealed record SnapshotScanIssue(string Path, string Reason);
+public sealed record SnapshotScanResult(Snapshot[] Snapshots, SnapshotScanIssue[] Issues, string[]? RecoveryPaths = null);
+
 public sealed class SnapshotStore(string root)
 {
     private static string Digest(SnapshotFile[] files, string[]? directories) => Convert.ToHexString(SHA256.HashData(
         JsonSerializer.SerializeToUtf8Bytes(new { files = files.OrderBy(f => f.Path, StringComparer.Ordinal).ToArray(), directories = (directories ?? []).Order(StringComparer.Ordinal).ToArray() }, Wire.Json)));
 
-    public IReadOnlyList<Snapshot> List()
+    public IReadOnlyList<Snapshot> List() => Scan().Snapshots;
+
+    // Directory discovery reads manifests only. Payload checks remain mandatory for
+    // verification, dragging and restoration; listing is not a successful hash check.
+    public SnapshotScanResult Scan(CancellationToken ct = default)
     {
-        if (!Directory.Exists(root)) return [];
+        if (!Directory.Exists(root)) return new([], []);
         var result = new List<Snapshot>();
-        foreach (var path in Directory.EnumerateFiles(root, "*.zip", new EnumerationOptions { RecurseSubdirectories = true, AttributesToSkip = FileAttributes.ReparsePoint }))
+        var recoveryPaths = new List<string>();
+        var issues = new List<SnapshotScanIssue>();
+        var pending = new Stack<string>(); pending.Push(root);
+        while (pending.TryPop(out var directory))
         {
-            try
+            ct.ThrowIfCancellationRequested();
+            string[] entries;
+            try { entries = Directory.GetFileSystemEntries(directory); }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            { issues.Add(new(directory, "无法读取此备份目录")); continue; }
+            foreach (var path in entries)
             {
-                using var zip = ZipFile.OpenRead(path); var entry = zip.GetEntry("manifest.json");
-                if (entry is null || entry.Length > 16 * 1024 * 1024) continue;
-                using var stream = entry.Open(); var manifest = JsonSerializer.Deserialize<SaveManifest>(stream, Wire.Json);
-                if (manifest != null) { ValidateManifest(manifest); result.Add(new(path, manifest)); }
+                ct.ThrowIfCancellationRequested();
+                try
+                {
+                    var attributes = File.GetAttributes(path);
+                    if (attributes.HasFlag(FileAttributes.ReparsePoint)) continue;
+                    if (attributes.HasFlag(FileAttributes.Directory)) { pending.Push(path); continue; }
+                    if (!Path.GetExtension(path).Equals(".zip", StringComparison.OrdinalIgnoreCase)) continue;
+                    using var zip = ZipFile.OpenRead(path); var entry = zip.GetEntry("manifest.json");
+                    if (entry is null) { issues.Add(new(path, "缺少快照清单，无法识别")); continue; }
+                    if (entry.Length > 16 * 1024 * 1024) { issues.Add(new(path, "快照清单过大")); continue; }
+                    using var stream = entry.Open(); var manifest = JsonSerializer.Deserialize<SaveManifest>(stream, Wire.Json);
+                    if (manifest == null) { issues.Add(new(path, "快照清单为空")); continue; }
+                    if (manifest.FormatVersion != 1) { issues.Add(new(path, "此快照格式版本尚不支持")); continue; }
+                    ValidateManifest(manifest); result.Add(new(path, manifest));
+                    if (Path.GetRelativePath(root, path).StartsWith("Recovery" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) recoveryPaths.Add(path);
+                }
+                catch (Exception e) when (e is IOException or InvalidDataException or JsonException or UnauthorizedAccessException)
+                { issues.Add(new(path, "快照清单损坏或文件不可读取")); }
             }
-            catch (Exception e) when (e is IOException or InvalidDataException or JsonException or UnauthorizedAccessException) { }
         }
-        return result.OrderByDescending(s => s.Manifest.CreatedAt).ToArray();
+        return new(result.OrderByDescending(s => s.Manifest.CreatedAt).ToArray(), issues.ToArray(), recoveryPaths.ToArray());
     }
     public async Task<Snapshot> BackupAsync(DeviceClient client, DeviceInfo device, SaveInfo save,
         IProgress<TransferProgress>? progress, CancellationToken ct, bool recovery = false)

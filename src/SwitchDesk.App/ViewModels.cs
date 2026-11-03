@@ -224,6 +224,7 @@ public sealed class ShellViewModel : Observable
     public UpdateChoice? SelectedOffer { get => selectedOffer; set { Set(ref selectedOffer, value); CommandManager.InvalidateRequerySuggested(); } }
     public LibraryViewModel Library { get; } = new();
     public SaveViewModel Saves { get; } = new();
+    public SaveLibraryViewModel SaveLibrary { get; } = new();
     public TasksViewModel Tasks { get; } = new();
     public ObservableCollection<string> Logs { get; } = [];
     public ObservableCollection<string> ConnectionEvents { get; } = [];
@@ -236,13 +237,13 @@ public sealed class ShellViewModel : Observable
             Tasks.Items.Any(x => x.State == "需要处理" && x.Detail == message) || message == lastConnectionEvent) return;
         lastConnectionEvent = message; ConnectionEvents.Add(line); while (ConnectionEvents.Count > 200) ConnectionEvents.RemoveAt(0);
     }
-    public NavigationItem[] Navigation { get; } = [new("library", "\uE8F1", "游戏库"), new("saves", "\uE74E", "存档"), new("files", "\uE8B7", "文件"), new("console", "\uE7F4", "主机")];
+    public NavigationItem[] Navigation { get; } = [new("library", "\uE8F1", "游戏库"), new("saves", "\uE74E", "存档"), new("files", "\uE8B7", "文件"), new("console", "\uE7F4", "主机"), new("cross-save", "\uE8AB", "跨平台存档")];
     public Dictionary<string, ICommand> Commands { get; } = [];
     private string page = "library", connection = "等待连接", notice = "", noticePath = "", environment = "未连接", sync = "连接后自动同步", model = "我的 Switch";
     private bool online, detailOpen, compact, fixture, streamGuide; private DeviceInfo? device;
     private StorageInfo[] storages = [];
     public string Page { get => page; set { if (Set(ref page, value)) { Changed(nameof(PageTitle)); CommandManager.InvalidateRequerySuggested(); } } }
-    public string PageTitle => Page switch { "saves" => "存档", "files" => "SD 文件", "console" => "主机", "settings" => "设置", "diagnostics" => "连接诊断", _ => "游戏库" };
+    public string PageTitle => Page switch { "saves" => "存档", "cross-save" => "跨平台存档", "files" => "SD 文件", "console" => "主机", "settings" => "设置", "diagnostics" => "连接诊断", _ => "游戏库" };
     public string Model { get => model; set => Set(ref model, value); }
     public string Connection { get => connection; set => Set(ref connection, value); }
     public string EnvironmentText { get => environment; set => Set(ref environment, value); }
